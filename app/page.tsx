@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowUpRight, BarChart3, ExternalLink, LoaderCircle, MapPin, Search, ShieldCheck, Sparkles, BookOpen, Home as HomeIcon, Euro, Users, Sun, Briefcase, Trash2, TrendingUp, TrendingDown } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import AnswerHero, { type AnswerStage } from "@/components/answer/AnswerHero";
+import EverydayView from "@/components/answer/EverydayView";
+import { everydayView } from "@/lib/everyday";
 import ExplanationPanel, { explanationProviderLabel, type Explanation, type ResponseTone } from "@/components/explain/ExplanationPanel";
 import HomeCityStrip from "@/components/home/HomeCityStrip";
 import MunicipalitySelector from "@/components/municipality/MunicipalitySelector";
@@ -107,6 +109,7 @@ export default function Home() {
     {answer && directExplanation && <section className="answer-area" ref={resultRef}>
       <AnswerHero question={answer.question} explanation={heroExplanation ?? directExplanation} tone={selectedTone}/>
       <div className="answer-kpis">{answer.summaries.filter((item) => item.last?.value != null).map((item) => { const change = answer.indicator.id === "0012136" ? answer.homologousComparison?.percentagePointChange ?? null : item.percent ?? null; const unitChange = answer.indicator.id === "0012136" ? " p.p." : " %"; return <article key={item.territory} className="answer-kpi"><span className="answer-kpi-place"><MapPin size={13}/>{item.territory}</span><strong>{fmt(item.last!.value, answer.indicator.unit)}</strong><span className="answer-kpi-period">{answer.indicator.shortName} · {item.last!.period}</span>{change != null && item.first?.period !== item.last?.period && <span className={change >= 0 ? "answer-kpi-change up" : "answer-kpi-change down"}>{change >= 0 ? <TrendingUp size={14}/> : <TrendingDown size={14}/>}{change >= 0 ? "+" : ""}{change.toLocaleString("pt-PT", { maximumFractionDigits: 1 })}{unitChange} {answer.indicator.id === "0012136" ? "face ao ano anterior" : `desde ${item.first?.period}`}</span>}</article>; })}</div>
+      <EverydayView view={everydayView(answer)}/>
       {answer.territoryIds?.length === 1 && getMunicipalityById(answer.territoryIds[0]) && <nav className="answer-next" aria-label="Continuar"><Link href={`/cidade/${municipalitySlug(getMunicipalityById(answer.territoryIds[0])!)}`}><MapPin size={14}/> Ver tudo sobre {getMunicipalityById(answer.territoryIds[0])!.name} <ArrowUpRight size={14}/></Link><Link href="/comparar"><BarChart3 size={14}/> Comparar com outra cidade <ArrowUpRight size={14}/></Link></nav>}
       <details className="answer-tones"><summary><Sparkles size={15}/> Explicar de outra forma <span>6 estilos, os mesmos números</span></summary>
       <ExplanationPanel key={answer.analysisId ?? answer.question} analysisId={answer.analysisId} initialExplanation={directExplanation} onActiveProviderChange={onActiveProviderChange} onToneChange={setSelectedTone} onExplanationChange={onExplanationChange} onShowEvidence={() => { if (proofRef.current) { proofRef.current.open = true; proofRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }}/>

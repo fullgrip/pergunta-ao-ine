@@ -170,3 +170,33 @@ body{background:radial-gradient(900px 520px at 12% -8%, color-mix(in srgb, var(-
 .answer-kpi-change.up{color:var(--sobe);background:color-mix(in srgb,var(--sobe) 14%,transparent)}
 .answer-kpi-change.down{color:var(--desce);background:color-mix(in srgb,var(--desce) 14%,transparent)}
 @media(max-width:720px){.hero.hero-photo{margin:16px auto 40px;padding:52px 18px 40px;border-radius:22px}.hero-photo-credit{left:18px;right:auto}}
+
+/* "Em linguagem do dia a dia": a resposta traduzida para quem não lê gráficos (17/10). */
+.everyday{max-width:990px;margin:16px auto 0;padding:24px 26px;border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--pinho) 9%,var(--superficie)),color-mix(in srgb,var(--falesia) 8%,var(--superficie)));border:1px solid var(--linha)}
+.everyday header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin-bottom:14px}
+.everyday-eyebrow{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--pinho)}
+.everyday header p{margin:0;font-size:12px;color:var(--tinta-2)}
+.everyday-lines{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.everyday-lines li{display:flex;gap:14px;align-items:flex-start}
+.everyday-lines p{margin:0;font-size:17px;line-height:1.5;color:var(--tinta);font-weight:500}
+.everyday-lines small{display:block;margin-top:3px;font-size:12px;color:var(--tinta-2)}
+.everyday-icon{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--superficie);border:1px solid var(--linha);color:var(--pinho)}
+.everyday-icon-home{color:var(--falesia)}.everyday-icon-sun{color:#D9A23B}.everyday-icon-users{color:var(--mar)}.everyday-icon-trash{color:#B5487A}.everyday-icon-briefcase{color:#4C6BD6}
+.everyday-visuals{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:20px}
+.everyday-visuals figure{margin:0;padding:16px 18px;border-radius:14px;background:var(--superficie);border:1px solid var(--linha)}
+.everyday-visuals figcaption{font-size:13px;font-weight:700;color:var(--tinta);margin-bottom:12px}
+.everyday-bar-row{display:grid;grid-template-columns:minmax(52px,auto) 1fr auto;align-items:center;gap:10px;margin-top:8px}
+.everyday-bar-label{font-size:13px;color:var(--tinta-2)}
+.everyday-bar-track{height:14px;border-radius:99px;background:color-mix(in srgb,var(--tinta) 8%,transparent);overflow:hidden}
+.everyday-bar{display:block;height:100%;border-radius:99px;background:color-mix(in srgb,var(--tinta-2) 55%,transparent)}
+.everyday-bar.now{background:linear-gradient(90deg,var(--pinho),var(--falesia))}
+.everyday-bar-row strong{font-size:14px;font-variant-numeric:tabular-nums;color:var(--tinta)}
+.everyday-people-grid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;max-width:420px}
+.everyday-people-grid svg{color:color-mix(in srgb,var(--tinta-2) 35%,transparent)}
+.everyday-people-grid svg.on{color:var(--falesia)}
+.everyday-guests-row{display:flex;align-items:center;gap:12px}
+.everyday-resident{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--mar)}
+.everyday-resident small{font-size:11px;color:var(--tinta-2)}
+.everyday-equals{font-size:22px;font-weight:700;color:var(--tinta-2)}
+.everyday-luggage{display:flex;flex-wrap:wrap;gap:4px;color:#D9A23B}
+@media(max-width:480px){.everyday{padding:18px 16px}.everyday-lines p{font-size:15px}.everyday-people-grid{grid-template-columns:repeat(10,1fr)}}
