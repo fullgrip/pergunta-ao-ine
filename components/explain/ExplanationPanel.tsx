@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeftRight, Download, FileCheck2, LoaderCircle, Sparkles } from "lucide-react";
+import { ArrowLeftRight, Download, FileCheck2 } from "lucide-react";
 import styles from "./ExplanationPanel.module.css";
 
-export type ResponseTone = "direct" | "journalist" | "teacher" | "researcher" | "executive" | "sarcastic";
+export type ResponseTone = "direct" | "friend" | "journalist" | "teacher" | "researcher" | "executive" | "sarcastic";
 export type Explanation = {
   tone: ResponseTone;
   headline?: string;
@@ -18,21 +18,33 @@ export type Explanation = {
   model?: string;
 };
 
-const tones: Array<{ id: ResponseTone; label: string }> = [
-  { id: "direct", label: "Direto" },
-  { id: "journalist", label: "Jornalista" },
-  { id: "teacher", label: "Professor" },
-  { id: "researcher", label: "Investigador" },
-  { id: "executive", label: "Executivo" },
-  { id: "sarcastic", label: "Sarcástico" },
+// Cada estilo é uma "personagem": mais fácil de escolher do que um tom abstrato, sobretudo para os mais novos.
+const tones: Array<{ id: ResponseTone; label: string; emoji: string; tagline: string }> = [
+  { id: "friend", label: "Como um amigo", emoji: "🤙", tagline: "Na boa, sem palavras difíceis" },
+  { id: "direct", label: "Direto", emoji: "🎯", tagline: "Sem rodeios" },
+  { id: "teacher", label: "Professor", emoji: "🧑‍🏫", tagline: "Com um exemplo do dia a dia" },
+  { id: "sarcastic", label: "Sarcástico", emoji: "😏", tagline: "Com ironia, os mesmos números" },
+  { id: "journalist", label: "Jornalista", emoji: "📰", tagline: "Como numa notícia" },
+  { id: "executive", label: "Executivo", emoji: "💼", tagline: "O que muda na prática" },
+  { id: "researcher", label: "Investigador", emoji: "🔬", tagline: "Com rigor técnico" },
 ];
 const toneIds = new Set(tones.map(({ id }) => id));
-const quickActions: Array<{ label: string; tone: ResponseTone; hint: string }> = [
-  { label: "Simplificar", tone: "teacher", hint: "Usa o modo Professor" },
-  { label: "Aprofundar", tone: "researcher", hint: "Usa o modo Investigador" },
-  { label: "Resumir", tone: "direct", hint: "Usa o modo Direto" },
-  { label: "Dar contexto", tone: "journalist", hint: "Usa o modo Jornalista com os mesmos dados" },
-];
+const toneById = (id: ResponseTone) => tones.find((item) => item.id === id) ?? tones[1];
+
+/** Reveals the text a few letters at a time; shows it whole when the person prefers reduced motion. */
+function Typewriter({ text }: { text: string }) {
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    let reduced = false;
+    try { reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { /* sem matchMedia: mostra tudo */ }
+    if (reduced) { setShown(text.length); return; }
+    setShown(0);
+    const step = Math.max(2, Math.ceil(text.length / 70));
+    const timer = window.setInterval(() => setShown((current) => { if (current + step >= text.length) { window.clearInterval(timer); return text.length; } return current + step; }), 18);
+    return () => window.clearInterval(timer);
+  }, [text]);
+  return <p aria-label={text}><span aria-hidden>{text.slice(0, shown)}</span>{shown < text.length && <span className={styles.caret} aria-hidden>▍</span>}</p>;
+}
 
 export function explanationProviderLabel(provider?: string) {
   if (provider === "gemini") return "Gemma 4 · Gemini API";
@@ -155,30 +167,40 @@ export default function ExplanationPanel({ analysisId, initialExplanation, onAct
 
   function renderText(selectedTone: ResponseTone, comparison = false) {
     const item = responses[selectedTone];
-    if (pending[selectedTone]) return <div className={styles.loading} role="status"><LoaderCircle className="spin" size={17}/> O Gemma 4 está a adaptar a explicação…</div>;
-    if (errors[selectedTone]) return <div className={styles.error} role="alert">{errors[selectedTone]} <button onClick={() => void loadTone(selectedTone)}>Tentar novamente</button></div>;
-    if (!item) return <div className={styles.loading}>Escolhe um tom para gerar a explicação.</div>;
-    return <div className={styles.text}>
-      {item.title && item.title !== item.headline && <h3>{item.title}</h3>}
-      <p>{item.detail ?? item.body}</p>
-      <span className={styles.provider}>{explanationProviderLabel(item.provider)}{comparison ? " · mesma evidência" : ""}</span>
+    const persona = toneById(selectedTone);
+    if (pending[selectedTone]) return <div className={styles.loading} role="status"><span className={styles.avatar} aria-hidden>{persona.emoji}</span><span>O Gemma 4 está a escrever {selectedTone === "friend" ? "como um amigo" : `como ${persona.label.toLowerCase()}`}<span className={styles.dots} aria-hidden><i/><i/><i/></span></span></div>;
+    if (errors[selectedTone]) return <div className={styles.error} role="alert">{errors[selectedTone]} <button onClick={() => void loadTone(selectedTone)}>Tentar outra vez</button></div>;
+    if (!item) return <div className={styles.loading}>Escolhe quem te explica.</div>;
+    return <div className={styles.bubbleRow} key={selectedTone}>
+      {!comparison && <span className={styles.avatar} aria-hidden>{persona.emoji}</span>}
+      <div className={styles.bubble}>
+        <span className={styles.bubbleName}>{persona.label}</span>
+        {comparison ? <p>{item.detail ?? item.body}</p> : <Typewriter text={item.detail ?? item.body}/>}
+        <span className={styles.provider}>{explanationProviderLabel(item.provider)}</span>
+      </div>
     </div>;
   }
 
   return <section className={styles.panel} aria-label="Explicação dos dados">
-    <div className={styles.heading}><div><span className={styles.kicker}><Sparkles size={14}/> EXPLICAÇÃO DOS DADOS</span><h2>Como queres que te explique?</h2></div><span className={styles.evidenceTag}>Dados e cálculos preservados</span></div>
-    <div className={styles.tones} role="group" aria-label="Tom da explicação">
-      {tones.map(({ id, label }) => <button key={id} type="button" className={tone === id ? styles.selected : ""} aria-pressed={tone === id} onClick={() => chooseTone(id)}>{label}</button>)}
+    <div className={styles.heading}><span className={styles.kicker}>🎭 ESCOLHE QUEM TE EXPLICA</span><h2>Os números são os mesmos. A conversa é que muda.</h2></div>
+    <div className={styles.personas} role="group" aria-label="Quem explica">
+      {tones.map(({ id, label, emoji, tagline }) => <button key={id} type="button" className={tone === id ? `${styles.persona} ${styles.selected}` : styles.persona} aria-pressed={tone === id} onClick={() => chooseTone(id)}>
+        <span className={styles.personaEmoji} aria-hidden>{emoji}</span><strong>{label}</strong><small>{tagline}</small>
+      </button>)}
     </div>
     <div className={styles.answer} aria-live="polite" aria-busy={Boolean(pending[tone])}>{renderText(tone)}</div>
-    <div className={styles.actions}><div className={styles.quickActions} aria-label="Explicar de outra maneira">{quickActions.map(({ label, tone: actionTone, hint }) => <button key={label} type="button" title={hint} onClick={() => chooseTone(actionTone)}>{label}</button>)}</div><div className={styles.mainActions}><button type="button" className={styles.compareButton} aria-expanded={compare} onClick={showCompare}><ArrowLeftRight size={15}/> {compare ? "Fechar comparação" : "Comparar estilos"}</button><button type="button" className={styles.compareButton} disabled={!responses[tone] || Boolean(pending[tone])} onClick={exportExplanation}><Download size={15}/> Exportar explicação</button><button type="button" className={styles.compareButton} onClick={onShowEvidence}><FileCheck2 size={15}/> Prova-me Isso</button></div></div>
+    <div className={styles.actions}>
+      <button type="button" className={styles.actionButton} aria-expanded={compare} onClick={showCompare}><ArrowLeftRight size={15}/> {compare ? "Fechar comparação" : "Comparar dois estilos"}</button>
+      <button type="button" className={styles.actionButton} disabled={!responses[tone] || Boolean(pending[tone])} onClick={exportExplanation}><Download size={15}/> Guardar texto</button>
+      <button type="button" className={styles.actionButton} onClick={onShowEvidence}><FileCheck2 size={15}/> Prova-me isso</button>
+    </div>
     {compare && <div className={styles.comparison} aria-label="Comparar dois estilos">
       {([leftTone, rightTone] as const).map((selected, index) => <article className={styles.comparisonCard} key={index}>
         <label htmlFor={`compare-tone-${index}`}>{index === 0 ? "Estilo A" : "Estilo B"}</label>
-        <select id={`compare-tone-${index}`} value={selected} onChange={(event) => { const next = event.target.value as ResponseTone; if (index === 0) setLeftTone(next); else setRightTone(next); void loadTone(next); }}>{tones.map(({ id, label }) => <option value={id} key={id}>{label}</option>)}</select>
+        <select id={`compare-tone-${index}`} value={selected} onChange={(event) => { const next = event.target.value as ResponseTone; if (index === 0) setLeftTone(next); else setRightTone(next); void loadTone(next); }}>{tones.map(({ id, label, emoji }) => <option value={id} key={id}>{emoji} {label}</option>)}</select>
         <div className={styles.comparisonText} aria-live="polite" aria-busy={Boolean(pending[selected])}>{renderText(selected, true)}</div>
       </article>)}
     </div>}
-    <p className={styles.disclosure}>A explicação adapta o texto. Os valores, o gráfico e as fontes abaixo pertencem à mesma análise do INE. O texto é gerado por IA, não pelo INE.</p>
+    <p className={styles.disclosure}>O texto muda, os números não. Escrito por IA (Gemma 4), não pelo INE.</p>
   </section>;
 }

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import type { Indicator, Observation } from "@/lib/ine/types";
 
-export const ResponseToneSchema = z.enum(["direct", "journalist", "teacher", "researcher", "executive", "sarcastic"]);
+export const ResponseToneSchema = z.enum(["direct", "friend", "journalist", "teacher", "researcher", "executive", "sarcastic"]);
 export type ResponseTone = z.infer<typeof ResponseToneSchema>;
 
 export interface StatisticalEvidence {

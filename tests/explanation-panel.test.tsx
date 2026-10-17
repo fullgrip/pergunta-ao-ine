@@ -12,14 +12,15 @@ const initial: Explanation = {
 };
 
 describe("interface dos modos de resposta", () => {
-  it("mostra os seis tons e começa em Direto com a evidência recebida", () => {
+  it("mostra as sete personagens e começa em Direto com a evidência recebida", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
     const html = renderToStaticMarkup(<ExplanationPanel analysisId="analysis-1" initialExplanation={initial} />);
-    for (const label of ["Direto", "Jornalista", "Professor", "Investigador", "Executivo", "Sarcástico"]) expect(html).toContain(label);
+    for (const label of ["Como um amigo", "Direto", "Jornalista", "Professor", "Investigador", "Executivo", "Sarcástico"]) expect(html).toContain(label);
     expect(html).toContain('aria-pressed="true"');
     expect(html).toContain("A renda passou de 7,09 para 11,36 €/m².");
-    expect(html).toContain("Comparar estilos");
-    expect(html).toContain("Prova-me Isso");
+    expect(html).toContain("ESCOLHE QUEM TE EXPLICA");
+    expect(html).toContain("Comparar dois estilos");
+    expect(html).toContain("Prova-me isso");
     expect(fetchSpy).not.toHaveBeenCalled();
     fetchSpy.mockRestore();
   });

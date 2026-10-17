@@ -10,7 +10,7 @@ const stageLabels: Record<AnswerStage, string> = {
   explain: "A preparar a explicação",
 };
 const toneLabels: Record<ResponseTone, string> = {
-  direct: "Direto", journalist: "Jornalista", teacher: "Professor",
+  direct: "Direto", friend: "Como um amigo", journalist: "Jornalista", teacher: "Professor",
   researcher: "Investigador", executive: "Executivo", sarcastic: "Sarcástico",
 };
 

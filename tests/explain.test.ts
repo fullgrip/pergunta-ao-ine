@@ -79,6 +79,13 @@ describe("explicações com evidência imutável", () => {
     expect(direct.summary).toContain("7,09");
     expect(direct.summary).toContain("11,36");
   });
+  it("rejeita brasileirismos no tom descontraído", async () => {
+    const id = storeEvidence(evidence);
+    model.mockResolvedValue({ content: JSON.stringify({ summary: "Basicamente, a grana que você gasta na renda subiu bastante nestes anos todos aí." }), provider: "ollama", model: "gemma4:e4b" });
+    const result = await generateExplanation(id, getEvidence(id)!, "friend");
+    expect(result.provider).toBe("template");
+    expect(result.summary).not.toMatch(/grana|você/i);
+  });
   it("rejeita chamar média à mediana e inferir causas sem prova", async () => {
     const id = storeEvidence(evidence);
     model.mockResolvedValue({ content: JSON.stringify({ summary: "O valor médio subiu significativamente e reflete a dinâmica do mercado." }), provider: "ollama", model: "gemma4:e4b" });

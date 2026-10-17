@@ -13,6 +13,7 @@ const OutputSchema = z.object({
 // Cada tom tem uma voz própria e concreta. Os números vêm sempre do servidor; aqui só muda a forma de explicar.
 const TONE_INSTRUCTIONS: Record<ResponseTone, string> = {
   direct: "Tom DIRETO: frases curtas e secas, sem adjetivos nem rodeios. Diz o que a medida mostra e o que o leitor pode tirar disso, mais nada.",
+  friend: "Tom AMIGO: fala como um amigo da mesma idade falaria com um adolescente português, por tu, frases curtas e descontraídas, sem palavras difíceis. Usa uma comparação com o dia a dia de um jovem (a escola, o telemóvel, sair com os amigos), sem números. Nada de calão ofensivo nem de exageros. Calão de Portugal, nunca do Brasil: diz \"dinheiro\", nunca \"grana\"; nunca uses \"você\", \"galera\", \"legal\" nem \"cara\".",
   journalist: "Tom JORNALISTA: escreve como o primeiro parágrafo de uma notícia de jornal português. Abre com uma frase que prenda a atenção do leitor comum (quem procura casa, quem vive na cidade), depois dá o contexto da medida. Informativo, nunca sensacionalista.",
   teacher: "Tom PROFESSOR: fala com um aluno curioso, por tu. Ensina o conceito com um exemplo do dia a dia (por exemplo, pôr os contratos em fila do mais barato ao mais caro e ver o do meio). Distingue o que os dados mostram do que não mostram.",
   researcher: "Tom INVESTIGADOR: registo técnico e preciso. Define a medida, a unidade e a cobertura da série, e aponta os limites de comparabilidade. Sem opiniões.",
@@ -135,6 +136,7 @@ export function hasOnlySupportedNumbers(text: string, evidence: Readonly<Statist
 function safeDetail(tone: ResponseTone): string {
   const lead: Record<ResponseTone, string> = {
     direct: "Esta leitura resume apenas as observações oficiais disponíveis.",
+    friend: "Resumindo: os números são estes e quem os publica é o INE. Sem mistérios.",
     journalist: "A leitura reúne os valores publicados e preserva o contexto do indicador.",
     teacher: "A comparação usa a mesma medida nos períodos disponíveis.",
     researcher: "A interpretação limita-se à série, à unidade e aos períodos observados.",
@@ -186,6 +188,8 @@ Lembra-te: ${TONE_INSTRUCTIONS[tone]}`;
       if (contradictsConclusion(detail, headline) || addsUnsupportedInterpretation(detail, evidence) || (detail.match(/[.!?](?=\s|$)/g)?.length ?? 0) > 3)
         throw new Error("A explicação diverge da conclusão ou é demasiado longa.");
       if (/^(?:com base nos dados|de acordo com a an[aá]lise)/i.test(detail)) throw new Error("Introdução genérica.");
+      // Português de Portugal: palavras do Brasil que o modelo deixa escapar no tom descontraído.
+      if (/(?<!\p{L})(?:grana|voc[eê]|galera)(?!\p{L})/iu.test(detail)) throw new Error("Brasileirismo.");
       return assemble(evidenceId, evidence, tone, detail, reply.provider, reply.model, generated.title);
     } catch { forceOllama = reply.provider === "gemini"; }
   }
