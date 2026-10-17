@@ -115,3 +115,23 @@ body,button,input,table,svg text{font-variant-numeric:tabular-nums}
 @media(max-width:1050px){.site-nav{gap:9px}.site-nav a{font-size:12px}.topbar>.health-button .health-label{display:none}}
 @media(max-width:850px){.site-nav{display:none}.mobile-nav{display:block;margin-left:auto;position:relative;z-index:20}.mobile-nav summary{cursor:pointer;list-style:none;border:1px solid var(--linha);background:var(--superficie);border-radius:9px;padding:9px 11px;font-size:12px;font-weight:700}.mobile-nav summary::-webkit-details-marker{display:none}.mobile-nav nav{position:absolute;right:0;top:42px;display:grid;min-width:190px;gap:0;background:var(--superficie);border:1px solid var(--linha);border-radius:12px;box-shadow:0 8px 24px var(--sombra);padding:5px}.mobile-nav nav a{font-size:14px;padding:10px;color:var(--tinta);border-radius:7px}.mobile-nav nav a:hover{background:var(--superficie-suave)}.topbar>.health-button{margin-left:8px}.benefits-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.hero{margin:55px auto 65px}.hero h1{font-size:clamp(44px,11vw,64px)}.hero-subtitle{font-size:20px}.hero-copy{font-size:14px}.benefits-grid,.origin-section,.about-principles{grid-template-columns:1fr}.origin-section{gap:24px;padding-bottom:60px}.national-hero{margin:55px auto 45px}.national-hero h1{font-size:44px;overflow-wrap:normal}.national-hero>p{font-size:14px}.benefits-section>h2,.origin-section h2,.national-examples h2,.about-story h2{font-size:28px}.topbar>.health-button{display:none}}
+
+/* Simplificação da página inicial e da resposta (17/10). */
+.hero-subtitle{max-width:640px;margin-left:auto;margin-right:auto}
+.hero .search-card{margin-top:28px}
+.home-municipality-toggle{max-width:550px;margin:18px auto 0;text-align:left}
+.home-municipality-toggle summary{display:inline-flex;align-items:center;gap:7px;cursor:pointer;list-style:none;color:var(--tinta-2);font-size:13px;font-weight:600}
+.home-municipality-toggle summary::-webkit-details-marker{display:none}
+.home-municipality-toggle summary:hover{color:var(--pinho)}
+.home-municipality-toggle .home-municipality{margin:12px 0 0}
+.answer-next{max-width:990px;margin:14px auto 0;display:flex;flex-wrap:wrap;gap:10px}
+.answer-next a{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border:1px solid var(--linha);border-radius:99px;background:var(--superficie);color:var(--pinho);font-size:13px;font-weight:700}
+.answer-next a:hover{border-color:var(--pinho)}
+.answer-tones{max-width:990px;margin:14px auto 0;background:var(--superficie);border:1px solid var(--linha);border-radius:14px;overflow:hidden}
+.answer-tones>summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;padding:16px 20px;font-size:14px;font-weight:700;color:var(--tinta)}
+.answer-tones>summary::-webkit-details-marker{display:none}
+.answer-tones>summary span{font-weight:500;color:var(--tinta-2);font-size:13px}
+.answer-tones>summary::after{content:"+";margin-left:auto;color:var(--pinho);font-size:20px;line-height:1}
+.answer-tones[open]>summary::after{content:"−"}
+.answer-tones[open]>summary{border-bottom:1px solid var(--linha)}
+@media(max-width:480px){.answer-tones>summary span{display:none}.answer-next a{width:100%;justify-content:space-between}}
