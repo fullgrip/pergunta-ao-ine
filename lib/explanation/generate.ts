@@ -12,7 +12,7 @@ const OutputSchema = z.object({
 });
 // Cada tom tem uma voz própria e concreta. Os números vêm sempre do servidor; aqui só muda a forma de explicar.
 const TONE_INSTRUCTIONS: Record<ResponseTone, string> = {
-  direct: "Tom DIRETO: frases curtas e secas, sem adjetivos nem rodeios. Diz o que a medida mostra e o que o leitor pode tirar disso, mais nada.",
+  direct: "Tom DIRETO: UMA frase só, no máximo vinte palavras, seca e sem adjetivos, a dizer o que esta mudança quer dizer para quem lê. Os números já aparecem antes da tua frase: não os repitas nem expliques a definição.",
   friend: "Tom AMIGO: fala como um amigo da mesma idade falaria com um adolescente português, por tu, frases curtas e descontraídas, sem palavras difíceis. Usa uma comparação com o dia a dia de um jovem (a escola, o telemóvel, sair com os amigos), sem números. Nada de calão ofensivo nem de exageros. Calão de Portugal, nunca do Brasil: diz \"dinheiro\", nunca \"grana\"; nunca uses \"você\", \"galera\", \"legal\" nem \"cara\".",
   journalist: "Tom JORNALISTA: escreve como o primeiro parágrafo de uma notícia de jornal português. Abre com uma frase que prenda a atenção do leitor comum (quem procura casa, quem vive na cidade), depois dá o contexto da medida. Informativo, nunca sensacionalista.",
   teacher: "Tom PROFESSOR: fala com um aluno curioso, por tu. Ensina o conceito com um exemplo do dia a dia (por exemplo, pôr os contratos em fila do mais barato ao mais caro e ver o do meio). Distingue o que os dados mostram do que não mostram.",
@@ -119,6 +119,8 @@ function contradictsConclusion(detail: string, headline: string): boolean {
 
 function addsUnsupportedInterpretation(detail: string, evidence: Readonly<StatisticalEvidence>): boolean {
   if (evidence.indicator.id === "0014711" && /\b(?:m[eé]dia|m[eé]dio|m[eé]dios|m[eé]dias)\b/i.test(detail)) return true;
+  // Também recusa conclusões que os dados não provam: "risco" a partir de crimes registados, "rendimento disponível" a partir do ganho bruto.
+  if (/\b(?:risco|riscos|arriscad[ao])\b|\brendimento (?:mensal )?dispon[ií]vel\b/i.test(detail)) return true;
   return /\b(?:reflete|refletem|causou|provocou|devido|impulsionad[ao]s?|explica|efeito|impacto|din[aâ]mica|significativ[ao]s?|press[aã]o|recorde|disparad[ao]s?)\b/i.test(detail);
 }
 
@@ -163,11 +165,42 @@ function safeDetail(tone: ResponseTone): string {
   return lead[tone];
 }
 
+const num = (value: number, maxDigits = 2) => new Intl.NumberFormat("pt-PT", { maximumFractionDigits: maxDigits, useGrouping: "always" }).format(value);
+const signed = (value: number, maxDigits = 2) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${num(Math.abs(value), maxDigits)}`;
+/** Estilo Direto: "de X para Y (ano → ano): +diferença, +%". Só valores e contas verificados. */
+export function directNumbersLine(evidence: Readonly<StatisticalEvidence>): string | null {
+  const rows = evidence.observations.filter((row) => row.value !== null);
+  if (!rows.length) return null;
+  const unit = evidence.indicator.unit;
+  const territories = [...new Map(rows.map((row) => [row.territoryId, row])).values()];
+  if (territories.length > 1) {
+    const latest = territories.map((first) => rows.filter((row) => row.territoryId === first.territoryId).at(-1)!);
+    if (!latest.every((row) => row.periodCode === latest[0].periodCode)) return null;
+    const sorted = [...latest].sort((a, b) => b.value! - a.value!);
+    const gap = sorted[0].value! - sorted.at(-1)!.value!;
+    return `${sorted.map((row) => `${row.territory}: ${num(row.value!)} ${unit}`).join(" · ")} (${latest[0].period}). Diferença: ${num(gap)} ${unit}.`;
+  }
+  const homologue = evidence.calculations.find((item) => item.label === "Variação homóloga em pontos percentuais");
+  const current = rows.at(-1)!;
+  if (homologue) {
+    const previous = [...rows].reverse().find((row) => row !== current && row.periodCode.slice(-1) === current.periodCode.slice(-1));
+    if (previous) return `De ${num(previous.value!)} % para ${num(current.value!)} % (${previous.period} → ${current.period}): ${signed(homologue.value, 1)} p.p.`;
+  }
+  if (rows.length === 1) return `${num(current.value!)} ${unit} (${current.period}).`;
+  const first = rows[0];
+  const summary = evidence.summaries.find((item) => item?.territory === first.territory);
+  const percent = summary?.percent != null ? `, ${signed(summary.percent, 1)} %` : "";
+  return `De ${num(first.value!)} para ${num(current.value!)} ${unit} (${first.period} → ${current.period}): ${signed(current.value! - first.value!)} ${unit}${percent}.`;
+}
+
 function assemble(evidenceId: string, evidence: Readonly<StatisticalEvidence>, tone: ResponseTone,
   detail: string, provider: Explanation["provider"], model: string, title?: string): Explanation {
   const headline = factualHeadline(evidence);
-  const fact = verifiedFactLine(evidence);
   const caveat = criticalCaveat(evidence);
+  // Em todos os estilos os números vêm primeiro ("de X para Y"); o texto do Gemma, curto, só diz o que significam.
+  const numbers = directNumbersLine(evidence);
+  if (numbers) detail = `${numbers} ${detail}`.trim();
+  const fact = numbers ? "" : verifiedFactLine(evidence);
   const summary = `${fact} ${detail}`.trim();
   const body = `${summary}${caveat ? ` Limitação: ${caveat}` : ""}`;
   return { tone, headline, summary, caveat, detail, title: title || headline, body, evidenceId, provider, model };
@@ -187,7 +220,7 @@ export async function generateExplanation(evidenceId: string, evidence: Readonly
   const basePrompt = `${TONE_INSTRUCTIONS[tone]}
 Produz JSON com {"headline":string,"summary":string,"caveat":string} em português de Portugal (nunca do Brasil).
 - headline: copia exatamente esta conclusão, já verificada: ${JSON.stringify(headline)}
-- summary: duas ou três frases, escritas com a voz pedida acima, que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir. O texto tem de soar claramente diferente de outros tons. A frase com os números já é escrita pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
+- summary: ${tone === "direct" ? "uma frase só" : "no máximo duas frases curtas"}, escritas com a voz pedida acima, direto ao assunto, ${tone !== "teacher" && tone !== "researcher" ? "que diga só o que esta mudança quer dizer na vida de quem lê, sem definir o indicador (exemplo do conteúdo, no estilo pedido: \"Arrendar casa nova ficou bem mais caro.\")." : `que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir.`} O texto tem de soar claramente diferente de outros tons. Os números aparecem logo antes do teu texto, escritos pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
 - caveat: ${caveat ? `copia esta limitação: ${JSON.stringify(caveat)}` : "deixa vazio"}
 Regras: a medida é ${evidence.indicator.shortName}; nunca a chames média. Não inventes valores, fontes, períodos, territórios, causas nem consequências. Não uses estas palavras: reflete, causou, provocou, devido, impulsionado, explica, efeito, impacto, dinâmica, significativo, pressão, recorde, disparou, dobrou, duplicou, metade, sempre, todos, todas. Não comeces com "Com base nos dados" nem "De acordo com a análise".
 Evidência verificada (só para contexto): ${JSON.stringify(evidence)}

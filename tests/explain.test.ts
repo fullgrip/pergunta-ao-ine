@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("../lib/ollama", () => ({ chatWithMetadata: vi.fn() }));
 import { chatWithMetadata } from "../lib/ollama";
 import { storeEvidence, getEvidence, type StatisticalEvidence } from "../lib/explanation/evidence";
-import { generateExplanation, hasOnlySupportedNumbers } from "../lib/explanation/generate";
+import { directNumbersLine, generateExplanation, hasOnlySupportedNumbers } from "../lib/explanation/generate";
 import { POST } from "../app/api/explain/route";
 
 const model = vi.mocked(chatWithMetadata);
@@ -82,6 +82,19 @@ describe("explicações com evidência imutável", () => {
   it("aceita a base de uma taxa mas continua a recusar números inventados", () => {
     expect(hasOnlySupportedNumbers("São crimes registados por cada mil habitantes.", evidence)).toBe(true);
     expect(hasOnlySupportedNumbers("Há mil crimes por ano.", evidence)).toBe(false);
+  });
+  it("no estilo Direto abre com os números: de X para Y", async () => {
+    expect(directNumbersLine(evidence)).toBe("De 7,09 para 11,36 €/m² (2021 → 2025): +4,27 €/m², +60,2 %.");
+    const id = storeEvidence(evidence);
+    model.mockResolvedValue({ content: JSON.stringify({ summary: "Arrendar uma casa nova ficou bem mais caro." }), provider: "ollama", model: "gemma4:e4b" });
+    const result = await generateExplanation(id, getEvidence(id)!, "direct");
+    expect(result.summary.startsWith("De 7,09 para 11,36 €/m²")).toBe(true);
+    expect(result.detail).toBe("De 7,09 para 11,36 €/m² (2021 → 2025): +4,27 €/m², +60,2 %. Arrendar uma casa nova ficou bem mais caro.");
+  });
+  it("recusa conclusões que os dados não provam", async () => {
+    const id = storeEvidence(evidence);
+    model.mockResolvedValue({ content: JSON.stringify({ summary: "Viver aqui passou a ter maior risco para quem procura casa." }), provider: "ollama", model: "gemma4:e4b" });
+    expect((await generateExplanation(id, getEvidence(id)!, "direct")).provider).toBe("template");
   });
   it("rejeita brasileirismos no tom descontraído", async () => {
     const id = storeEvidence(evidence);
