@@ -45,6 +45,26 @@ describe("interpretação de perguntas com limites verificáveis", () => {
     expect(() => tema("Quantas pessoas estão sem emprego no Algarve?")).toThrow(/taxa de desemprego/);
   });
 
+  it("aceita mais formas naturais e explica o que ainda não existe", () => {
+    const tema = (pergunta: string) => questionConstraints(pergunta, "1500811").indicatorId;
+    expect(tema("Quanto é que as pessoas recebem em Portimão?")).toBe("0012653");
+    expect(tema("Paga-se bem em Faro?")).toBe("0012653");
+    expect(tema("Quantos visitantes recebe Faro?")).toBe("0013312");
+    expect(tema("Portimão está a crescer?")).toBe("0012918");
+    expect(tema("Qual o tamanho de Albufeira?")).toBe("0012918");
+    expect(tema("Está difícil arranjar emprego no Algarve?")).toBe("0012136");
+    expect(() => tema("Preço das casas em Portimão")).toThrow(/preços de compra/);
+    expect(() => tema("Recicla-se muito em Lagos?")).toThrow(/reciclagem/);
+    expect(() => tema("Quanto custa viver em Portimão?")).toThrow(/custo de vida/);
+    expect(isCityChoiceQuestion("Vale a pena ir viver para Lagos?")).toBe(true);
+  });
+
+  it("não confunde verbos e nomes comuns com municípios", () => {
+    expect(questionConstraints("Quanta gente mora em Tavira?").territoryIds).toEqual(["1500814"]);
+    expect(questionConstraints("Rendas em Mora").territoryIds).toEqual(["1C40707"]);
+    expect(questionConstraints("quantos habitantes tem a guarda").territoryIds).toEqual(["1960907"]);
+  });
+
   it("pede esclarecimento para Lagoa, nome usado em dois municípios", () => {
     expect(() => questionConstraints("Como evoluíram as rendas em Lagoa?")).toThrow(/ambíguo/);
     expect(questionConstraints("Como evoluíram as rendas em Lagoa (R.A.A.)?").territoryIds).toEqual(["2004201"]);
@@ -82,7 +102,7 @@ describe("interpretação de perguntas com limites verificáveis", () => {
   });
 
   it.each([
-    ["Qual é a melhor cidade?", /Indique o indicador/],
+    ["Qual é a melhor cidade?", /Ainda não percebi o tema/],
     ["Rendas e população de Portimão", /um indicador de cada vez/],
     ["Taxa de desemprego no Algarve no 3.º trimestre de 2026", /ainda não está publicado/],
     ["Taxa de desemprego no Algarve no 5.º trimestre de 2025", /entre o primeiro e o quarto/],

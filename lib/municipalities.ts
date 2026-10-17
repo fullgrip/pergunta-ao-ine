@@ -66,14 +66,24 @@ export interface MunicipalityMention {
   ambiguous: boolean;
 }
 
+// Municípios cujo nome também é uma palavra comum ("Quanta gente mora em Tavira?" não é sobre Mora).
+// Só contam como lugar quando escritos com maiúscula.
+const COMMON_WORD_NAMES = new Set(["mora", "tomar", "mira", "caminha", "guarda", "batalha", "redondo", "paredes", "espinho",
+  "horta", "velas", "nordeste", "povoacao", "constancia", "fronteira", "cuba", "vagos", "amadora", "chaves", "moita",
+  "entroncamento", "tabua", "lagoa", "corvo"]);
+
 /** Find explicit municipality names or INE codes in a question. Multiple names mean a comparison. */
 export function resolveMunicipalityMention(text: string): MunicipalityMention {
   const normalized = ` ${normalizeMunicipalityText(text)} `;
+  const accentless = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const writtenAsName = (alias: string) => new RegExp(`(^|[^A-Za-z])${alias.charAt(0).toUpperCase()}${alias.slice(1)}(?![A-Za-z])`).test(accentless);
   const candidates: Array<{ municipality: Municipality; start: number; end: number; length: number }> = [];
 
   for (const municipality of MUNICIPALITIES) {
     const aliases = [municipality.name, baseName(municipality), municipality.id];
     for (const alias of new Set(aliases.map(normalizeMunicipalityText))) {
+      // Em minúsculas só conta depois de "em/no/na/de/da/do/a/o" ("habitantes da guarda"), nunca depois de "para" ("para tomar").
+      if (COMMON_WORD_NAMES.has(alias) && !writtenAsName(alias) && !new RegExp(` (em|no|na|de|da|do|a|o) ${alias} `).test(normalized)) continue;
       const needle = ` ${alias} `;
       let start = normalized.indexOf(needle);
       while (start >= 0) {

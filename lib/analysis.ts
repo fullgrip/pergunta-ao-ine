@@ -18,25 +18,42 @@ const normalizeWords = (value: string) => value.normalize("NFD").replace(/[\u030
 /** A subjective city recommendation needs criteria that the current catalog cannot establish. */
 export function isCityChoiceQuestion(question: string) {
   const words = normalizeWords(question);
-  return /\b(melhor|ideal|ideais|recomendada|recomendado|escolher)\b/.test(words)
+  return (/\b(melhor|ideal|ideais|recomendada|recomendado|escolher)\b/.test(words)
     && /\b(cidade|cidades|municipio|municipios|local|sitio)\b/.test(words)
-    && /\b(viver|morar|habitar)\b/.test(words);
+    && /\b(viver|morar|habitar)\b/.test(words))
+    || /\bvale a pena (ir )?(viver|morar)\b|\bdevo (ir )?(viver|morar|mudar)\b|\bmudar-me para\b/.test(words);
 }
 // Inclui a forma como as pessoas perguntam de facto ("quanto se ganha?", "quanto custa arrendar?"),
 // não só o nome técnico do indicador.
 const indicatorWords: Array<{ id: ParsedQuestion["indicatorId"]; pattern: RegExp }> = [
   { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|arrendar|arrenda|aluguer|alugueres|alugueis|alugar)\b/ },
   { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas\b|\bquanta gente\b/ },
-  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas)\b|\bsem (emprego|trabalho)\b/ },
-  { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes)\b/ },
-  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas)\b/ },
+  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas|emprego|empregos)\b|\bsem (emprego|trabalho)\b|\b(arranjar|encontrar|procurar|conseguir) (um )?trabalho\b|\b(ha|existe|tem) (muito |pouco )?trabalho\b/ },
+  { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes|rendimento|rendimentos)\b|\bse recebe\b|\b(pessoas|trabalhadores|trabalhador|funcionarios) (\p{L}+ )?recebem?\b|\brecebem? por mes\b|\bpaga(-se| se)? bem\b|\bpagam bem\b/u },
+  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas|visitantes)\b/ },
   { id: "0012765", pattern: /\b(residuos|lixo)\b/ },
+];
+// Só quando nenhum tema foi reconhecido: perguntas sobre o tamanho ou o crescimento de uma terra.
+const populationFallback = /\b(crescer|cresce|cresceu|tamanho|gente|despovoa\p{L}*)\b/u;
+// Temas que as pessoas pedem e que o catálogo ainda não tem: dizer o que existe em vez de um erro genérico.
+const notInCatalog: Array<{ pattern: RegExp; message: string }> = [
+  { pattern: /\b(comprar|compra|venda|vender)\b|\b(preco|precos|valor|valores) (das|de|da) (casas?|habitac\p{L}*|imoveis|apartamentos?)\b/u,
+    message: "Ainda não temos preços de compra de casas. Temos as rendas de novos contratos: experimenta «Quanto custa arrendar em Portimão?»." },
+  { pattern: /\b(recicla\p{L}*|reciclagem)\b/u,
+    message: "Ainda não temos dados de reciclagem. Temos os resíduos urbanos recolhidos por habitante: experimenta «Quanto lixo se produz em Lagos?»." },
+  { pattern: /\bcust(o|a) (de )?vida\b|\bcusta viver\b/,
+    message: "Não há um indicador único de custo de vida. Podes perguntar pelas rendas ou pelo ganho médio, por exemplo «Quanto se ganha em Faro?»." },
 ];
 
 /** Limits the model to concepts and dates that the present INE catalog can answer. */
 export function questionConstraints(question: string, selectedMunicipalityId?: string) {
   const words = normalizeWords(question);
-  const identified = indicatorWords.filter(({ pattern }) => pattern.test(words));
+  let identified = indicatorWords.filter(({ pattern }) => pattern.test(words));
+  if (!identified.length) {
+    const missing = notInCatalog.find(({ pattern }) => pattern.test(words));
+    if (missing) throw new Error(missing.message);
+    if (populationFallback.test(words)) identified = indicatorWords.filter(({ id }) => id === "0012918");
+  }
   // "por habitante" e "quantas pessoas ... sem emprego" falam de pessoas sem pedirem a população.
   const mentionedIndicators = (/\bpor habitante\b/.test(words) && identified.some(({ id }) => id === "0013312" || id === "0012765"))
     || identified.some(({ id }) => id === "0012136")
@@ -44,7 +61,7 @@ export function questionConstraints(question: string, selectedMunicipalityId?: s
   if (mentionedIndicators.length !== 1) {
     throw new Error(mentionedIndicators.length > 1
       ? "Esta versão responde a um indicador de cada vez. Escolha apenas um tema estatístico."
-      : "Indique o indicador: rendas, população, desemprego, ganho médio, hóspedes ou resíduos urbanos.");
+      : "Ainda não percebi o tema. Pergunta por rendas, salários, população, desemprego, turistas ou lixo, por exemplo «Quanto se ganha em Faro?».");
   }
   const indicatorId = mentionedIndicators[0].id;
   if (indicatorId === "0012136" && /\b(numero|total|quantos|quantas)\b.{0,35}\b(desempregad|sem emprego|sem trabalho)/.test(words)) {
