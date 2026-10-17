@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("../lib/ollama", () => ({ chatWithMetadata: vi.fn() }));
 import { chatWithMetadata } from "../lib/ollama";
 import { storeEvidence, getEvidence, type StatisticalEvidence } from "../lib/explanation/evidence";
-import { directNumbersLine, generateExplanation, hasOnlySupportedNumbers } from "../lib/explanation/generate";
+import { directNumbersLine, generateExplanation, hasOnlySupportedNumbers, talksAboutHousingOffTopic } from "../lib/explanation/generate";
 import { POST } from "../app/api/explain/route";
 
 const model = vi.mocked(chatWithMetadata);
@@ -95,6 +95,12 @@ describe("explicações com evidência imutável", () => {
     const id = storeEvidence(evidence);
     model.mockResolvedValue({ content: JSON.stringify({ summary: "Viver aqui passou a ter maior risco para quem procura casa." }), provider: "ollama", model: "gemma4:e4b" });
     expect((await generateExplanation(id, getEvidence(id)!, "direct")).provider).toBe("template");
+  });
+  it("não fala de casas quando o tema não é habitação", () => {
+    const waste = { ...evidence, indicator: { ...evidence.indicator, id: "0012765" as const, shortName: "Resíduos urbanos por habitante", unit: "kg/hab." } };
+    expect(talksAboutHousingOffTopic("Recolhe-se menos lixo, um alívio para quem procura casa.", waste)).toBe(true);
+    expect(talksAboutHousingOffTopic("Recolhe-se menos lixo por habitante do que antes.", waste)).toBe(false);
+    expect(talksAboutHousingOffTopic("Arrendar ficou mais caro.", evidence)).toBe(false);
   });
   it("rejeita brasileirismos no tom descontraído", async () => {
     const id = storeEvidence(evidence);

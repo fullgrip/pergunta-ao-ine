@@ -15,11 +15,11 @@ const OutputSchema = z.object({
 const TONE_INSTRUCTIONS: Record<ResponseTone, string> = {
   direct: "Tom DIRETO: UMA frase só, no máximo vinte palavras, seca e sem adjetivos, a dizer o que esta mudança quer dizer para quem lê. Os números já aparecem antes da tua frase: não os repitas nem expliques a definição.",
   friend: "Tom AMIGO: fala como um amigo da mesma idade falaria com um adolescente português, por tu, frases curtas e descontraídas, sem palavras difíceis. Usa uma comparação com o dia a dia de um jovem (a escola, o telemóvel, sair com os amigos), sem números. Nada de calão ofensivo nem de exageros. Calão de Portugal, nunca do Brasil: diz \"dinheiro\", nunca \"grana\"; nunca uses \"você\", \"galera\", \"legal\" nem \"cara\".",
-  journalist: "Tom JORNALISTA: escreve como o primeiro parágrafo de uma notícia de jornal português. Abre com uma frase que prenda a atenção do leitor comum (quem procura casa, quem vive na cidade), depois dá o contexto da medida. Informativo, nunca sensacionalista.",
-  teacher: "Tom PROFESSOR: fala com um aluno curioso, por tu. Ensina o conceito com um exemplo do dia a dia (por exemplo, pôr os contratos em fila do mais barato ao mais caro e ver o do meio). Distingue o que os dados mostram do que não mostram.",
+  journalist: "Tom JORNALISTA: escreve como o primeiro parágrafo de uma notícia de jornal português. Abre com uma frase que prenda a atenção de quem vive na terra, depois dá o contexto da medida. Informativo, nunca sensacionalista.",
+  teacher: "Tom PROFESSOR: fala com um aluno curioso, por tu. Ensina o conceito com um exemplo do dia a dia ligado ao tema da pergunta (se a medida for uma mediana: pôr os valores em fila e ver o do meio; se for uma taxa: pensar num grupo de mil pessoas). Distingue o que os dados mostram do que não mostram.",
   researcher: "Tom INVESTIGADOR: registo técnico e preciso. Define a medida, a unidade e a cobertura da série, e aponta os limites de comparabilidade. Sem opiniões.",
-  executive: "Tom EXECUTIVO: escreve para quem tem de decidir (orçamento, onde viver, onde investir). Uma frase sobre o que isto quer dizer na prática e uma ressalva. Qualquer hipótese é apresentada como hipótese.",
-  sarcastic: "Tom SARCÁSTICO: ironia seca e bem-humorada, à portuguesa, sobre a situação (procurar casa, ler estatísticas), nunca sobre pessoas ou grupos. A piada não pode mudar o que os dados dizem.",
+  executive: "Tom EXECUTIVO: escreve para quem tem de decidir (uma família, um negócio, a câmara municipal). Uma frase sobre o que isto quer dizer na prática e uma ressalva. Qualquer hipótese é apresentada como hipótese.",
+  sarcastic: "Tom SARCÁSTICO: ironia seca e bem-humorada, à portuguesa, sobre a situação que os dados descrevem (ou sobre ler estatísticas), nunca sobre pessoas ou grupos. A piada não pode mudar o que os dados dizem.",
 };
 
 function pt(value: number, maxDigits = 2) { return value.toLocaleString("pt-PT", { maximumFractionDigits: maxDigits }); }
@@ -166,7 +166,7 @@ function contradictsConclusion(detail: string, headline: string): boolean {
 function addsUnsupportedInterpretation(detail: string, evidence: Readonly<StatisticalEvidence>): boolean {
   if (evidence.indicator.id === "0014711" && /\b(?:m[eé]dia|m[eé]dio|m[eé]dios|m[eé]dias)\b/i.test(detail)) return true;
   // Também recusa conclusões que os dados não provam: "risco" a partir de crimes registados, "rendimento disponível" a partir do ganho bruto.
-  if (/\b(?:risco|riscos|arriscad[ao])\b|\brendimento (?:mensal )?dispon[ií]vel\b/i.test(detail)) return true;
+  if (/\b(?:risco|riscos|arriscad[ao]|insegur\p{L}*|perigos[ao]s?)\b|\brendimento (?:mensal )?dispon[ií]vel\b/iu.test(detail)) return true;
   if (/\b(?:caused|due to|driven by|because of|impact|effect|significant(?:ly)?|pressure|record|risk|risky|disposable income|reflects?|average)\b/i.test(detail)) return true;
   return /\b(?:reflete|refletem|causou|provocou|devido|impulsionad[ao]s?|explica|efeito|impacto|din[aâ]mica|significativ[ao]s?|press[aã]o|recorde|disparad[ao]s?)\b/i.test(detail);
 }
@@ -260,6 +260,41 @@ function assemble(evidenceId: string, evidence: Readonly<StatisticalEvidence>, t
   return { tone, headline, summary, caveat, detail, title: title || headline, body, evidenceId, provider, model };
 }
 
+// Um exemplo de frase por tema, na direção que os dados mostram: um exemplo único ("arrendar ficou mais caro")
+// fazia o modelo falar de casas a propósito de lixo ou de crime.
+const HOUSING = new Set(["0014711", "0012255", "0012256", "0014137", "0013249"]);
+const TOPIC_EXAMPLES: Record<string, { up: [string, string]; down: [string, string] }> = {
+  "0014711": { up: ["Arrendar casa nova ficou bem mais caro.", "Renting a new home got a lot more expensive."], down: ["Arrendar casa nova ficou mais barato.", "Renting a new home got cheaper."] },
+  "0012255": { up: ["Comprar casa ficou bem mais caro.", "Buying a home got a lot more expensive."], down: ["Comprar casa ficou mais barato.", "Buying a home got cheaper."] },
+  "0012256": { up: ["Os bancos dão mais valor às casas do que antes.", "Banks value homes higher than before."], down: ["Os bancos dão menos valor às casas do que antes.", "Banks value homes lower than before."] },
+  "0014137": { up: ["Há muitas casas, contando as de férias e as vazias.", "There are lots of homes, counting holiday and empty ones."], down: ["Há muitas casas, contando as de férias e as vazias.", "There are lots of homes, counting holiday and empty ones."] },
+  "0013249": { up: ["Está a construir-se mais casa nova do que antes.", "More new homes are being finished than before."], down: ["Está a construir-se menos casa nova do que antes.", "Fewer new homes are being finished than before."] },
+  "0012918": { up: ["Há mais gente a viver aqui.", "More people live here now."], down: ["Há menos gente a viver aqui.", "Fewer people live here now."] },
+  "0012136": { up: ["Há mais gente sem trabalho do que há um ano.", "More people are out of work than a year ago."], down: ["Há menos gente sem trabalho do que há um ano.", "Fewer people are out of work than a year ago."] },
+  "0012653": { up: ["Quem trabalha aqui ganha mais ao fim do mês.", "People working here take home more each month."], down: ["Quem trabalha aqui ganha menos ao fim do mês.", "People working here take home less each month."] },
+  "0013312": { up: ["Vêm mais turistas por cada pessoa que cá vive.", "There are more visitors for each person who lives here."], down: ["Vêm menos turistas por cada pessoa que cá vive.", "There are fewer visitors for each person who lives here."] },
+  "0012765": { up: ["Recolhe-se mais lixo por pessoa do que antes.", "More rubbish is collected per person than before."], down: ["Recolhe-se menos lixo por pessoa do que antes.", "Less rubbish is collected per person than before."] },
+  "0012909": { up: ["A terra está a ficar mais velha.", "The town is getting older."], down: ["A terra está a ficar mais nova.", "The town is getting younger."] },
+  "0013044": { up: ["Nascem mais bebés do que antes.", "More babies are born than before."], down: ["Nascem menos bebés do que antes.", "Fewer babies are born than before."] },
+  "0012260": { up: ["A polícia regista mais crimes do que antes.", "Police record more crimes than before."], down: ["A polícia regista menos crimes do que antes.", "Police record fewer crimes than before."] },
+  "0014580": { up: ["Aqui o dinheiro rende acima da média do país.", "Money goes further here than the national average."], down: ["Aqui o dinheiro rende abaixo da média do país.", "Money goes less far here than the national average."] },
+};
+function topicExample(evidence: Readonly<StatisticalEvidence>): string | null {
+  const examples = TOPIC_EXAMPLES[evidence.indicator.id];
+  if (!examples) return null;
+  const rows = evidence.observations.filter((row) => row.value !== null);
+  const homologue = evidence.calculations.find((item) => item.label === "Variação homóloga em pontos percentuais");
+  const change = evidence.indicator.id === "0014580" ? (rows.at(-1)?.value ?? 100) - 100
+    : homologue ? homologue.value : rows.length >= 2 ? rows.at(-1)!.value! - rows[0].value! : 0;
+  if (change === 0 && evidence.indicator.id !== "0014137") return null;
+  return examples[change >= 0 ? "up" : "down"][evidence.lang === "en" ? 1 : 0];
+}
+/** Fora dos temas de habitação, o texto não pode falar de casas nem de rendas. */
+export function talksAboutHousingOffTopic(detail: string, evidence: Readonly<StatisticalEvidence>): boolean {
+  if (HOUSING.has(evidence.indicator.id)) return false;
+  return /\b(?:casa|casas|renda|rendas|arrend\p{L}*|alug\p{L}*|habitaç\p{L}*|habitac\p{L}*|home|homes|house|houses|housing|rent|renting)\b/iu.test(detail);
+}
+
 export async function generateExplanation(evidenceId: string, evidence: Readonly<StatisticalEvidence>, tone: ResponseTone): Promise<Explanation> {
   const en = evidence.lang === "en";
   const headline = en ? factualHeadlineEn(evidence) : factualHeadline(evidence);
@@ -275,9 +310,9 @@ export async function generateExplanation(evidenceId: string, evidence: Readonly
   const basePrompt = `${TONE_INSTRUCTIONS[tone]}
 Produz JSON com {"headline":string,"summary":string,"caveat":string} ${en ? "ESCRITO EM INGLÊS BRITÂNICO (British English): headline, summary e caveat em inglês, mantendo a voz pedida" : "em português de Portugal (nunca do Brasil)"}.
 - headline: copia exatamente esta conclusão, já verificada: ${JSON.stringify(headline)}
-- summary: ${tone === "direct" ? "uma frase só" : "no máximo duas frases curtas"}, escritas com a voz pedida acima, direto ao assunto, ${tone !== "teacher" && tone !== "researcher" ? `que diga só o que esta mudança quer dizer na vida de quem lê, sem definir o indicador (exemplo do conteúdo, no estilo pedido: ${en ? "\"Renting a new home got a lot more expensive.\"" : "\"Arrendar casa nova ficou bem mais caro.\""}).` : `que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir.`} O texto tem de soar claramente diferente de outros tons. Os números aparecem logo antes do teu texto, escritos pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
+- summary: ${tone === "direct" ? "uma frase só" : "no máximo duas frases curtas"}, escritas com a voz pedida acima, direto ao assunto, ${tone !== "teacher" && tone !== "researcher" ? `que diga só o que esta mudança quer dizer na vida de quem lê, sem definir o indicador ${topicExample(evidence) ? `(exemplo do conteúdo, no estilo pedido: ${JSON.stringify(topicExample(evidence))})` : ""}.` : `que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir.`} O texto tem de soar claramente diferente de outros tons. Os números aparecem logo antes do teu texto, escritos pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
 - caveat: ${caveat ? `copia esta limitação: ${JSON.stringify(caveat)}` : "deixa vazio"}
-Regras: a medida é ${evidence.indicator.shortName}; nunca a chames média. Não inventes valores, fontes, períodos, territórios, causas nem consequências. Não uses estas palavras: reflete, causou, provocou, devido, impulsionado, explica, efeito, impacto, dinâmica, significativo, pressão, recorde, disparou, dobrou, duplicou, metade, sempre, todos, todas. Não comeces com "Com base nos dados" nem "De acordo com a análise".
+Regras: o tema desta pergunta é ${evidence.indicator.shortName}; fala só deste tema${HOUSING.has(evidence.indicator.id) ? "" : " e nunca fales de casas, rendas ou arrendar"}. Nunca chames média a uma mediana. Não inventes valores, fontes, períodos, territórios, causas nem consequências. Não uses estas palavras: reflete, causou, provocou, devido, impulsionado, explica, efeito, impacto, dinâmica, significativo, pressão, recorde, disparou, dobrou, duplicou, metade, sempre, todos, todas. Não comeces com "Com base nos dados" nem "De acordo com a análise".
 Evidência verificada (só para contexto): ${JSON.stringify(evidence)}
 Lembra-te: ${TONE_INSTRUCTIONS[tone]}${en ? " Responde em inglês britânico." : ""}`;
   let forceOllama = false;
@@ -290,7 +325,7 @@ Lembra-te: ${TONE_INSTRUCTIONS[tone]}${en ? " Responde em inglês britânico." :
       const detail = (generated.summary ?? generated.body ?? "").trim();
       if (detail.length < 20 || /\d/.test(withoutRateBase(detail).replaceAll(evidence.indicator.unit, "")) || !hasOnlySupportedNumbers(detail, evidence))
         throw new Error("A explicação livre contém uma afirmação não verificável.");
-      if (contradictsConclusion(detail, headline) || addsUnsupportedInterpretation(detail, evidence) || (detail.match(/[.!?](?=\s|$)/g)?.length ?? 0) > 3)
+      if (contradictsConclusion(detail, headline) || addsUnsupportedInterpretation(detail, evidence) || talksAboutHousingOffTopic(detail, evidence) || (detail.match(/[.!?](?=\s|$)/g)?.length ?? 0) > 3)
         throw new Error("A explicação diverge da conclusão ou é demasiado longa.");
       if (/^(?:com base nos dados|de acordo com a an[aá]lise)/i.test(detail)) throw new Error("Introdução genérica.");
       // Português de Portugal: palavras do Brasil que o modelo deixa escapar no tom descontraído.
