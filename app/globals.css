@@ -135,3 +135,38 @@ body,button,input,table,svg text{font-variant-numeric:tabular-nums}
 .answer-tones[open]>summary::after{content:"−"}
 .answer-tones[open]>summary{border-bottom:1px solid var(--linha)}
 @media(max-width:480px){.answer-tones>summary span{display:none}.answer-next a{width:100%;justify-content:space-between}}
+
+/* Identidade visual (17/10): Algarve à vista, cor por tema, número em destaque. */
+body{background:radial-gradient(900px 520px at 12% -8%, color-mix(in srgb, var(--mar) 16%, transparent), transparent 70%),radial-gradient(800px 480px at 95% 4%, color-mix(in srgb, var(--falesia) 14%, transparent), transparent 70%),var(--cal);background-attachment:fixed}
+.hero.hero-photo{position:relative;max-width:1180px;margin:34px auto 64px;padding:76px 48px 44px;border-radius:28px;overflow:hidden;isolation:isolate;color:#F7F4EC;background:linear-gradient(180deg,rgba(9,22,26,.30) 0%,rgba(9,22,26,.52) 42%,rgba(9,22,26,.88) 100%),url(/cidades/portimao.webp) center 60%/cover no-repeat;box-shadow:0 30px 80px rgba(9,22,26,.28)}
+.hero.hero-photo .eyebrow{color:#9FE6CB}
+.hero.hero-photo h1{color:#FBF8F2;font-size:clamp(48px,7.4vw,92px);letter-spacing:-.04em;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.hero.hero-photo .period{color:#F0A868}
+.hero.hero-photo .hero-subtitle{color:#E9EFEA;font-weight:600}
+.hero-subtitle mark{background:none;color:#F7C08C;box-shadow:inset 0 -.32em 0 rgba(217,147,98,.38);padding:0 .05em}
+.hero.hero-photo .search-card{max-width:760px;margin:30px auto 0;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 60px rgba(0,0,0,.35),0 0 0 6px rgba(97,212,174,.08)}
+.hero.hero-photo .examples>span{color:#CFE3DA}
+.examples button{display:inline-flex;align-items:center;gap:7px;font-weight:600}
+.hero.hero-photo .examples button{background:rgba(12,26,30,.62);border-color:rgba(255,255,255,.16);color:#F2F5EF;backdrop-filter:blur(6px)}
+.examples button svg{flex:none}
+.examples [data-theme-chip=rendas] svg{color:#F0A868}
+.examples [data-theme-chip=ganho] svg{color:#7FE0BC}
+.examples [data-theme-chip=populacao] svg{color:#8FD0EE}
+.examples [data-theme-chip=turismo] svg{color:#F7D27A}
+.examples [data-theme-chip=desemprego] svg{color:#A9B8FF}
+.examples [data-theme-chip=lixo] svg{color:#E59AC0}
+.hero.hero-photo .examples button:hover{border-color:#9FE6CB;color:#FFFFFF;background:rgba(12,26,30,.82)}
+.hero.hero-photo .home-municipality-toggle summary{color:#D7E4DE}
+.hero.hero-photo .home-municipality-toggle .home-municipality{background:var(--superficie);color:var(--tinta);border-radius:14px;padding:14px}
+.hero-photo-credit{position:absolute;right:16px;bottom:10px;font-size:11px;color:rgba(247,244,236,.7)}
+.hero-photo-credit:hover{color:#FFFFFF;text-decoration:underline}
+.answer-kpis{max-width:990px;margin:16px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.answer-kpi{position:relative;display:flex;flex-direction:column;gap:6px;padding:22px 24px;border-radius:18px;background:var(--superficie);border:1px solid var(--linha);overflow:hidden}
+.answer-kpi::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:linear-gradient(180deg,var(--pinho),var(--falesia))}
+.answer-kpi-place{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-2)}
+.answer-kpi strong{font-size:clamp(34px,4.6vw,48px);line-height:1.05;letter-spacing:-.03em;color:var(--tinta);font-variant-numeric:tabular-nums}
+.answer-kpi-period{font-size:13px;color:var(--tinta-2)}
+.answer-kpi-change{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;margin-top:4px;padding:5px 10px;border-radius:99px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.answer-kpi-change.up{color:var(--sobe);background:color-mix(in srgb,var(--sobe) 14%,transparent)}
+.answer-kpi-change.down{color:var(--desce);background:color-mix(in srgb,var(--desce) 14%,transparent)}
+@media(max-width:720px){.hero.hero-photo{margin:16px auto 40px;padding:52px 18px 40px;border-radius:22px}.hero-photo-credit{left:18px;right:auto}}
