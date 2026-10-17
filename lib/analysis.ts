@@ -21,28 +21,29 @@ export function isCityChoiceQuestion(question: string) {
   return (/\b(melhor|ideal|ideais|recomendada|recomendado|escolher)\b/.test(words)
     && /\b(cidade|cidades|municipio|municipios|local|sitio)\b/.test(words)
     && /\b(viver|morar|habitar)\b/.test(words))
-    || /\bvale a pena (ir )?(viver|morar)\b|\bdevo (ir )?(viver|morar|mudar)\b|\bmudar-me para\b/.test(words);
+    || /\bvale a pena (ir )?(viver|morar)\b|\bdevo (ir )?(viver|morar|mudar)\b|\bmudar-me para\b/.test(words)
+    || /\bbest (city|town|place) to live\b|\bshould i (move|live)\b|\bworth (living|moving)\b/.test(words);
 }
 // Inclui a forma como as pessoas perguntam de facto ("quanto se ganha?", "quanto custa arrendar?"),
 // não só o nome técnico do indicador.
 const indicatorWords: Array<{ id: ParsedQuestion["indicatorId"]; pattern: RegExp }> = [
-  { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|arrendar|arrenda|aluguer|alugueres|alugueis|alugar)\b/ },
-  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas (vivem|moram|ha|habitam|residem|tem)\b|\bquanta gente\b/ },
-  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas|emprego|empregos)\b|\bsem (emprego|trabalho)\b|\b(arranjar|encontrar|procurar|conseguir) (um )?trabalho\b|\b(ha|existe|tem) (muito |pouco )?trabalho\b/ },
-  { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes|rendimento|rendimentos)\b|\bse recebe\b|\b(pessoas|trabalhadores|trabalhador|funcionarios) (\p{L}+ )?recebem?\b|\brecebem? por mes\b|\bpaga(-se| se)? bem\b|\bpagam bem\b/u },
-  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas|visitantes)\b/ },
-  { id: "0012765", pattern: /\b(residuos|lixo)\b/ },
-  { id: "0014137", pattern: /\b(quantas|muitas|poucas|numero de|total de) (casas|habitacoes|alojamentos|fogos|moradias)\b|\bparque habitacional\b|\bcasas (vazias|de ferias)\b/ },
-  { id: "0012255", pattern: /\b(comprar|compra|venda|vendas|vender|vende-se)\b|\b(preco|precos|valor|valores) (das|de|da|do) (casas?|habitac\p{L}*|imoveis|apartamentos?|metro quadrado|m2)\b|\bhabitacao (esta )?cara\b|\bcasas (estao )?caras\b/u },
-  { id: "0012256", pattern: /\bavaliac\p{L}* bancari\p{L}*|\b(banco|bancos) avalia\p{L}*|\bvale\b.{0,40}\b(banco|bancos)\b|\b(banco|bancos)\b.{0,40}\bvale\b/u },
-  { id: "0012909", pattern: /\b(idosos|idosas|velhos|velhinhos|envelhecimento|envelhecida|envelhecido|terceira idade|reformados)\b/ },
-  { id: "0013044", pattern: /\b(natalidade|nascimentos|nascem|nasceram|bebes|nados)\b/ },
-  { id: "0012260", pattern: /\b(crime|crimes|criminalidade|seguranca|perigos[ao]s?|assaltos?|roubos?)\b|\b(e|sera|e uma terra|e uma cidade) segur[ao]\b/ },
-  { id: "0014580", pattern: /\bpoder de compra\b|\b(ricos?|ricas?|pobres?|riqueza)\b/ },
-  { id: "0013249", pattern: /\b(construcao|construir|constroem|construiram|construidas|construidos|obras|fogos concluidos)\b|\bcasas novas\b/ },
+  { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|arrendar|arrenda|aluguer|alugueres|alugueis|alugar)\b|\b(rent|rents|renting|lease|leases)\b/ },
+  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas (vivem|moram|ha|habitam|residem|tem)\b|\bquanta gente\b|\b(population|residents|inhabitants)\b|\bhow many people (live|are there)\b|\bpeople live\b/ },
+  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas|emprego|empregos)\b|\bsem (emprego|trabalho)\b|\b(arranjar|encontrar|procurar|conseguir) (um )?trabalho\b|\b(ha|existe|tem) (muito |pouco )?trabalho\b|\b(unemployment|unemployed|jobless)\b|\b(find|get) a job\b/ },
+  { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes|rendimento|rendimentos)\b|\bse recebe\b|\b(pessoas|trabalhadores|trabalhador|funcionarios) (\p{L}+ )?recebem?\b|\brecebem? por mes\b|\bpaga(-se| se)? bem\b|\bpagam bem\b|\b(earn|earns|earning|earnings|salary|salaries|wage|wages|income)\b|\bpaid well\b/u },
+  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas|visitantes)\b|\b(tourist|tourists|tourism|visitors|guests)\b/ },
+  { id: "0012765", pattern: /\b(residuos|lixo)\b|\b(waste|trash|rubbish|garbage)\b/ },
+  { id: "0014137", pattern: /\b(quantas|muitas|poucas|numero de|total de) (casas|habitacoes|alojamentos|fogos|moradias)\b|\bparque habitacional\b|\bcasas (vazias|de ferias)\b|\bhow many (homes|houses|dwellings)\b|\bmany (homes|houses)\b|\bhousing stock\b|\bnumber of (homes|houses)\b/ },
+  { id: "0012255", pattern: /\b(comprar|compra|venda|vendas|vender|vende-se)\b|\b(preco|precos|valor|valores) (das|de|da|do) (casas?|habitac\p{L}*|imoveis|apartamentos?|metro quadrado|m2)\b|\bhabitacao (esta )?cara\b|\bcasas (estao )?caras\b|\b(buy|buying|for sale)\b|\b(house|home|property|housing) prices?\b|\bsale prices?\b/u },
+  { id: "0012256", pattern: /\bavaliac\p{L}* bancari\p{L}*|\b(banco|bancos) avalia\p{L}*|\bvale\b.{0,40}\b(banco|bancos)\b|\b(banco|bancos)\b.{0,40}\bvale\b|\bbank valuations?\b|\bvalued by (the )?bank\b/u },
+  { id: "0012909", pattern: /\b(idosos|idosas|velhos|velhinhos|envelhecimento|envelhecida|envelhecido|terceira idade|reformados)\b|\b(elderly|ageing|aging|pensioners|retirees)\b|\b(old|older) people\b/ },
+  { id: "0013044", pattern: /\b(natalidade|nascimentos|nascem|nasceram|bebes|nados)\b|\b(births?|babies|born)\b|\bbirth rate\b/ },
+  { id: "0012260", pattern: /\b(crime|crimes|criminalidade|seguranca|perigos[ao]s?|assaltos?|roubos?)\b|\b(e|sera|e uma terra|e uma cidade) segur[ao]\b|\b(crime|crimes|safe|safety|dangerous|robbery|robberies|theft)\b/ },
+  { id: "0014580", pattern: /\bpoder de compra\b|\b(ricos?|ricas?|pobres?|riqueza)\b|\bpurchasing power\b|\b(rich|wealthy|poor)\b/ },
+  { id: "0013249", pattern: /\b(construcao|construir|constroem|construiram|construidas|construidos|obras|fogos concluidos)\b|\bcasas novas\b|\b(construction|building|built)\b|\bnew (homes|houses)\b/ },
 ];
 // Só quando nenhum tema foi reconhecido: perguntas sobre o tamanho ou o crescimento de uma terra.
-const populationFallback = /\b(crescer|cresce|cresceu|tamanho|gente|despovoa\p{L}*)\b/u;
+const populationFallback = /\b(crescer|cresce|cresceu|tamanho|gente|despovoa\p{L}*|growing|grow|shrinking|how big)\b/u;
 // Temas que as pessoas pedem e que o catálogo ainda não tem: dizer o que existe em vez de um erro genérico.
 const notInCatalog: Array<{ pattern: RegExp; message: string }> = [
   { pattern: /\b(recicla\p{L}*|reciclagem)\b/u,
@@ -84,8 +85,8 @@ export function questionConstraints(question: string, selectedMunicipalityId?: s
   const drop = (...ids: string[]) => { identified = identified.filter((item) => !ids.includes(item.id)); };
   // Um tema específico ganha à população ("a população está envelhecida?", "crimes por habitante").
   if (identified.some((item) => !["0012918", "0014711", "0012653"].includes(item.id))) drop("0012918");
-  if (has("0014580")) drop("0012255");                                   // "poder de compra" não é comprar casa
-  if (has("0014711") && /\b(arrend|alug)/.test(words)) drop("0012255");  // "preço das casas para arrendar"
+  if (has("0014580")) drop("0012255", "0013249");                                   // "poder de compra" não é comprar casa
+  if (has("0014711") && /\b(arrend|alug|rent)/.test(words)) drop("0012255");  // "preço das casas para arrendar"
   if (has("0012256")) drop("0012255", "0014137");                                   // avaliação bancária é mais específica
   if (has("0013249")) drop("0014137");                                   // "muitas casas novas" é construção
   if (identified.length > 1 && has("0014137") && /\b(arrend|alug|comprar|venda)/.test(words)) drop("0014137");

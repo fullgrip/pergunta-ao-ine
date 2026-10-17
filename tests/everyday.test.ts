@@ -68,6 +68,13 @@ describe("respostas em linguagem do dia a dia", () => {
     expect(everydayView(one("0012260", "‰", ["2021", 30.6], ["2025", 37.4], "Faro")).lines[0].text).toContain("Em Faro a polícia registou cerca de 37,4 crimes");
   });
 
+  it("tem uma versão inglesa com as mesmas contas", () => {
+    const view = everydayView(one("0014711", "€/m²", ["2021", 7.09], ["2025", 11.36]), "en");
+    expect(view.lines[0].text).toBe("An 80 m² flat (a typical two-bedroom) in Portimão would rent for about €909 a month (2025).");
+    expect(view.lines[1].text).toBe("Up €342 a month for the same flat since 2021.");
+    expect(everydayView(one("0012136", "%", ["2.º Trimestre de 2024", 5.1], ["2.º Trimestre de 2026", 4.2], "Algarve"), "en").lines[0].text).toContain("in the Algarve, about 4.2 are unemployed (Q2 2026)");
+  });
+
   it("não mostra nada sem valores", () => {
     expect(everydayView({ indicator: { id: "0014711", unit: "€/m²" }, summaries: [{ territory: "Mora", last: { period: "2025", value: null } }] }).lines).toEqual([]);
   });

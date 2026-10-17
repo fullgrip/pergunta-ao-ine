@@ -28,6 +28,15 @@ const tones: Array<{ id: ResponseTone; label: string; emoji: string; tagline: st
   { id: "executive", label: "Executivo", emoji: "💼", tagline: "O que muda na prática" },
   { id: "researcher", label: "Investigador", emoji: "🔬", tagline: "Com rigor técnico" },
 ];
+const tonesEn: Record<ResponseTone, { label: string; tagline: string }> = {
+  friend: { label: "Like a friend", tagline: "Chill, no big words" },
+  direct: { label: "Direct", tagline: "Straight to the point" },
+  teacher: { label: "Teacher", tagline: "With an everyday example" },
+  sarcastic: { label: "Sarcastic", tagline: "Ironic, same numbers" },
+  journalist: { label: "Journalist", tagline: "Like a news story" },
+  executive: { label: "Executive", tagline: "What it means in practice" },
+  researcher: { label: "Researcher", tagline: "Technically precise" },
+};
 const toneIds = new Set(tones.map(({ id }) => id));
 const toneById = (id: ResponseTone) => tones.find((item) => item.id === id) ?? tones[1];
 
@@ -60,9 +69,12 @@ type Props = {
   onShowEvidence?: () => void;
   onToneChange?: (tone: ResponseTone) => void;
   onExplanationChange?: (explanation: Explanation) => void;
+  lang?: "pt" | "en";
 };
 
-export default function ExplanationPanel({ analysisId, initialExplanation, onActiveProviderChange, onShowEvidence, onToneChange, onExplanationChange }: Props) {
+export default function ExplanationPanel({ analysisId, initialExplanation, onActiveProviderChange, onShowEvidence, onToneChange, onExplanationChange, lang = "pt" }: Props) {
+  const en = lang === "en";
+  const labelOf = (id: ResponseTone) => en ? tonesEn[id].label : toneById(id).label;
   const [tone, setTone] = useState<ResponseTone>("direct");
   const [responses, setResponses] = useState<Partial<Record<ResponseTone, Explanation>>>({ direct: initialExplanation });
   const responsesRef = useRef<Partial<Record<ResponseTone, Explanation>>>({ direct: initialExplanation });
@@ -168,39 +180,39 @@ export default function ExplanationPanel({ analysisId, initialExplanation, onAct
   function renderText(selectedTone: ResponseTone, comparison = false) {
     const item = responses[selectedTone];
     const persona = toneById(selectedTone);
-    if (pending[selectedTone]) return <div className={styles.loading} role="status"><span className={styles.avatar} aria-hidden>{persona.emoji}</span><span>O Gemma 4 está a escrever {selectedTone === "friend" ? "como um amigo" : `como ${persona.label.toLowerCase()}`}<span className={styles.dots} aria-hidden><i/><i/><i/></span></span></div>;
-    if (errors[selectedTone]) return <div className={styles.error} role="alert">{errors[selectedTone]} <button onClick={() => void loadTone(selectedTone)}>Tentar outra vez</button></div>;
-    if (!item) return <div className={styles.loading}>Escolhe quem te explica.</div>;
+    if (pending[selectedTone]) return <div className={styles.loading} role="status"><span className={styles.avatar} aria-hidden>{persona.emoji}</span><span>{en ? `Gemma 4 is writing as ${labelOf(selectedTone).toLowerCase()}` : `O Gemma 4 está a escrever ${selectedTone === "friend" ? "como um amigo" : `como ${persona.label.toLowerCase()}`}`}<span className={styles.dots} aria-hidden><i/><i/><i/></span></span></div>;
+    if (errors[selectedTone]) return <div className={styles.error} role="alert">{errors[selectedTone]} <button onClick={() => void loadTone(selectedTone)}>{en ? "Try again" : "Tentar outra vez"}</button></div>;
+    if (!item) return <div className={styles.loading}>{en ? "Pick who explains." : "Escolhe quem te explica."}</div>;
     return <div className={styles.bubbleRow} key={selectedTone}>
       {!comparison && <span className={styles.avatar} aria-hidden>{persona.emoji}</span>}
       <div className={styles.bubble}>
-        <span className={styles.bubbleName}>{persona.label}</span>
+        <span className={styles.bubbleName}>{labelOf(selectedTone)}</span>
         {comparison ? <p>{item.detail ?? item.body}</p> : <Typewriter text={item.detail ?? item.body}/>}
         <span className={styles.provider}>{explanationProviderLabel(item.provider)}</span>
       </div>
     </div>;
   }
 
-  return <section className={styles.panel} aria-label="Explicação dos dados">
-    <div className={styles.heading}><span className={styles.kicker}>🎭 ESCOLHE QUEM TE EXPLICA</span><h2>Os números são os mesmos. A conversa é que muda.</h2></div>
-    <div className={styles.personas} role="group" aria-label="Quem explica">
+  return <section className={styles.panel} aria-label={en ? "Explanation of the data" : "Explicação dos dados"}>
+    <div className={styles.heading}><span className={styles.kicker}>🎭 {en ? "PICK WHO EXPLAINS" : "ESCOLHE QUEM TE EXPLICA"}</span><h2>{en ? "Same numbers. Different conversation." : "Os números são os mesmos. A conversa é que muda."}</h2></div>
+    <div className={styles.personas} role="group" aria-label={en ? "Who explains" : "Quem explica"}>
       {tones.map(({ id, label, emoji, tagline }) => <button key={id} type="button" className={tone === id ? `${styles.persona} ${styles.selected}` : styles.persona} aria-pressed={tone === id} onClick={() => chooseTone(id)}>
-        <span className={styles.personaEmoji} aria-hidden>{emoji}</span><strong>{label}</strong><small>{tagline}</small>
+        <span className={styles.personaEmoji} aria-hidden>{emoji}</span><strong>{en ? tonesEn[id].label : label}</strong><small>{en ? tonesEn[id].tagline : tagline}</small>
       </button>)}
     </div>
     <div className={styles.answer} aria-live="polite" aria-busy={Boolean(pending[tone])}>{renderText(tone)}</div>
     <div className={styles.actions}>
-      <button type="button" className={styles.actionButton} aria-expanded={compare} onClick={showCompare}><ArrowLeftRight size={15}/> {compare ? "Fechar comparação" : "Comparar dois estilos"}</button>
-      <button type="button" className={styles.actionButton} disabled={!responses[tone] || Boolean(pending[tone])} onClick={exportExplanation}><Download size={15}/> Guardar texto</button>
-      <button type="button" className={styles.actionButton} onClick={onShowEvidence}><FileCheck2 size={15}/> Prova-me isso</button>
+      <button type="button" className={styles.actionButton} aria-expanded={compare} onClick={showCompare}><ArrowLeftRight size={15}/> {compare ? (en ? "Close comparison" : "Fechar comparação") : (en ? "Compare two styles" : "Comparar dois estilos")}</button>
+      <button type="button" className={styles.actionButton} disabled={!responses[tone] || Boolean(pending[tone])} onClick={exportExplanation}><Download size={15}/> {en ? "Save text" : "Guardar texto"}</button>
+      <button type="button" className={styles.actionButton} onClick={onShowEvidence}><FileCheck2 size={15}/> {en ? "Prove it" : "Prova-me isso"}</button>
     </div>
-    {compare && <div className={styles.comparison} aria-label="Comparar dois estilos">
+    {compare && <div className={styles.comparison} aria-label={en ? "Compare two styles" : "Comparar dois estilos"}>
       {([leftTone, rightTone] as const).map((selected, index) => <article className={styles.comparisonCard} key={index}>
-        <label htmlFor={`compare-tone-${index}`}>{index === 0 ? "Estilo A" : "Estilo B"}</label>
-        <select id={`compare-tone-${index}`} value={selected} onChange={(event) => { const next = event.target.value as ResponseTone; if (index === 0) setLeftTone(next); else setRightTone(next); void loadTone(next); }}>{tones.map(({ id, label, emoji }) => <option value={id} key={id}>{emoji} {label}</option>)}</select>
+        <label htmlFor={`compare-tone-${index}`}>{index === 0 ? (en ? "Style A" : "Estilo A") : (en ? "Style B" : "Estilo B")}</label>
+        <select id={`compare-tone-${index}`} value={selected} onChange={(event) => { const next = event.target.value as ResponseTone; if (index === 0) setLeftTone(next); else setRightTone(next); void loadTone(next); }}>{tones.map(({ id, label, emoji }) => <option value={id} key={id}>{emoji} {en ? tonesEn[id].label : label}</option>)}</select>
         <div className={styles.comparisonText} aria-live="polite" aria-busy={Boolean(pending[selected])}>{renderText(selected, true)}</div>
       </article>)}
     </div>}
-    <p className={styles.disclosure}>O texto muda, os números não. Escrito por IA (Gemma 4), não pelo INE.</p>
+    <p className={styles.disclosure}>{en ? "The words change, the numbers don’t. Written by AI (Gemma 4), not by INE." : "O texto muda, os números não. Escrito por IA (Gemma 4), não pelo INE."}</p>
   </section>;
 }

@@ -10,7 +10,7 @@ import type { IneResponse, Territory } from "@/lib/ine/types";
 import { parseQuestion } from "@/lib/ollama";
 
 export const runtime = "nodejs";
-const RequestSchema = z.object({ question: z.string().trim().min(3).max(500), municipalityId: z.string().regex(/^[0-9A-Z]{7}$/).optional() });
+const RequestSchema = z.object({ question: z.string().trim().min(3).max(500), municipalityId: z.string().regex(/^[0-9A-Z]{7}$/).optional(), lang: z.enum(["pt", "en"]).optional() });
 type AnswerStage = "interpret" | "data" | "analyze" | "explain";
 type StageNotice = { stage: AnswerStage; source?: "snapshot" | "ine" };
 
@@ -86,7 +86,7 @@ async function answerQuestion(input: z.infer<typeof RequestSchema>, notify?: (no
       ...(indicator.id === "0014711" ? ["A renda é a mediana por m² de novos contratos; não representa todos os contratos em vigor."] : []),
     ];
     const publicIndicator = { id: indicator.id, name: indicator.name, shortName: indicator.shortName, unit: indicator.unit, dimensionDescription: indicator.dimensionDescription };
-    const evidence: StatisticalEvidence = { question: input.question, indicator: publicIndicator, observations: rows, summaries, calculations, sources, limitations };
+    const evidence: StatisticalEvidence = { question: input.question, indicator: publicIndicator, observations: rows, summaries, calculations, sources, limitations, lang: input.lang ?? "pt" };
     const analysisId = storeEvidence(evidence);
     notify?.({ stage: "explain" });
     const explanation = await generateExplanation(analysisId, evidence, "direct");

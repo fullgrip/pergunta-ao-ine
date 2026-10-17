@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { chatWithMetadata } from "@/lib/ollama";
 import type { Explanation, ResponseTone, StatisticalEvidence } from "./evidence";
+import { INDICATOR_EN, periodLabel } from "@/lib/i18n";
 
 const OutputSchema = z.object({
   headline: z.string().trim().max(160).optional(),
@@ -97,6 +98,49 @@ export function factualHeadline(evidence: Readonly<StatisticalEvidence>): string
   return `${subject} ${verb} em ${latest.territory} entre ${first.period} e ${latest.period}.`;
 }
 
+/** English version of the factual headline (same logic, same evidence). */
+export function factualHeadlineEn(evidence: Readonly<StatisticalEvidence>): string {
+  const rows = evidence.observations.filter((row) => row.value !== null);
+  if (!rows.length) return "There is not enough data to answer this question.";
+  const indicator = evidence.indicator;
+  const en = INDICATOR_EN[indicator.id] ?? { name: indicator.shortName, unit: indicator.unit, subject: indicator.shortName };
+  const territories = [...new Map(rows.map((row) => [row.territoryId, row])).values()];
+  if (territories.length > 1) {
+    if (!territories.every((row) => row.periodCode === territories[0].periodCode)) return "These places cannot be compared without values for the same period.";
+    const [first, second] = territories;
+    if (first.value === second.value) return `${en.subject} was the same in ${first.territory} and ${second.territory} in ${periodLabel(first.period, "en")}.`;
+    const higher = first.value! > second.value! ? first : second;
+    const lower = higher === first ? second : first;
+    return `${en.subject} was higher in ${higher.territory} than in ${lower.territory} in ${periodLabel(first.period, "en")}.`;
+  }
+  const latest = rows.at(-1)!;
+  if (rows.length === 1) return `${en.subject} in ${latest.territory} was ${new Intl.NumberFormat("en-GB", { maximumFractionDigits: 2 }).format(latest.value!)} ${en.unit} in ${periodLabel(latest.period, "en")}.`;
+  if (indicator.id === "0012136") {
+    const comparison = evidence.calculations.find((item) => item.label === "Variação homóloga em pontos percentuais");
+    if (!comparison) return "The quarterly trend cannot be judged without a same-quarter comparison.";
+    return `${en.subject} in the Algarve ${comparison.value > 0 ? "rose" : comparison.value < 0 ? "fell" : "held steady"} compared with the same quarter a year earlier.`;
+  }
+  const first = rows[0];
+  const change = latest.value! - first.value!;
+  return `${en.subject} in ${latest.territory} ${change > 0 ? "rose" : change < 0 ? "fell" : "did not change"} between ${periodLabel(first.period, "en")} and ${periodLabel(latest.period, "en")}.`;
+}
+
+const LIMITATIONS_EN: Array<[RegExp, string]> = [
+  [/aviso de qualidade/, "Some INE values carry a quality warning (§)."],
+  [/apenas um per[ií]odo/, "Only one period is available; another one is needed to see a trend."],
+  [/desemprego trimestral/, "Quarterly unemployment in the Algarve is seasonal; changes compare the same quarter a year earlier."],
+  [/renda [eé] a mediana/, "Rent is the median per m² of new leases; it does not cover all existing leases."],
+];
+function criticalCaveatEn(evidence: Readonly<StatisticalEvidence>): string | null {
+  const pt = criticalCaveat(evidence);
+  if (!pt) return null;
+  if (/^Existe apenas um per[ií]odo/.test(pt)) return "Only one period is available; another one is needed to see a trend.";
+  if (/^Faltam observa/.test(pt)) return "There are no values for the same period, so a direct comparison is not possible.";
+  const snapshot = pt.match(/Snapshot oficial verificado em (\S+?);/);
+  if (snapshot) return `Official INE snapshot checked on ${snapshot[1]}; it may not include the latest values.`;
+  return LIMITATIONS_EN.find(([pattern]) => pattern.test(pt))?.[1] ?? "Some INE requests did not return every value; the table shows what was returned.";
+}
+
 function criticalCaveat(evidence: Readonly<StatisticalEvidence>): string | null {
   const rows = evidence.observations.filter((row) => row.value !== null);
   if (rows.length === 1)
@@ -108,6 +152,8 @@ function criticalCaveat(evidence: Readonly<StatisticalEvidence>): string | null 
 }
 
 function contradictsConclusion(detail: string, headline: string): boolean {
+  if (/\b(?:rose|higher)\b/i.test(headline)) return /\b(?:fell|fallen|decreased|dropped|lower)\b/i.test(detail);
+  if (/\b(?:fell|lower)\b/i.test(headline)) return /\b(?:rose|risen|increased|grew|higher)\b/i.test(detail);
   if (/^N[aã]o [eé] poss[ií]vel|^N[aã]o h[aá] dados/i.test(headline))
     return /\b(?:subiu|aumentou|cresceu|desceu|diminuiu|caiu|lidera|superior|inferior)\b/i.test(detail);
   if (/\b(?:subiu|aumentou|superior)\b/i.test(headline))
@@ -121,6 +167,7 @@ function addsUnsupportedInterpretation(detail: string, evidence: Readonly<Statis
   if (evidence.indicator.id === "0014711" && /\b(?:m[eé]dia|m[eé]dio|m[eé]dios|m[eé]dias)\b/i.test(detail)) return true;
   // Também recusa conclusões que os dados não provam: "risco" a partir de crimes registados, "rendimento disponível" a partir do ganho bruto.
   if (/\b(?:risco|riscos|arriscad[ao])\b|\brendimento (?:mensal )?dispon[ií]vel\b/i.test(detail)) return true;
+  if (/\b(?:caused|due to|driven by|because of|impact|effect|significant(?:ly)?|pressure|record|risk|risky|disposable income|reflects?|average)\b/i.test(detail)) return true;
   return /\b(?:reflete|refletem|causou|provocou|devido|impulsionad[ao]s?|explica|efeito|impacto|din[aâ]mica|significativ[ao]s?|press[aã]o|recorde|disparad[ao]s?)\b/i.test(detail);
 }
 
@@ -137,6 +184,8 @@ function allowedNumbers(evidence: Readonly<StatisticalEvidence>): number[] {
 // "a média do país é 100"): não são números afirmados pelo modelo, são a própria unidade.
 export function withoutRateBase(text: string): string {
   return text.replace(/\bpor (?:cada )?(?:mil|1\s?000|cem|100) (?:habitantes|pessoas|jovens|residentes)\b/giu, "por cada base")
+    .replace(/\b(?:per|for every) (?:one )?(?:thousand|1,?000|hundred|100) (?:residents|inhabitants|people|young people|children)\b/giu, "per base")
+    .replace(/\b(?:aged )?(?:65|sixty-five)(?: years)?(?: or older| and over| or over)\b|\bunder (?:15|fifteen)\b/giu, "age band")
     .replace(/\b(?:m[eé]dia (?:do pa[ií]s|nacional)) (?:[eé]|igual a|de) (?:100|cem)\b/giu, "média nacional")
     .replace(/\b(?:65|sessenta e cinco) (?:ou mais )?anos(?: ou mais)?\b/giu, "idade de idoso")
     .replace(/\b(?:menos de|abaixo dos?) (?:15|quinze) anos\b/giu, "idade jovem");
@@ -147,6 +196,7 @@ export function hasOnlySupportedNumbers(text: string, evidence: Readonly<Statist
   const numbers = Array.from(withoutUnit.matchAll(/(?<![\p{L}\d])-?\d+(?:[.,]\d+)?/gu), (match) => Number(match[0].replace(",", ".")));
   if (numbers.some((value) => !allowed.some((candidate) => Math.abs(value - candidate) < 1e-9))) return false;
   if (/\b(?:dobr(?:ou|aram|ou-se)|duplic(?:ou|aram)|triplic(?:ou|aram)|metade|recorde|sempre|todos|todas|maior do pa[ií]s|menor do pa[ií]s)\b/i.test(text)) return false;
+  if (/\b(?:one|two|three|four|five|six|seven|eight|nine|ten|twenty|hundred|thousand|million|doubled|tripled|half|always|record)\b/i.test(withoutRateBase(text))) return false;
   if (/\b(?:zero|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|mil|milh[aã]o|milh[oõ]es)\b/i.test(withoutRateBase(text))) return false;
   if (evidence.indicator.id === "0012136" && /\b(?:tend[eê]ncia de (?:descida|queda|diminui[cç][aã]o)|descida sustentada|queda sustentada|continua a (?:cair|descer|diminuir))\b/i.test(text)) return false;
   return true;
@@ -165,50 +215,55 @@ function safeDetail(tone: ResponseTone): string {
   return lead[tone];
 }
 
-const num = (value: number, maxDigits = 2) => new Intl.NumberFormat("pt-PT", { maximumFractionDigits: maxDigits, useGrouping: "always" }).format(value);
-const signed = (value: number, maxDigits = 2) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${num(Math.abs(value), maxDigits)}`;
+const formatFor = (lang: "pt" | "en") => (value: number, maxDigits = 2) => new Intl.NumberFormat(lang === "en" ? "en-GB" : "pt-PT", { maximumFractionDigits: maxDigits, useGrouping: "always" }).format(value);
 /** Estilo Direto: "de X para Y (ano → ano): +diferença, +%". Só valores e contas verificados. */
 export function directNumbersLine(evidence: Readonly<StatisticalEvidence>): string | null {
+  const en = evidence.lang === "en";
+  const num = formatFor(en ? "en" : "pt");
+  const signed = (value: number, maxDigits = 2) => `${value > 0 ? "+" : value < 0 ? "−" : ""}${num(Math.abs(value), maxDigits)}`;
+  const period = (label: string) => en ? periodLabel(label, "en") : label;
   const rows = evidence.observations.filter((row) => row.value !== null);
   if (!rows.length) return null;
-  const unit = evidence.indicator.unit;
+  const unit = en ? INDICATOR_EN[evidence.indicator.id]?.unit ?? evidence.indicator.unit : evidence.indicator.unit;
   const territories = [...new Map(rows.map((row) => [row.territoryId, row])).values()];
   if (territories.length > 1) {
     const latest = territories.map((first) => rows.filter((row) => row.territoryId === first.territoryId).at(-1)!);
     if (!latest.every((row) => row.periodCode === latest[0].periodCode)) return null;
     const sorted = [...latest].sort((a, b) => b.value! - a.value!);
     const gap = sorted[0].value! - sorted.at(-1)!.value!;
-    return `${sorted.map((row) => `${row.territory}: ${num(row.value!)} ${unit}`).join(" · ")} (${latest[0].period}). Diferença: ${num(gap)} ${unit}.`;
+    return `${sorted.map((row) => `${row.territory}: ${num(row.value!)} ${unit}`).join(" · ")} (${period(latest[0].period)}). ${en ? "Difference" : "Diferença"}: ${num(gap)} ${unit}.`;
   }
   const homologue = evidence.calculations.find((item) => item.label === "Variação homóloga em pontos percentuais");
   const current = rows.at(-1)!;
   if (homologue) {
     const previous = [...rows].reverse().find((row) => row !== current && row.periodCode.slice(-1) === current.periodCode.slice(-1));
-    if (previous) return `De ${num(previous.value!)} % para ${num(current.value!)} % (${previous.period} → ${current.period}): ${signed(homologue.value, 1)} p.p.`;
+    if (previous) return `${en ? "From" : "De"} ${num(previous.value!)} % ${en ? "to" : "para"} ${num(current.value!)} % (${period(previous.period)} → ${period(current.period)}): ${signed(homologue.value, 1)} p.p.`;
   }
-  if (rows.length === 1) return `${num(current.value!)} ${unit} (${current.period}).`;
+  if (rows.length === 1) return `${num(current.value!)} ${unit} (${period(current.period)}).`;
   const first = rows[0];
   const summary = evidence.summaries.find((item) => item?.territory === first.territory);
   const percent = summary?.percent != null ? `, ${signed(summary.percent, 1)} %` : "";
-  return `De ${num(first.value!)} para ${num(current.value!)} ${unit} (${first.period} → ${current.period}): ${signed(current.value! - first.value!)} ${unit}${percent}.`;
+  return `${en ? "From" : "De"} ${num(first.value!)} ${en ? "to" : "para"} ${num(current.value!)} ${unit} (${period(first.period)} → ${period(current.period)}): ${signed(current.value! - first.value!)} ${unit}${percent}.`;
 }
 
 function assemble(evidenceId: string, evidence: Readonly<StatisticalEvidence>, tone: ResponseTone,
   detail: string, provider: Explanation["provider"], model: string, title?: string): Explanation {
-  const headline = factualHeadline(evidence);
-  const caveat = criticalCaveat(evidence);
+  const en = evidence.lang === "en";
+  const headline = en ? factualHeadlineEn(evidence) : factualHeadline(evidence);
+  const caveat = en ? criticalCaveatEn(evidence) : criticalCaveat(evidence);
   // Em todos os estilos os números vêm primeiro ("de X para Y"); o texto do Gemma, curto, só diz o que significam.
   const numbers = directNumbersLine(evidence);
   if (numbers) detail = `${numbers} ${detail}`.trim();
-  const fact = numbers ? "" : verifiedFactLine(evidence);
+  const fact = numbers || en ? "" : verifiedFactLine(evidence);
   const summary = `${fact} ${detail}`.trim();
-  const body = `${summary}${caveat ? ` Limitação: ${caveat}` : ""}`;
+  const body = `${summary}${caveat ? ` ${en ? "Limitation" : "Limitação"}: ${caveat}` : ""}`;
   return { tone, headline, summary, caveat, detail, title: title || headline, body, evidenceId, provider, model };
 }
 
 export async function generateExplanation(evidenceId: string, evidence: Readonly<StatisticalEvidence>, tone: ResponseTone): Promise<Explanation> {
-  const headline = factualHeadline(evidence);
-  const caveat = criticalCaveat(evidence);
+  const en = evidence.lang === "en";
+  const headline = en ? factualHeadlineEn(evidence) : factualHeadline(evidence);
+  const caveat = en ? criticalCaveatEn(evidence) : criticalCaveat(evidence);
   const schema = z.toJSONSchema(OutputSchema);
   const scopeHint = evidence.indicator.id === "0014711"
     ? "A medida é a mediana por metro quadrado de novos contratos de arrendamento; contratos já em vigor ficam fora desta série."
@@ -218,13 +273,13 @@ export async function generateExplanation(evidenceId: string, evidence: Readonly
         ? "O indicador conta a população residente total, somando ambos os sexos e todos os grupos etários."
         : `O indicador mede ${evidence.indicator.dimensionDescription}.`;
   const basePrompt = `${TONE_INSTRUCTIONS[tone]}
-Produz JSON com {"headline":string,"summary":string,"caveat":string} em português de Portugal (nunca do Brasil).
+Produz JSON com {"headline":string,"summary":string,"caveat":string} ${en ? "ESCRITO EM INGLÊS BRITÂNICO (British English): headline, summary e caveat em inglês, mantendo a voz pedida" : "em português de Portugal (nunca do Brasil)"}.
 - headline: copia exatamente esta conclusão, já verificada: ${JSON.stringify(headline)}
-- summary: ${tone === "direct" ? "uma frase só" : "no máximo duas frases curtas"}, escritas com a voz pedida acima, direto ao assunto, ${tone !== "teacher" && tone !== "researcher" ? "que diga só o que esta mudança quer dizer na vida de quem lê, sem definir o indicador (exemplo do conteúdo, no estilo pedido: \"Arrendar casa nova ficou bem mais caro.\")." : `que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir.`} O texto tem de soar claramente diferente de outros tons. Os números aparecem logo antes do teu texto, escritos pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
+- summary: ${tone === "direct" ? "uma frase só" : "no máximo duas frases curtas"}, escritas com a voz pedida acima, direto ao assunto, ${tone !== "teacher" && tone !== "researcher" ? `que diga só o que esta mudança quer dizer na vida de quem lê, sem definir o indicador (exemplo do conteúdo, no estilo pedido: ${en ? "\"Renting a new home got a lot more expensive.\"" : "\"Arrendar casa nova ficou bem mais caro.\""}).` : `que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir.`} O texto tem de soar claramente diferente de outros tons. Os números aparecem logo antes do teu texto, escritos pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
 - caveat: ${caveat ? `copia esta limitação: ${JSON.stringify(caveat)}` : "deixa vazio"}
 Regras: a medida é ${evidence.indicator.shortName}; nunca a chames média. Não inventes valores, fontes, períodos, territórios, causas nem consequências. Não uses estas palavras: reflete, causou, provocou, devido, impulsionado, explica, efeito, impacto, dinâmica, significativo, pressão, recorde, disparou, dobrou, duplicou, metade, sempre, todos, todas. Não comeces com "Com base nos dados" nem "De acordo com a análise".
 Evidência verificada (só para contexto): ${JSON.stringify(evidence)}
-Lembra-te: ${TONE_INSTRUCTIONS[tone]}`;
+Lembra-te: ${TONE_INSTRUCTIONS[tone]}${en ? " Responde em inglês britânico." : ""}`;
   let forceOllama = false;
   for (let attempt = 0; attempt < 2; attempt++) {
     let reply;
@@ -243,5 +298,5 @@ Lembra-te: ${TONE_INSTRUCTIONS[tone]}`;
       return assemble(evidenceId, evidence, tone, detail, reply.provider, reply.model, generated.title);
     } catch { forceOllama = reply.provider === "gemini"; }
   }
-  return assemble(evidenceId, evidence, tone, safeDetail(tone), "template", "Modelo indisponível");
+  return assemble(evidenceId, evidence, tone, en ? "This reading only summarises the official values available." : safeDetail(tone), "template", "Modelo indisponível");
 }

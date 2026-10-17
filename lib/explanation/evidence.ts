@@ -13,6 +13,8 @@ export interface StatisticalEvidence {
   calculations: Array<{ label: string; value: number; unit: string }>;
   sources: Array<{ name: string; url: string; dataUrl: string; indicatorId: string }>;
   limitations: string[];
+  /** Língua da resposta: "en" na versão inglesa; por omissão português. */
+  lang?: "pt" | "en";
 }
 
 export interface Explanation {
