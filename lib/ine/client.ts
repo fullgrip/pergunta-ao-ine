@@ -3,8 +3,22 @@ import { normalizeIneResponse } from "./normalize";
 import type { Indicator, IndicatorId, IneResponse, Territory } from "./types";
 
 const base = "https://www.ine.pt/ine/json_indicador";
-const timeoutMs = 10_000;
+// Medido a 17/10/2026: uma ligação nova ao INE às vezes fica pendurada sem nunca responder
+// (2 em 3 pedidos seguidos, 30 s cada), enquanto a seguinte responde em ~1 s. Esperar mais
+// não ajuda; repetir com uma ligação nova, sim. Só depois de todas as tentativas falharem
+// é que o INE conta como indisponível.
+const timeoutMs = 7_000;
+const transportAttempts = 3;
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+async function ineFetch(url: string): Promise<Response> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < transportAttempts; attempt++) {
+    if (attempt > 0) await pause(attempt * 600);
+    try { return await fetch(url, { signal: AbortSignal.timeout(timeoutMs), cache: "no-store" }); }
+    catch (error) { lastError = error; }
+  }
+  throw lastError instanceof Error ? lastError : new Error("erro de rede");
+}
 let dataQueue: Promise<unknown> = Promise.resolve();
 let lastRequestAt = 0;
 let unavailableUntil = 0;
@@ -20,7 +34,7 @@ function enqueue<T>(job: () => Promise<T>): Promise<T> {
   return current;
 }
 export async function getMetadata(id: IndicatorId) {
-  const response = await fetch(`${base}/pindicaMeta.jsp?varcd=${encodeURIComponent(id)}&lang=PT`, { signal: AbortSignal.timeout(timeoutMs), cache: "no-store" });
+  const response = await ineFetch(`${base}/pindicaMeta.jsp?varcd=${encodeURIComponent(id)}&lang=PT`);
   if (!response.ok) throw new Error(`INE metadados: HTTP ${response.status}`);
   return response.json();
 }
@@ -35,8 +49,8 @@ export async function fetchObservation(indicator: Indicator, territory: Territor
     const maxAttempts = Math.max(1, Math.min(3, options?.maxAttempts ?? 3));
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       let response: Response;
-      try { response = await fetch(`${base}/pindica.jsp?${params}`, { signal: AbortSignal.timeout(timeoutMs), cache: "no-store" }); }
-      catch (error) { unavailableUntil = Date.now() + 30_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
+      try { response = await ineFetch(`${base}/pindica.jsp?${params}`); }
+      catch (error) { unavailableUntil = Date.now() + 10_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
       if (response.status === 429 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 5000); continue; }
       if (response.status === 429) unavailableUntil = Date.now() + 60_000;
       if (!response.ok) throw new Error(`INE dados: HTTP ${response.status}`);
@@ -75,8 +89,8 @@ export async function fetchBatchObservations(
     const maxAttempts = Math.max(1, Math.min(3, options?.maxAttempts ?? 2));
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       let response: Response;
-      try { response = await fetch(`${base}/pindica.jsp?${query}`, { signal: AbortSignal.timeout(timeoutMs), cache: "no-store" }); }
-      catch (error) { unavailableUntil = Date.now() + 30_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
+      try { response = await ineFetch(`${base}/pindica.jsp?${query}`); }
+      catch (error) { unavailableUntil = Date.now() + 10_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
       if (response.status === 429 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 5000); continue; }
       if (response.status === 429) unavailableUntil = Date.now() + 60_000;
       if (!response.ok) throw new Error(`INE dados: HTTP ${response.status}`);
@@ -120,7 +134,8 @@ export async function checkIne() {
   if (healthCache && healthCache.until > Date.now()) return healthCache.available;
   let available = false;
   try { const items = await getMetadata("0012918"); available = Array.isArray(items) && items[0]?.IndicadorCod === "0012918"; } catch { available = false; }
-  healthCache = { until: Date.now() + 5 * 60_000, available };
+  // Uma falha só fica em cache 30 s: o INE costuma voltar logo, e o selo não deve ficar vermelho 5 min.
+  healthCache = { until: Date.now() + (available ? 5 * 60_000 : 30_000), available };
   return available;
 }
 export function indicatorById(id: string) { return getIndicator(id); }

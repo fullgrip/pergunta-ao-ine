@@ -89,6 +89,16 @@ describe("falhas externas", () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response("unavailable", { status: 503 })));
     await expect(fetchObservation(pop, pop.supportedTerritories[0], "2025", "S7A2025")).rejects.toThrow("HTTP 503");
   });
+  it("repete com uma ligação nova quando o INE fica pendurado", async () => {
+    const ok = fixture("population-2025-portimao.json");
+    const network = vi.fn()
+      .mockRejectedValueOnce(new DOMException("The operation was aborted due to timeout", "TimeoutError"))
+      .mockResolvedValueOnce(new Response(JSON.stringify(ok), { status: 200 }));
+    vi.stubGlobal("fetch", network);
+    const result = await fetchObservation(pop, pop.supportedTerritories[0], "2024", "S7A2024");
+    expect(network).toHaveBeenCalledTimes(2);
+    expect(result.observations.length).toBeGreaterThan(0);
+  });
   it("deteta Ollama indisponível", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
     expect((await ollamaHealth()).available).toBe(false);
