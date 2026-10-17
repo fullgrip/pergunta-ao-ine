@@ -61,6 +61,13 @@ describe("respostas em linguagem do dia a dia", () => {
     expect(view.lines.at(-1)!.text).toContain("eram cerca de 4,5 em cada 100");
   });
 
+  it("explica os temas novos sem jargão", () => {
+    expect(everydayView(one("0014137", "casas", ["2022", 49450], ["2022", 49450])).lines[0].text).toMatch(/Há cerca de 49\s450 casas em Portimão/);
+    expect(everydayView(one("0012255", "€/m²", ["2021", 1803], ["2025", 2953])).lines[0].text).toMatch(/236\s240 €/);
+    expect(everydayView(one("0014580", "(Portugal = 100)", ["2023", 99.87], ["2023", 99.87])).lines[0].text).toContain("abaixo da média nacional");
+    expect(everydayView(one("0012260", "‰", ["2021", 30.6], ["2025", 37.4], "Faro")).lines[0].text).toContain("Em Faro a polícia registou cerca de 37,4 crimes");
+  });
+
   it("não mostra nada sem valores", () => {
     expect(everydayView({ indicator: { id: "0014711", unit: "€/m²" }, summaries: [{ territory: "Mora", last: { period: "2025", value: null } }] }).lines).toEqual([]);
   });

@@ -1,4 +1,4 @@
-export type IndicatorId = "0014711" | "0012918" | "0012136" | "0012653" | "0013312" | "0012765";
+export type IndicatorId = "0014711" | "0012918" | "0012136" | "0012653" | "0013312" | "0012765" | "0014137" | "0012255" | "0012256" | "0012909" | "0013044" | "0012260" | "0014580" | "0013249";
 export type Intent = "trend" | "comparison";
 
 export interface Territory { id: string; name: string; level: "municipality" | "region" }

@@ -200,3 +200,4 @@ body{background:radial-gradient(900px 520px at 12% -8%, color-mix(in srgb, var(-
 .everyday-equals{font-size:22px;font-weight:700;color:var(--tinta-2)}
 .everyday-luggage{display:flex;flex-wrap:wrap;gap:4px;color:#D9A23B}
 @media(max-width:480px){.everyday{padding:18px 16px}.everyday-lines p{font-size:15px}.everyday-people-grid{grid-template-columns:repeat(10,1fr)}}
+.examples [data-theme-chip=casas] svg{color:#F0A868}.examples [data-theme-chip=crime] svg{color:#9FE6CB}.examples [data-theme-chip=compra] svg{color:#F7C08C}.examples [data-theme-chip=idosos] svg{color:#C9B6FF}

@@ -21,6 +21,10 @@ const EXAMPLES = [
   { q: "Há muitos turistas em Albufeira?", Icon: Sun, theme: "turismo" },
   { q: "Como está o desemprego no Algarve?", Icon: Briefcase, theme: "desemprego" },
   { q: "Quanto lixo se produz em Tavira?", Icon: Trash2, theme: "lixo" },
+  { q: "Há muitas casas em Portimão?", Icon: HomeIcon, theme: "casas" },
+  { q: "É seguro viver em Faro?", Icon: ShieldCheck, theme: "crime" },
+  { q: "Quanto custa comprar casa em Lagos?", Icon: Euro, theme: "compra" },
+  { q: "Há muitos idosos em Tavira?", Icon: Users, theme: "idosos" },
 ];
 type Health = { ollama: { available: boolean; modelAvailable: boolean; model: string }; ine: { available: boolean | null; checked: boolean } };
 const fmt = (n: number | null | undefined, unit: string) => n == null ? "—" : `${new Intl.NumberFormat("pt-PT", { maximumFractionDigits: unit === "pessoas" ? 0 : 2, useGrouping: "always" }).format(n)} ${unit}`;

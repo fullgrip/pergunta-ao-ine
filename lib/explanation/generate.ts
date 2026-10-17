@@ -60,7 +60,16 @@ export function factualHeadline(evidence: Readonly<StatisticalEvidence>): string
     : indicator.id === "0012918" ? "A população residente"
     : indicator.id === "0012653" ? "O ganho médio mensal"
     : indicator.id === "0013312" ? "O número de hóspedes por habitante"
-    : "A quantidade de resíduos urbanos recolhidos por habitante";
+    : indicator.id === "0012765" ? "A quantidade de resíduos urbanos recolhidos por habitante"
+    : indicator.id === "0014137" ? "O número de casas"
+    : indicator.id === "0012255" ? "O preço mediano de venda das casas"
+    : indicator.id === "0012256" ? "A avaliação bancária mediana das casas"
+    : indicator.id === "0012909" ? "O índice de envelhecimento"
+    : indicator.id === "0013044" ? "A taxa de natalidade"
+    : indicator.id === "0012260" ? "A taxa de criminalidade"
+    : indicator.id === "0014580" ? "O poder de compra por pessoa"
+    : indicator.id === "0013249" ? "O número de casas novas concluídas"
+    : `O valor de ${indicator.shortName.toLowerCase()}`;
   const territories = [...new Map(rows.map((row) => [row.territoryId, row])).values()];
   if (territories.length > 1) {
     if (!territories.every((row) => row.periodCode === territories[0].periodCode))
@@ -122,13 +131,21 @@ function allowedNumbers(evidence: Readonly<StatisticalEvidence>): number[] {
 }
 
 /** Refuse any numeric assertion not present in the immutable evidence or a rounded calculation. */
+// Expressões que fazem parte da definição de uma taxa ("por cada mil habitantes", "por cada 100 jovens",
+// "a média do país é 100"): não são números afirmados pelo modelo, são a própria unidade.
+export function withoutRateBase(text: string): string {
+  return text.replace(/\bpor (?:cada )?(?:mil|1\s?000|cem|100) (?:habitantes|pessoas|jovens|residentes)\b/giu, "por cada base")
+    .replace(/\b(?:m[eé]dia (?:do pa[ií]s|nacional)) (?:[eé]|igual a|de) (?:100|cem)\b/giu, "média nacional")
+    .replace(/\b(?:65|sessenta e cinco) (?:ou mais )?anos(?: ou mais)?\b/giu, "idade de idoso")
+    .replace(/\b(?:menos de|abaixo dos?) (?:15|quinze) anos\b/giu, "idade jovem");
+}
 export function hasOnlySupportedNumbers(text: string, evidence: Readonly<StatisticalEvidence>): boolean {
   const allowed = allowedNumbers(evidence);
-  const withoutUnit = text.replaceAll(evidence.indicator.unit, "");
+  const withoutUnit = withoutRateBase(text).replaceAll(evidence.indicator.unit, "");
   const numbers = Array.from(withoutUnit.matchAll(/(?<![\p{L}\d])-?\d+(?:[.,]\d+)?/gu), (match) => Number(match[0].replace(",", ".")));
   if (numbers.some((value) => !allowed.some((candidate) => Math.abs(value - candidate) < 1e-9))) return false;
   if (/\b(?:dobr(?:ou|aram|ou-se)|duplic(?:ou|aram)|triplic(?:ou|aram)|metade|recorde|sempre|todos|todas|maior do pa[ií]s|menor do pa[ií]s)\b/i.test(text)) return false;
-  if (/\b(?:zero|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|mil|milh[aã]o|milh[oõ]es)\b/i.test(text)) return false;
+  if (/\b(?:zero|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|vinte|trinta|quarenta|cinquenta|sessenta|setenta|oitenta|noventa|cem|cento|mil|milh[aã]o|milh[oõ]es)\b/i.test(withoutRateBase(text))) return false;
   if (evidence.indicator.id === "0012136" && /\b(?:tend[eê]ncia de (?:descida|queda|diminui[cç][aã]o)|descida sustentada|queda sustentada|continua a (?:cair|descer|diminuir))\b/i.test(text)) return false;
   return true;
 }
@@ -183,7 +200,7 @@ Lembra-te: ${TONE_INSTRUCTIONS[tone]}`;
     try {
       const generated = OutputSchema.parse(JSON.parse(reply.content));
       const detail = (generated.summary ?? generated.body ?? "").trim();
-      if (detail.length < 20 || /\d/.test(detail.replaceAll(evidence.indicator.unit, "")) || !hasOnlySupportedNumbers(detail, evidence))
+      if (detail.length < 20 || /\d/.test(withoutRateBase(detail).replaceAll(evidence.indicator.unit, "")) || !hasOnlySupportedNumbers(detail, evidence))
         throw new Error("A explicação livre contém uma afirmação não verificável.");
       if (contradictsConclusion(detail, headline) || addsUnsupportedInterpretation(detail, evidence) || (detail.match(/[.!?](?=\s|$)/g)?.length ?? 0) > 3)
         throw new Error("A explicação diverge da conclusão ou é demasiado longa.");

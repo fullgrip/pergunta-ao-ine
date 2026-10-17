@@ -79,6 +79,10 @@ describe("explicações com evidência imutável", () => {
     expect(direct.summary).toContain("7,09");
     expect(direct.summary).toContain("11,36");
   });
+  it("aceita a base de uma taxa mas continua a recusar números inventados", () => {
+    expect(hasOnlySupportedNumbers("São crimes registados por cada mil habitantes.", evidence)).toBe(true);
+    expect(hasOnlySupportedNumbers("Há mil crimes por ano.", evidence)).toBe(false);
+  });
   it("rejeita brasileirismos no tom descontraído", async () => {
     const id = storeEvidence(evidence);
     model.mockResolvedValue({ content: JSON.stringify({ summary: "Basicamente, a grana que você gasta na renda subiu bastante nestes anos todos aí." }), provider: "ollama", model: "gemma4:e4b" });

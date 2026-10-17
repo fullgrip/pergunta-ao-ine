@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isCityChoiceQuestion, questionConstraints } from "../lib/analysis";
+import { catalogSuggestions, isCityChoiceQuestion, questionConstraints } from "../lib/analysis";
 import { plannedPeriods } from "../lib/ine/client";
 import { getIndicator } from "../lib/ine/catalog";
 import { narrate, parseQuestion } from "../lib/ollama";
@@ -53,7 +53,7 @@ describe("interpretação de perguntas com limites verificáveis", () => {
     expect(tema("Portimão está a crescer?")).toBe("0012918");
     expect(tema("Qual o tamanho de Albufeira?")).toBe("0012918");
     expect(tema("Está difícil arranjar emprego no Algarve?")).toBe("0012136");
-    expect(() => tema("Preço das casas em Portimão")).toThrow(/preços de compra/);
+    expect(tema("Preço das casas em Portimão")).toBe("0012255");
     expect(() => tema("Recicla-se muito em Lagos?")).toThrow(/reciclagem/);
     expect(() => tema("Quanto custa viver em Portimão?")).toThrow(/custo de vida/);
     expect(isCityChoiceQuestion("Vale a pena ir viver para Lagos?")).toBe(true);
@@ -63,6 +63,24 @@ describe("interpretação de perguntas com limites verificáveis", () => {
     expect(questionConstraints("Quanta gente mora em Tavira?").territoryIds).toEqual(["1500814"]);
     expect(questionConstraints("Rendas em Mora").territoryIds).toEqual(["1C40707"]);
     expect(questionConstraints("quantos habitantes tem a guarda").territoryIds).toEqual(["1960907"]);
+  });
+
+  it("reconhece os temas acrescentados e desempata pelo mais específico", () => {
+    const tema = (pergunta: string) => questionConstraints(pergunta, "1500811").indicatorId;
+    expect(tema("Há muitas casas em Portimão?")).toBe("0014137");
+    expect(tema("Quanto custa comprar casa em Lagos?")).toBe("0012255");
+    expect(tema("Preço das casas para arrendar em Faro")).toBe("0014711");
+    expect(tema("Quanto vale uma casa para o banco em Lagos?")).toBe("0012256");
+    expect(tema("A população de Portimão está envelhecida?")).toBe("0012909");
+    expect(tema("Nascem muitos bebés em Faro?")).toBe("0013044");
+    expect(tema("É seguro viver em Faro?")).toBe("0012260");
+    expect(tema("Qual o poder de compra em Faro?")).toBe("0014580");
+    expect(tema("Há muitas casas novas em Faro?")).toBe("0013249");
+  });
+
+  it("não confunde votar com população e aponta para o catálogo do INE", () => {
+    expect(() => questionConstraints("Quantas pessoas votaram em Portimão?", "1500811")).toThrow(/Abstenção/);
+    expect(catalogSuggestions("Quantas casas há?").some((item) => /Casamentos/.test(item.title))).toBe(false);
   });
 
   it("pede esclarecimento para Lagoa, nome usado em dois municípios", () => {

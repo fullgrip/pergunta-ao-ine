@@ -17,6 +17,7 @@ export type EverydayInput = {
 /** Typical flat used to turn €/m² into a monthly rent people recognise. */
 export const EXAMPLE_FLAT_M2 = 80;
 const RENT = "0014711", POPULATION = "0012918", UNEMPLOYMENT = "0012136", WAGE = "0012653", GUESTS = "0013312", WASTE = "0012765";
+const HOUSES = "0014137", SALE_PRICE = "0012255", BANK_VALUE = "0012256", AGEING = "0012909", BIRTHS = "0013044", CRIME = "0012260", PURCHASING = "0014580", NEW_HOMES = "0013249";
 
 // pt-PT não agrupa números de 4 algarismos por omissão ("1484"); aqui queremos "1 484".
 const whole = (n: number) => new Intl.NumberFormat("pt-PT", { maximumFractionDigits: 0, useGrouping: "always" }).format(Math.round(n));
@@ -29,6 +30,8 @@ export function inPlace(territory: string) {
   const name = territory.replace(/\s*\(R\.A\.[AM]\.\)\s*$/, "");
   return MASCULINE.has(name) ? `no ${territory}` : FEMININE.has(name) ? `na ${territory}` : `em ${territory}`;
 }
+
+const capital = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 function linesFor(id: string, territory: string, first: { period: string; value: number } | null, last: { period: string; value: number }): EverydayLine[] {
   const changed = first && first.period !== last.period ? first : null;
@@ -63,10 +66,39 @@ function linesFor(id: string, territory: string, first: { period: string; value:
   if (id === WASTE) {
     return [{ icon: "trash", text: `${capital(inPlace(territory))} recolhem-se cerca de ${oneDecimal(last.value / 365)} kg de lixo por habitante, por dia (${whole(last.value)} kg por ano, ${last.period}).`, note: "Inclui o lixo dos turistas, que não contam como habitantes." }];
   }
+  const diffLine = (format: (n: number) => string, suffix: string, factor = 1): EverydayLine[] => {
+    if (!changed) return [];
+    const diff = (last.value - changed.value) * factor;
+    return Math.round(diff * 10) === 0 ? [] : [{ icon: "trend", text: `${diff > 0 ? "Mais" : "Menos"} ${format(Math.abs(diff))}${suffix} do que em ${changed.period}.` }];
+  };
+  if (id === HOUSES) {
+    return [{ icon: "home", text: `Há cerca de ${whole(last.value)} casas ${inPlace(territory)} (${last.period}).`, note: "Conta todas as casas de família, incluindo casas de férias e casas vazias, não só as que têm gente a viver." }];
+  }
+  if (id === SALE_PRICE || id === BANK_VALUE) {
+    const verb = id === SALE_PRICE ? "foi vendida, a meio da tabela, por cerca de" : "valia para o banco cerca de";
+    return [
+      { icon: "home", text: `Uma casa de ${EXAMPLE_FLAT_M2} m² ${inPlace(territory)} ${verb} ${whole(last.value * EXAMPLE_FLAT_M2)} € (${last.period}).`, note: `Exemplo ilustrativo: mediana por m² × ${EXAMPLE_FLAT_M2} m². Não é o preço de uma casa concreta.` },
+      ...diffLine(whole, " € pela mesma casa", EXAMPLE_FLAT_M2),
+    ];
+  }
+  if (id === AGEING) {
+    return [{ icon: "users", text: `${capital(inPlace(territory))}, por cada 100 crianças e jovens com menos de 15 anos há ${whole(last.value)} pessoas com 65 ou mais anos (${last.period}).` }, ...diffLine(whole, " idosos por cada 100 jovens")];
+  }
+  if (id === BIRTHS) {
+    return [{ icon: "users", text: `${capital(inPlace(territory))} nascem cerca de ${oneDecimal(last.value)} bebés por cada 1 000 habitantes, num ano (${last.period}).` }];
+  }
+  if (id === CRIME) {
+    return [{ icon: "briefcase", text: `${capital(inPlace(territory))} a polícia registou cerca de ${oneDecimal(last.value)} crimes por cada 1 000 habitantes (${last.period}).`, note: "São crimes registados pelas autoridades, não todos os que acontecem. Os turistas não contam como habitantes." }, ...diffLine(oneDecimal, " crimes por cada 1 000 habitantes")];
+  }
+  if (id === PURCHASING) {
+    const above = last.value >= 100;
+    return [{ icon: "euro", text: `Se a média do país for 100, o poder de compra por pessoa ${inPlace(territory)} é ${oneDecimal(last.value)}: ${above ? "acima" : "abaixo"} da média nacional (${last.period}).` }];
+  }
+  if (id === NEW_HOMES) {
+    return [{ icon: "home", text: `${capital(inPlace(territory))} concluíram-se ${whole(last.value)} casas novas (${last.period}).` }, ...diffLine(whole, " casas novas")];
+  }
   return [];
 }
-
-const capital = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 export function everydayView(answer: EverydayInput): Everyday {
   const rows = answer.summaries

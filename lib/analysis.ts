@@ -6,7 +6,7 @@ import { getMunicipalityById, resolveMunicipalityMention } from "./municipalitie
 
 export const ParsedQuestionSchema = z.object({
   intent: z.enum(["trend", "comparison"]),
-  indicatorId: z.enum(["0014711", "0012918", "0012136", "0012653", "0013312", "0012765"]),
+  indicatorId: z.enum(["0014711", "0012918", "0012136", "0012653", "0013312", "0012765", "0014137", "0012255", "0012256", "0012909", "0013044", "0012260", "0014580", "0013249"]),
   territoryIds: z.array(z.string()).min(1).max(2),
   startYear: z.number().int().min(2000).max(2100).nullable(),
   endYear: z.number().int().min(2000).max(2100).nullable(),
@@ -27,28 +27,68 @@ export function isCityChoiceQuestion(question: string) {
 // não só o nome técnico do indicador.
 const indicatorWords: Array<{ id: ParsedQuestion["indicatorId"]; pattern: RegExp }> = [
   { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|arrendar|arrenda|aluguer|alugueres|alugueis|alugar)\b/ },
-  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas\b|\bquanta gente\b/ },
+  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas (vivem|moram|ha|habitam|residem|tem)\b|\bquanta gente\b/ },
   { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas|emprego|empregos)\b|\bsem (emprego|trabalho)\b|\b(arranjar|encontrar|procurar|conseguir) (um )?trabalho\b|\b(ha|existe|tem) (muito |pouco )?trabalho\b/ },
   { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes|rendimento|rendimentos)\b|\bse recebe\b|\b(pessoas|trabalhadores|trabalhador|funcionarios) (\p{L}+ )?recebem?\b|\brecebem? por mes\b|\bpaga(-se| se)? bem\b|\bpagam bem\b/u },
   { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas|visitantes)\b/ },
   { id: "0012765", pattern: /\b(residuos|lixo)\b/ },
+  { id: "0014137", pattern: /\b(quantas|muitas|poucas|numero de|total de) (casas|habitacoes|alojamentos|fogos|moradias)\b|\bparque habitacional\b|\bcasas (vazias|de ferias)\b/ },
+  { id: "0012255", pattern: /\b(comprar|compra|venda|vendas|vender|vende-se)\b|\b(preco|precos|valor|valores) (das|de|da|do) (casas?|habitac\p{L}*|imoveis|apartamentos?|metro quadrado|m2)\b|\bhabitacao (esta )?cara\b|\bcasas (estao )?caras\b/u },
+  { id: "0012256", pattern: /\bavaliac\p{L}* bancari\p{L}*|\b(banco|bancos) avalia\p{L}*|\bvale\b.{0,40}\b(banco|bancos)\b|\b(banco|bancos)\b.{0,40}\bvale\b/u },
+  { id: "0012909", pattern: /\b(idosos|idosas|velhos|velhinhos|envelhecimento|envelhecida|envelhecido|terceira idade|reformados)\b/ },
+  { id: "0013044", pattern: /\b(natalidade|nascimentos|nascem|nasceram|bebes|nados)\b/ },
+  { id: "0012260", pattern: /\b(crime|crimes|criminalidade|seguranca|perigos[ao]s?|assaltos?|roubos?)\b|\b(e|sera|e uma terra|e uma cidade) segur[ao]\b/ },
+  { id: "0014580", pattern: /\bpoder de compra\b|\b(ricos?|ricas?|pobres?|riqueza)\b/ },
+  { id: "0013249", pattern: /\b(construcao|construir|constroem|construiram|construidas|construidos|obras|fogos concluidos)\b|\bcasas novas\b/ },
 ];
 // Só quando nenhum tema foi reconhecido: perguntas sobre o tamanho ou o crescimento de uma terra.
 const populationFallback = /\b(crescer|cresce|cresceu|tamanho|gente|despovoa\p{L}*)\b/u;
 // Temas que as pessoas pedem e que o catálogo ainda não tem: dizer o que existe em vez de um erro genérico.
 const notInCatalog: Array<{ pattern: RegExp; message: string }> = [
-  { pattern: /\b(comprar|compra|venda|vender)\b|\b(preco|precos|valor|valores) (das|de|da) (casas?|habitac\p{L}*|imoveis|apartamentos?)\b/u,
-    message: "Ainda não temos preços de compra de casas. Temos as rendas de novos contratos: experimenta «Quanto custa arrendar em Portimão?»." },
   { pattern: /\b(recicla\p{L}*|reciclagem)\b/u,
     message: "Ainda não temos dados de reciclagem. Temos os resíduos urbanos recolhidos por habitante: experimenta «Quanto lixo se produz em Lagos?»." },
   { pattern: /\bcust(o|a) (de )?vida\b|\bcusta viver\b/,
     message: "Não há um indicador único de custo de vida. Podes perguntar pelas rendas ou pelo ganho médio, por exemplo «Quanto se ganha em Faro?»." },
 ];
 
+// Catálogo municipal do INE (744 conceitos com dados de 2021 em diante; extraído a 3/10/2026).
+// Serve para dizer com honestidade o que existe quando a pergunta sai dos temas que a app sabe mostrar.
+import catalogo from "@/data/ine-catalogo-municipal.json";
+const STOP = new Set(["qual", "quais", "quanto", "quanta", "quantos", "quantas", "como", "onde", "esta", "estao", "muito", "muita", "muitos", "muitas", "pouco", "tem", "temos", "existe", "existem", "para", "pela", "pelo", "numa", "num", "uma", "das", "dos", "que", "sobre", "cidade", "terra", "municipio", "concelho", "ano", "anos", "agora", "hoje", "mais", "menos"]);
+const SYNONYMS: Record<string, string[]> = { vot: ["eleic", "votant", "absten"], escol: ["ensino", "alunos"], medic: ["saude", "medic", "farmac", "hospit"], idos: ["envelh", "idade"], jove: ["jovens", "idade"], carro: ["veicul", "automov"], empres: ["empresas", "sociedades"] };
+export function catalogSuggestions(question: string, limit = 3): Array<{ id: string; title: string }> {
+  const words = normalizeWords(question).split(/[^a-z0-9]+/).filter((word) => word.length >= 4 && !STOP.has(word));
+  const stems = new Set(words.flatMap((word) => [word.length >= 6 ? word.slice(0, 5) : word, ...Object.entries(SYNONYMS).filter(([key]) => word.startsWith(key)).flatMap(([, extra]) => extra)]));
+  if (!stems.size) return [];
+  const matches = (titleWords: string[], stem: string) => titleWords.some((word) => stem.length >= 5 ? word.startsWith(stem) : word === stem || word === `${stem}s`);
+  return (catalogo as Array<{ id: string; t: string }>)
+    .map((item) => { const titleWords = normalizeWords(item.t).split(/[^a-z0-9]+/); return { id: item.id, title: item.t, score: [...stems].filter((stem) => matches(titleWords, stem)).length }; })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score || a.title.length - b.title.length)
+    .slice(0, limit)
+    .map(({ id, title }) => ({ id, title }));
+}
+function unknownTopicMessage(question: string) {
+  const found = catalogSuggestions(question);
+  const themes = "rendas, preço das casas, salários, população, idosos, nascimentos, crime, poder de compra, casas novas, desemprego, turistas ou lixo";
+  if (!found.length) return `Ainda não percebi o tema. Sei responder sobre ${themes}. Por exemplo: «Quanto se ganha em Faro?».`;
+  return `Ainda não sei mostrar isto aqui, mas o INE tem dados que podem ter a ver com isto: ${found.map((item) => `«${item.title}» (código ${item.id})`).join("; ")}. Podes procurar esses códigos em ine.pt. Por agora sei responder sobre ${themes}.`;
+}
+
 /** Limits the model to concepts and dates that the present INE catalog can answer. */
 export function questionConstraints(question: string, selectedMunicipalityId?: string) {
   const words = normalizeWords(question);
   let identified = indicatorWords.filter(({ pattern }) => pattern.test(words));
+  // Desempates entre temas parecidos, pela palavra mais específica.
+  const has = (id: string) => identified.some((item) => item.id === id);
+  const drop = (...ids: string[]) => { identified = identified.filter((item) => !ids.includes(item.id)); };
+  // Um tema específico ganha à população ("a população está envelhecida?", "crimes por habitante").
+  if (identified.some((item) => !["0012918", "0014711", "0012653"].includes(item.id))) drop("0012918");
+  if (has("0014580")) drop("0012255");                                   // "poder de compra" não é comprar casa
+  if (has("0014711") && /\b(arrend|alug)/.test(words)) drop("0012255");  // "preço das casas para arrendar"
+  if (has("0012256")) drop("0012255", "0014137");                                   // avaliação bancária é mais específica
+  if (has("0013249")) drop("0014137");                                   // "muitas casas novas" é construção
+  if (identified.length > 1 && has("0014137") && /\b(arrend|alug|comprar|venda)/.test(words)) drop("0014137");
   if (!identified.length) {
     const missing = notInCatalog.find(({ pattern }) => pattern.test(words));
     if (missing) throw new Error(missing.message);
@@ -61,7 +101,7 @@ export function questionConstraints(question: string, selectedMunicipalityId?: s
   if (mentionedIndicators.length !== 1) {
     throw new Error(mentionedIndicators.length > 1
       ? "Esta versão responde a um indicador de cada vez. Escolha apenas um tema estatístico."
-      : "Ainda não percebi o tema. Pergunta por rendas, salários, população, desemprego, turistas ou lixo, por exemplo «Quanto se ganha em Faro?».");
+      : unknownTopicMessage(question));
   }
   const indicatorId = mentionedIndicators[0].id;
   if (indicatorId === "0012136" && /\b(numero|total|quantos|quantas)\b.{0,35}\b(desempregad|sem emprego|sem trabalho)/.test(words)) {
