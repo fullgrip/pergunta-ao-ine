@@ -22,12 +22,14 @@ export function isCityChoiceQuestion(question: string) {
     && /\b(cidade|cidades|municipio|municipios|local|sitio)\b/.test(words)
     && /\b(viver|morar|habitar)\b/.test(words);
 }
+// Inclui a forma como as pessoas perguntam de facto ("quanto se ganha?", "quanto custa arrendar?"),
+// não só o nome técnico do indicador.
 const indicatorWords: Array<{ id: ParsedQuestion["indicatorId"]; pattern: RegExp }> = [
-  { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|aluguer|alugueis)\b/ },
-  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes)\b|\b(quantas|quantos) pessoas vivem\b/ },
-  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas)\b/ },
-  { id: "0012653", pattern: /\b(ganho medio|salario medio|salarios medios|remuneracao media|remuneracoes medias)\b/ },
-  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica)\b/ },
+  { id: "0014711", pattern: /\b(renda|rendas|arrendamento|arrendamentos|arrendar|arrenda|aluguer|alugueres|alugueis|alugar)\b/ },
+  { id: "0012918", pattern: /\b(populacao|habitante|habitantes|residente|residentes|moradores|moram)\b|\b(quantas|quantos) pessoas\b|\bquanta gente\b/ },
+  { id: "0012136", pattern: /\b(desemprego|desempregado|desempregados|desempregada|desempregadas)\b|\bsem (emprego|trabalho)\b/ },
+  { id: "0012653", pattern: /\b(ganho|ganhos|ganha|ganham|ganhar|salario|salarios|ordenado|ordenados|vencimento|vencimentos|remuneracao|remuneracoes)\b/ },
+  { id: "0013312", pattern: /\b(hospedes|turismo|turistico|turistica|turista|turistas)\b/ },
   { id: "0012765", pattern: /\b(residuos|lixo)\b/ },
 ];
 
@@ -35,7 +37,9 @@ const indicatorWords: Array<{ id: ParsedQuestion["indicatorId"]; pattern: RegExp
 export function questionConstraints(question: string, selectedMunicipalityId?: string) {
   const words = normalizeWords(question);
   const identified = indicatorWords.filter(({ pattern }) => pattern.test(words));
-  const mentionedIndicators = /\bpor habitante\b/.test(words) && identified.some(({ id }) => id === "0013312" || id === "0012765")
+  // "por habitante" e "quantas pessoas ... sem emprego" falam de pessoas sem pedirem a população.
+  const mentionedIndicators = (/\bpor habitante\b/.test(words) && identified.some(({ id }) => id === "0013312" || id === "0012765"))
+    || identified.some(({ id }) => id === "0012136")
     ? identified.filter(({ id }) => id !== "0012918") : identified;
   if (mentionedIndicators.length !== 1) {
     throw new Error(mentionedIndicators.length > 1
@@ -43,7 +47,7 @@ export function questionConstraints(question: string, selectedMunicipalityId?: s
       : "Indique o indicador: rendas, população, desemprego, ganho médio, hóspedes ou resíduos urbanos.");
   }
   const indicatorId = mentionedIndicators[0].id;
-  if (indicatorId === "0012136" && /\b(numero|total|quantos|quantas)\b.{0,35}\bdesempregad/.test(words)) {
+  if (indicatorId === "0012136" && /\b(numero|total|quantos|quantas)\b.{0,35}\b(desempregad|sem emprego|sem trabalho)/.test(words)) {
     throw new Error("O catálogo contém a taxa de desemprego, não o número de pessoas desempregadas. Pergunte pela taxa de desemprego no Algarve.");
   }
   const indicator = indicators.find((item) => item.id === indicatorId)!;

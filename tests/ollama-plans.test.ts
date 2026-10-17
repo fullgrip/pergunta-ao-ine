@@ -34,6 +34,17 @@ describe("interpretação de perguntas com limites verificáveis", () => {
     expect(() => questionConstraints("Como evoluíram as rendas em Vigo?", "1A01106")).toThrow(/Não reconhecemos/);
   });
 
+  it("reconhece o tema quando a pergunta é feita em linguagem do dia a dia", () => {
+    const tema = (pergunta: string) => questionConstraints(pergunta, "1500811").indicatorId;
+    expect(tema("quanto se ganha?")).toBe("0012653");
+    expect(tema("Qual é o salário em Faro?")).toBe("0012653");
+    expect(tema("Quanto custa arrendar casa em Lagos?")).toBe("0014711");
+    expect(tema("Quantas pessoas vivem em Portimão?")).toBe("0012918");
+    expect(tema("Há muitos turistas em Albufeira?")).toBe("0013312");
+    expect(tema("Como está o desemprego no Algarve?")).toBe("0012136");
+    expect(() => tema("Quantas pessoas estão sem emprego no Algarve?")).toThrow(/taxa de desemprego/);
+  });
+
   it("pede esclarecimento para Lagoa, nome usado em dois municípios", () => {
     expect(() => questionConstraints("Como evoluíram as rendas em Lagoa?")).toThrow(/ambíguo/);
     expect(questionConstraints("Como evoluíram as rendas em Lagoa (R.A.A.)?").territoryIds).toEqual(["2004201"]);
