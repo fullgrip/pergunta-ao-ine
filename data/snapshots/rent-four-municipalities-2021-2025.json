@@ -1,0 +1,217 @@
+{
+  "mode": "snapshot",
+  "collectedAt": "2026-10-17T12:39:31.296+01:00",
+  "lastUpdated": "2026-09-29",
+  "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+  "notice": "20 observações oficiais do INE: quatro municípios, 2021–2025, recolhidas num único pedido.",
+  "series": [
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500801",
+      "territory": "Albufeira",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 7.65,
+          "displayValue": "7,65",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 8.44,
+          "displayValue": "8,44",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 9.13,
+          "displayValue": "9,13",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 10.71,
+          "displayValue": "10,71",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 11.44,
+          "displayValue": "11,44",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500805",
+      "territory": "Faro",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 6.72,
+          "displayValue": "6,72",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 7.5,
+          "displayValue": "7,50",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 8.02,
+          "displayValue": "8,02",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 8.93,
+          "displayValue": "8,93",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 9.67,
+          "displayValue": "9,67",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500807",
+      "territory": "Lagos",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 7.58,
+          "displayValue": "7,58",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 9.07,
+          "displayValue": "9,07",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 9.55,
+          "displayValue": "9,55",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 10.8,
+          "displayValue": "10,80",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 12.34,
+          "displayValue": "12,34",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 7.09,
+          "displayValue": "7,09",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 7.92,
+          "displayValue": "7,92",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 8.97,
+          "displayValue": "8,97",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 10.5,
+          "displayValue": "10,50",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 11.36,
+          "displayValue": "11,36",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    }
+  ]
+}

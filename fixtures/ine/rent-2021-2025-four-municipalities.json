@@ -1,0 +1,189 @@
+[
+  {
+    "IndicadorCod": "0014711",
+    "IndicadorDsg": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026 - €/ m²) por Localização geográfica (NUTS - 2024) e Quartis; Anual - INE, Estatísticas de Rendas da Habitação ao nível local",
+    "MetaInfUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+    "DataExtracao": "2026-10-17T12:39:31.296+01:00",
+    "DataUltimoAtualizacao": "2026-09-29",
+    "UltimoPref": "2025",
+    "Dados": {
+      "2021": [
+        {
+          "geocod": "1500805",
+          "geodsg": "Faro",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "6,72",
+          "valor": "6.72"
+        },
+        {
+          "geocod": "1500811",
+          "geodsg": "Portimão",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "7,09",
+          "valor": "7.09"
+        },
+        {
+          "geocod": "1500807",
+          "geodsg": "Lagos",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "7,58",
+          "valor": "7.58"
+        },
+        {
+          "geocod": "1500801",
+          "geodsg": "Albufeira",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "7,65",
+          "valor": "7.65"
+        }
+      ],
+      "2022": [
+        {
+          "geocod": "1500805",
+          "geodsg": "Faro",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "7,50",
+          "valor": "7.5"
+        },
+        {
+          "geocod": "1500811",
+          "geodsg": "Portimão",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "7,92",
+          "valor": "7.92"
+        },
+        {
+          "geocod": "1500801",
+          "geodsg": "Albufeira",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "8,44",
+          "valor": "8.44"
+        },
+        {
+          "geocod": "1500807",
+          "geodsg": "Lagos",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "9,07",
+          "valor": "9.07"
+        }
+      ],
+      "2023": [
+        {
+          "geocod": "1500805",
+          "geodsg": "Faro",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "8,02",
+          "valor": "8.02"
+        },
+        {
+          "geocod": "1500811",
+          "geodsg": "Portimão",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "8,97",
+          "valor": "8.97"
+        },
+        {
+          "geocod": "1500801",
+          "geodsg": "Albufeira",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "9,13",
+          "valor": "9.13"
+        },
+        {
+          "geocod": "1500807",
+          "geodsg": "Lagos",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "9,55",
+          "valor": "9.55"
+        }
+      ],
+      "2024": [
+        {
+          "geocod": "1500805",
+          "geodsg": "Faro",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "8,93",
+          "valor": "8.93"
+        },
+        {
+          "geocod": "1500811",
+          "geodsg": "Portimão",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "10,50",
+          "valor": "10.5"
+        },
+        {
+          "geocod": "1500801",
+          "geodsg": "Albufeira",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "10,71",
+          "valor": "10.71"
+        },
+        {
+          "geocod": "1500807",
+          "geodsg": "Lagos",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "10,80",
+          "valor": "10.8"
+        }
+      ],
+      "2025": [
+        {
+          "geocod": "1500805",
+          "geodsg": "Faro",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "9,67",
+          "valor": "9.67"
+        },
+        {
+          "geocod": "1500811",
+          "geodsg": "Portimão",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "11,36",
+          "valor": "11.36"
+        },
+        {
+          "geocod": "1500801",
+          "geodsg": "Albufeira",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "11,44",
+          "valor": "11.44"
+        },
+        {
+          "geocod": "1500807",
+          "geodsg": "Lagos",
+          "dim_3": "2",
+          "dim_3_t": "2.º quartil",
+          "ind_string": "12,34",
+          "valor": "12.34"
+        }
+      ]
+    },
+    "Sucesso": {
+      "Verdadeiro": [
+        {
+          "Msg": "OK"
+        }
+      ]
+    }
+  }
+]

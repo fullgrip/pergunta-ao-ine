@@ -1,0 +1,203 @@
+{
+  "city": {
+    "id": "1500811",
+    "name": "Portimão",
+    "slug": "portimao"
+  },
+  "mode": "snapshot",
+  "collectedAt": "2026-10-17",
+  "notice": "Cinco indicadores oficiais de Portimão, recolhidos em 17-10-2026. Consulta a fonte para verificar revisões e novos períodos.",
+  "series": [
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 7.09,
+          "displayValue": "7,09",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 7.92,
+          "displayValue": "7,92",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 8.97,
+          "displayValue": "8,97",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 10.5,
+          "displayValue": "10,50",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 11.36,
+          "displayValue": "11,36",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2021,S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500801,1500805,1500807,1500811&Dim3=2&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "População",
+      "indicatorId": "0012918",
+      "indicatorName": "População residente por local de residência (NUTS 2024), sexo e grupo etário",
+      "description": "Sexo HM, grupo etário Total. Um único ponto recolhido; ainda não permite inferir tendência.",
+      "unit": "pessoas",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012918&lingua=PT",
+      "observations": [
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 78125,
+          "displayValue": "78 125",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012918&Dim1=S7A2025&Dim2=1500811&Dim3=T&Dim4=T&lang=PT"
+        }
+      ]
+    },
+    {
+      "theme": "Rendimento",
+      "indicatorId": "0012653",
+      "indicatorName": "Ganho médio mensal (€) por Localização geográfica (NUTS - 2024) e Nível de educação",
+      "description": "Média de trabalhadores por conta de outrem a tempo completo com remuneração completa; educação Total. Neste snapshot, só 2021 e 2024 foram recolhidos.",
+      "unit": "€",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012653&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 1102.08,
+          "displayValue": "1 102,08",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012653&Dim1=S7A2021,S7A2024&Dim2=1500811&Dim3=T&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 1294.27,
+          "displayValue": "1 294,27",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012653&Dim1=S7A2021,S7A2024&Dim2=1500811&Dim3=T&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "Turismo",
+      "indicatorId": "0013312",
+      "indicatorName": "Hóspedes por habitante (N.º) nos estabelecimentos de alojamento turístico",
+      "description": "Número de hóspedes em alojamento turístico por habitante; não equivale a visitantes únicos nem à população presente.",
+      "unit": "hóspedes/hab.",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0013312&lingua=PT",
+      "observations": [
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 9.2,
+          "displayValue": "9,2",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0013312&Dim1=S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 9.4,
+          "displayValue": "9,4",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0013312&Dim1=S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 9.9,
+          "displayValue": "9,9",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0013312&Dim1=S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2025",
+          "periodCode": "S7A2025",
+          "value": 8.4,
+          "displayValue": "8,4",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0013312&Dim1=S7A2022,S7A2023,S7A2024,S7A2025&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    },
+    {
+      "theme": "Ambiente",
+      "indicatorId": "0012765",
+      "indicatorName": "Resíduos urbanos recolhidos por habitante (kg/ hab.)",
+      "description": "Resíduos urbanos recolhidos por habitante; não mede a produção individual de cada residente.",
+      "unit": "kg/hab.",
+      "territoryId": "1500811",
+      "territory": "Portimão",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012765&lingua=PT",
+      "observations": [
+        {
+          "period": "2021",
+          "periodCode": "S7A2021",
+          "value": 689.0,
+          "displayValue": "689",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012765&Dim1=S7A2021,S7A2022,S7A2023,S7A2024&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2022",
+          "periodCode": "S7A2022",
+          "value": 698.0,
+          "displayValue": "698",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012765&Dim1=S7A2021,S7A2022,S7A2023,S7A2024&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2023",
+          "periodCode": "S7A2023",
+          "value": 638.0,
+          "displayValue": "638",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012765&Dim1=S7A2021,S7A2022,S7A2023,S7A2024&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        },
+        {
+          "period": "2024",
+          "periodCode": "S7A2024",
+          "value": 643.0,
+          "displayValue": "643",
+          "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012765&Dim1=S7A2021,S7A2022,S7A2023,S7A2024&Dim2=1500811&lang=PT",
+          "collectedAt": "2026-10-17"
+        }
+      ]
+    }
+  ],
+  "warnings": [
+    "O ganho médio mensal abrange apenas trabalhadores por conta de outrem a tempo completo com remuneração completa; não é rendimento familiar.",
+    "A renda é a mediana por m² dos novos contratos; os indicadores não medem diretamente acessibilidade à habitação."
+  ]
+}

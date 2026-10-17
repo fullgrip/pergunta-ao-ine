@@ -1,0 +1,39 @@
+[ {
+  "IndicadorCod" : "0012765",
+  "IndicadorDsg" : "Resíduos urbanos recolhidos por habitante (kg/ hab.) por Localização geográfica (NUTS - 2024); Anual - INE, Estatísticas dos resíduos urbanos",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012765&lingua=PT",
+  "DataExtracao" : "2026-10-17T12:44:30.305+01:00",
+  "DataUltimoAtualizacao" : "2026-08-13",
+  "UltimoPref" : "2024",
+  "Dados" : {
+    "2021" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "689",
+      "valor" : "689"
+    } ],
+    "2022" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "698",
+      "valor" : "698"
+    } ],
+    "2023" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "638",
+      "valor" : "638"
+    } ],
+    "2024" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "643",
+      "valor" : "643"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

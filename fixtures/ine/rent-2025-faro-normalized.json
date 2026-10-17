@@ -1,0 +1,13 @@
+{
+  "indicatorId": "0014711",
+  "territoryId": "1500805",
+  "period": "2025",
+  "periodCode": "S7A2025",
+  "value": 9.67,
+  "displayValue": "9,67",
+  "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2025&Dim2=1500805&Dim3=2&lang=PT",
+  "extractedAt": "2026-10-17T12:29:46.104+01:00",
+  "lastUpdated": "2026-09-29",
+  "savedAt": "2026-10-17T11:29:46.340Z",
+  "warnings": []
+}

@@ -1,0 +1,39 @@
+[ {
+  "IndicadorCod" : "0013312",
+  "IndicadorDsg" : "Hóspedes por habitante (N.º) nos estabelecimentos de alojamento turístico por Localização geográfica (NUTS - 2024); Anual - INE, Inquérito à permanência de hóspedes na hotelaria e outros alojamentos",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0013312&lingua=PT",
+  "DataExtracao" : "2026-10-17T12:44:31.390+01:00",
+  "DataUltimoAtualizacao" : "2026-07-09",
+  "UltimoPref" : "2025",
+  "Dados" : {
+    "2022" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "9,2",
+      "valor" : "9.2"
+    } ],
+    "2023" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "9,4",
+      "valor" : "9.4"
+    } ],
+    "2024" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "9,9",
+      "valor" : "9.9"
+    } ],
+    "2025" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "ind_string" : "8,4",
+      "valor" : "8.4"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

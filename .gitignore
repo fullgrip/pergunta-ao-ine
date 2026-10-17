@@ -1,0 +1,16 @@
+node_modules/
+.next/
+.env
+.env.local
+coverage/
+*.log
+.data/
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+.vercel/
+# Rascunhos de trabalho e pacotes gerados (não fazem parte da app)
+work/
+outputs/
+*.zip

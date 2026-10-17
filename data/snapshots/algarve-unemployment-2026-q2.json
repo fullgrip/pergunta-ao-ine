@@ -1,0 +1,71 @@
+{
+  "indicatorId": "0012136",
+  "territoryId": "15",
+  "territory": "Algarve",
+  "collectedAt": "2026-10-17T12:40:43.061+01:00",
+  "lastUpdated": "2026-08-05",
+  "observations": [
+    {
+      "period": "3.º Trimestre de 2024",
+      "periodCode": "S5A20243",
+      "value": 4.5,
+      "displayValue": "4,5 §",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "4.º Trimestre de 2024",
+      "periodCode": "S5A20244",
+      "value": 5.6,
+      "displayValue": "5,6",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "1.º Trimestre de 2025",
+      "periodCode": "S5A20251",
+      "value": 8.1,
+      "displayValue": "8,1",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "2.º Trimestre de 2025",
+      "periodCode": "S5A20252",
+      "value": 4.5,
+      "displayValue": "4,5 §",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "3.º Trimestre de 2025",
+      "periodCode": "S5A20253",
+      "value": 4.5,
+      "displayValue": "4,5 §",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "4.º Trimestre de 2025",
+      "periodCode": "S5A20254",
+      "value": 5.3,
+      "displayValue": "5,3",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "1.º Trimestre de 2026",
+      "periodCode": "S5A20261",
+      "value": 6.7,
+      "displayValue": "6,7",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    },
+    {
+      "period": "2.º Trimestre de 2026",
+      "periodCode": "S5A20262",
+      "value": 4.2,
+      "displayValue": "4,2 §",
+      "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012136&Dim1=S5A20243,S5A20244,S5A20251,S5A20252,S5A20253,S5A20254,S5A20261,S5A20262&Dim2=15&Dim3=T&lang=PT"
+    }
+  ],
+  "warnings": [
+    "3.º Trimestre de 2024: Desvio do padrão de qualidade/Coeficiente de variação elevado.",
+    "2.º Trimestre de 2025: Desvio do padrão de qualidade/Coeficiente de variação elevado.",
+    "3.º Trimestre de 2025: Desvio do padrão de qualidade/Coeficiente de variação elevado.",
+    "2.º Trimestre de 2026: Desvio do padrão de qualidade/Coeficiente de variação elevado."
+  ]
+}

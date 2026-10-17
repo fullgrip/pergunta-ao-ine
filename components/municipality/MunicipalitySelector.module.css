@@ -1,0 +1,15 @@
+.selector{position:relative;min-width:0;width:100%}
+.label{display:block;margin-bottom:7px;color:var(--tinta-2);font-size:12px;font-weight:700}
+.inputWrap{position:relative}
+.inputWrap input{width:100%;min-width:0;height:46px;border:1px solid var(--linha);border-radius:10px;background:var(--superficie);color:var(--tinta);padding:0 39px 0 13px;font-size:14px;outline:none}
+.inputWrap input:focus{border-color:var(--pinho);box-shadow:0 0 0 3px var(--sombra)}
+.inputWrap input::placeholder{color:var(--tinta-2)}
+.inputWrap input:disabled{opacity:.65;cursor:not-allowed}
+.icon{position:absolute;right:13px;top:8px;color:var(--pinho);font-size:24px;line-height:1;pointer-events:none}
+.popup{position:absolute;z-index:50;top:calc(100% + 5px);left:0;right:0;border:1px solid var(--linha);border-radius:10px;background:var(--superficie);box-shadow:0 12px 30px var(--sombra);overflow:hidden}
+.list{list-style:none;margin:0;padding:5px;max-height:320px;overflow-y:auto}
+.list li button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 11px;border:0;border-radius:7px;background:transparent;color:var(--tinta);text-align:left;font-size:14px}
+.list li button:hover,.list li button.active{background:var(--superficie-suave)}
+.list small{flex:none;color:var(--tinta-2);font-size:12px}
+.empty{padding:11px;color:var(--tinta-2);font-size:14px}
+@media(max-width:480px){.list li button{align-items:flex-start;flex-direction:column;gap:2px}}

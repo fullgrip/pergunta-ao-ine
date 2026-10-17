@@ -1,0 +1,100 @@
+.map {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--linha);
+  border-radius: 14px;
+  background: var(--superficie);
+  overflow: hidden;
+}
+
+.map svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 160px;
+  background: var(--map-mar-fundo);
+}
+
+.land {
+  fill: var(--map-terra-fundo);
+}
+
+.coast {
+  fill: none;
+  stroke: var(--mar);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.seaLabel {
+  fill: var(--mar);
+  opacity: 0.82;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.cityLink {
+  cursor: pointer;
+  --point-color: var(--pinho);
+}
+
+.portimao { --point-color: var(--cidade-portimao); }
+.faro { --point-color: var(--cidade-faro); }
+.lagos { --point-color: var(--cidade-lagos); }
+.albufeira { --point-color: var(--cidade-albufeira); }
+
+.halo {
+  fill: var(--superficie);
+  stroke: var(--point-color);
+  stroke-width: 2;
+}
+.hitArea { fill: transparent; }
+
+.point {
+  fill: var(--point-color);
+}
+
+.cityLabel {
+  fill: var(--tinta);
+  font-size: 13px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: var(--map-terra-fundo);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.active .halo,
+.cityLink:hover .halo,
+.cityLink:focus-visible .halo {
+  stroke-width: 3.5;
+}
+
+.active .cityLabel {
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.cityLink:focus-visible {
+  outline: 3px solid var(--mar);
+  outline-offset: 4px;
+}
+
+.caption {
+  margin: 0;
+  padding: 9px 14px;
+  color: var(--tinta-2);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .map svg { min-height: 150px; }
+  .seaLabel { display: none; }
+  .cityLabel { font-size: 28px; }
+}
+
+@media (prefers-color-scheme: dark) {
+  .portimao .halo { stroke: var(--tinta); stroke-width: 2.5; }
+}

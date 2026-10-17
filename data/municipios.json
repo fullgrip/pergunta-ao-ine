@@ -1,0 +1,1864 @@
+{
+  "version": "nuts-2024-0012918-2024",
+  "source": {
+    "provider": "Instituto Nacional de Estatística",
+    "indicatorId": "0012918",
+    "indicatorName": "População residente (N.º) por Local de residência (NUTS - 2024), Sexo e Grupo etário; Anual - INE, Estimativas anuais da população residente",
+    "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0012918&Dim1=S7A2024&lang=PT",
+    "classification": "NUTS 2024",
+    "referencePeriod": "2024",
+    "extractedAt": "2026-10-17T14:02:25.782+01:00",
+    "lastUpdatedAt": "2026-06-22"
+  },
+  "count": 308,
+  "municipalities": [
+    {
+      "id": "1500811",
+      "name": "Portimão",
+      "region": "Algarve",
+      "slug": "portimao"
+    },
+    {
+      "id": "1500805",
+      "name": "Faro",
+      "region": "Algarve",
+      "slug": "faro"
+    },
+    {
+      "id": "1500807",
+      "name": "Lagos",
+      "region": "Algarve",
+      "slug": "lagos"
+    },
+    {
+      "id": "1500801",
+      "name": "Albufeira",
+      "region": "Algarve",
+      "slug": "albufeira"
+    },
+    {
+      "id": "1D21401",
+      "name": "Abrantes",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "abrantes"
+    },
+    {
+      "id": "1910101",
+      "name": "Águeda",
+      "region": "Centro",
+      "slug": "agueda"
+    },
+    {
+      "id": "1940901",
+      "name": "Aguiar da Beira",
+      "region": "Centro",
+      "slug": "aguiar-da-beira"
+    },
+    {
+      "id": "1C40701",
+      "name": "Alandroal",
+      "region": "Alentejo",
+      "slug": "alandroal"
+    },
+    {
+      "id": "1910102",
+      "name": "Albergaria-a-Velha",
+      "region": "Centro",
+      "slug": "albergaria-a-velha"
+    },
+    {
+      "id": "1C11501",
+      "name": "Alcácer do Sal",
+      "region": "Alentejo",
+      "slug": "alcacer-do-sal"
+    },
+    {
+      "id": "1D21402",
+      "name": "Alcanena",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "alcanena"
+    },
+    {
+      "id": "1D11001",
+      "name": "Alcobaça",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "alcobaca"
+    },
+    {
+      "id": "1B01502",
+      "name": "Alcochete",
+      "region": "Península de Setúbal",
+      "slug": "alcochete"
+    },
+    {
+      "id": "1500802",
+      "name": "Alcoutim",
+      "region": "Algarve",
+      "slug": "alcoutim"
+    },
+    {
+      "id": "1D11101",
+      "name": "Alenquer",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "alenquer"
+    },
+    {
+      "id": "11E0401",
+      "name": "Alfândega da Fé",
+      "region": "Norte",
+      "slug": "alfandega-da-fe"
+    },
+    {
+      "id": "11D1701",
+      "name": "Alijó",
+      "region": "Norte",
+      "slug": "alijo"
+    },
+    {
+      "id": "1500803",
+      "name": "Aljezur",
+      "region": "Algarve",
+      "slug": "aljezur"
+    },
+    {
+      "id": "1C20201",
+      "name": "Aljustrel",
+      "region": "Alentejo",
+      "slug": "aljustrel"
+    },
+    {
+      "id": "1B01503",
+      "name": "Almada",
+      "region": "Península de Setúbal",
+      "slug": "almada"
+    },
+    {
+      "id": "1960902",
+      "name": "Almeida",
+      "region": "Centro",
+      "slug": "almeida"
+    },
+    {
+      "id": "1D31403",
+      "name": "Almeirim",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "almeirim"
+    },
+    {
+      "id": "1C20202",
+      "name": "Almodôvar",
+      "region": "Alentejo",
+      "slug": "almodovar"
+    },
+    {
+      "id": "1D31404",
+      "name": "Alpiarça",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "alpiarca"
+    },
+    {
+      "id": "1C31201",
+      "name": "Alter do Chão",
+      "region": "Alentejo",
+      "slug": "alter-do-chao"
+    },
+    {
+      "id": "1931002",
+      "name": "Alvaiázere",
+      "region": "Centro",
+      "slug": "alvaiazere"
+    },
+    {
+      "id": "1C20203",
+      "name": "Alvito",
+      "region": "Alentejo",
+      "slug": "alvito"
+    },
+    {
+      "id": "1A01115",
+      "name": "Amadora",
+      "region": "Grande Lisboa",
+      "slug": "amadora"
+    },
+    {
+      "id": "11C1301",
+      "name": "Amarante",
+      "region": "Norte",
+      "slug": "amarante"
+    },
+    {
+      "id": "1120301",
+      "name": "Amares",
+      "region": "Norte",
+      "slug": "amares"
+    },
+    {
+      "id": "1910103",
+      "name": "Anadia",
+      "region": "Centro",
+      "slug": "anadia"
+    },
+    {
+      "id": "2004301",
+      "name": "Angra do Heroísmo",
+      "region": "Região Autónoma dos Açores",
+      "slug": "angra-do-heroismo"
+    },
+    {
+      "id": "1931003",
+      "name": "Ansião",
+      "region": "Centro",
+      "slug": "ansiao"
+    },
+    {
+      "id": "1111601",
+      "name": "Arcos de Valdevez",
+      "region": "Norte",
+      "slug": "arcos-de-valdevez"
+    },
+    {
+      "id": "1920601",
+      "name": "Arganil",
+      "region": "Centro",
+      "slug": "arganil"
+    },
+    {
+      "id": "11D1801",
+      "name": "Armamar",
+      "region": "Norte",
+      "slug": "armamar"
+    },
+    {
+      "id": "11A0104",
+      "name": "Arouca",
+      "region": "Norte",
+      "slug": "arouca"
+    },
+    {
+      "id": "1C40702",
+      "name": "Arraiolos",
+      "region": "Alentejo",
+      "slug": "arraiolos"
+    },
+    {
+      "id": "1C31202",
+      "name": "Arronches",
+      "region": "Alentejo",
+      "slug": "arronches"
+    },
+    {
+      "id": "1D11102",
+      "name": "Arruda dos Vinhos",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "arruda-dos-vinhos"
+    },
+    {
+      "id": "1910105",
+      "name": "Aveiro",
+      "region": "Centro",
+      "slug": "aveiro"
+    },
+    {
+      "id": "1C31203",
+      "name": "Avis",
+      "region": "Alentejo",
+      "slug": "avis"
+    },
+    {
+      "id": "1D31103",
+      "name": "Azambuja",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "azambuja"
+    },
+    {
+      "id": "11C1302",
+      "name": "Baião",
+      "region": "Norte",
+      "slug": "baiao"
+    },
+    {
+      "id": "1120302",
+      "name": "Barcelos",
+      "region": "Norte",
+      "slug": "barcelos"
+    },
+    {
+      "id": "1C20204",
+      "name": "Barrancos",
+      "region": "Alentejo",
+      "slug": "barrancos"
+    },
+    {
+      "id": "1B01504",
+      "name": "Barreiro",
+      "region": "Península de Setúbal",
+      "slug": "barreiro"
+    },
+    {
+      "id": "1931004",
+      "name": "Batalha",
+      "region": "Centro",
+      "slug": "batalha"
+    },
+    {
+      "id": "1C20205",
+      "name": "Beja",
+      "region": "Alentejo",
+      "slug": "beja"
+    },
+    {
+      "id": "1960501",
+      "name": "Belmonte",
+      "region": "Centro",
+      "slug": "belmonte"
+    },
+    {
+      "id": "1D31405",
+      "name": "Benavente",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "benavente"
+    },
+    {
+      "id": "1D11005",
+      "name": "Bombarral",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "bombarral"
+    },
+    {
+      "id": "1C40703",
+      "name": "Borba",
+      "region": "Alentejo",
+      "slug": "borba"
+    },
+    {
+      "id": "11B1702",
+      "name": "Boticas",
+      "region": "Norte",
+      "slug": "boticas"
+    },
+    {
+      "id": "1120303",
+      "name": "Braga",
+      "region": "Norte",
+      "slug": "braga"
+    },
+    {
+      "id": "11E0402",
+      "name": "Bragança",
+      "region": "Norte",
+      "slug": "braganca"
+    },
+    {
+      "id": "1190304",
+      "name": "Cabeceiras de Basto",
+      "region": "Norte",
+      "slug": "cabeceiras-de-basto"
+    },
+    {
+      "id": "1D11104",
+      "name": "Cadaval",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "cadaval"
+    },
+    {
+      "id": "1D11006",
+      "name": "Caldas da Rainha",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "caldas-da-rainha"
+    },
+    {
+      "id": "2004501",
+      "name": "Calheta (R.A.A.)",
+      "region": "Região Autónoma dos Açores",
+      "slug": "calheta-r-a-a"
+    },
+    {
+      "id": "3003101",
+      "name": "Calheta (R.A.M.)",
+      "region": "Região Autónoma da Madeira",
+      "slug": "calheta-r-a-m"
+    },
+    {
+      "id": "3003102",
+      "name": "Câmara de Lobos",
+      "region": "Região Autónoma da Madeira",
+      "slug": "camara-de-lobos"
+    },
+    {
+      "id": "1111602",
+      "name": "Caminha",
+      "region": "Norte",
+      "slug": "caminha"
+    },
+    {
+      "id": "1C31204",
+      "name": "Campo Maior",
+      "region": "Alentejo",
+      "slug": "campo-maior"
+    },
+    {
+      "id": "1920602",
+      "name": "Cantanhede",
+      "region": "Centro",
+      "slug": "cantanhede"
+    },
+    {
+      "id": "11D0403",
+      "name": "Carrazeda de Ansiães",
+      "region": "Norte",
+      "slug": "carrazeda-de-ansiaes"
+    },
+    {
+      "id": "1941802",
+      "name": "Carregal do Sal",
+      "region": "Centro",
+      "slug": "carregal-do-sal"
+    },
+    {
+      "id": "1D31406",
+      "name": "Cartaxo",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "cartaxo"
+    },
+    {
+      "id": "1A01105",
+      "name": "Cascais",
+      "region": "Grande Lisboa",
+      "slug": "cascais"
+    },
+    {
+      "id": "1931007",
+      "name": "Castanheira de Pêra",
+      "region": "Centro",
+      "slug": "castanheira-de-pera"
+    },
+    {
+      "id": "1950502",
+      "name": "Castelo Branco",
+      "region": "Centro",
+      "slug": "castelo-branco"
+    },
+    {
+      "id": "11C0106",
+      "name": "Castelo de Paiva",
+      "region": "Norte",
+      "slug": "castelo-de-paiva"
+    },
+    {
+      "id": "1C31205",
+      "name": "Castelo de Vide",
+      "region": "Alentejo",
+      "slug": "castelo-de-vide"
+    },
+    {
+      "id": "1941803",
+      "name": "Castro Daire",
+      "region": "Centro",
+      "slug": "castro-daire"
+    },
+    {
+      "id": "1500804",
+      "name": "Castro Marim",
+      "region": "Algarve",
+      "slug": "castro-marim"
+    },
+    {
+      "id": "1C20206",
+      "name": "Castro Verde",
+      "region": "Alentejo",
+      "slug": "castro-verde"
+    },
+    {
+      "id": "1960903",
+      "name": "Celorico da Beira",
+      "region": "Centro",
+      "slug": "celorico-da-beira"
+    },
+    {
+      "id": "11C0305",
+      "name": "Celorico de Basto",
+      "region": "Norte",
+      "slug": "celorico-de-basto"
+    },
+    {
+      "id": "1D31407",
+      "name": "Chamusca",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "chamusca"
+    },
+    {
+      "id": "11B1703",
+      "name": "Chaves",
+      "region": "Norte",
+      "slug": "chaves"
+    },
+    {
+      "id": "11C1804",
+      "name": "Cinfães",
+      "region": "Norte",
+      "slug": "cinfaes"
+    },
+    {
+      "id": "1920603",
+      "name": "Coimbra",
+      "region": "Centro",
+      "slug": "coimbra"
+    },
+    {
+      "id": "1920604",
+      "name": "Condeixa-a-Nova",
+      "region": "Centro",
+      "slug": "condeixa-a-nova"
+    },
+    {
+      "id": "1D21408",
+      "name": "Constância",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "constancia"
+    },
+    {
+      "id": "1D31409",
+      "name": "Coruche",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "coruche"
+    },
+    {
+      "id": "2004901",
+      "name": "Corvo",
+      "region": "Região Autónoma dos Açores",
+      "slug": "corvo"
+    },
+    {
+      "id": "1960503",
+      "name": "Covilhã",
+      "region": "Centro",
+      "slug": "covilha"
+    },
+    {
+      "id": "1C31206",
+      "name": "Crato",
+      "region": "Alentejo",
+      "slug": "crato"
+    },
+    {
+      "id": "1C20207",
+      "name": "Cuba",
+      "region": "Alentejo",
+      "slug": "cuba"
+    },
+    {
+      "id": "1C31207",
+      "name": "Elvas",
+      "region": "Alentejo",
+      "slug": "elvas"
+    },
+    {
+      "id": "1D21410",
+      "name": "Entroncamento",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "entroncamento"
+    },
+    {
+      "id": "11A0107",
+      "name": "Espinho",
+      "region": "Norte",
+      "slug": "espinho"
+    },
+    {
+      "id": "1120306",
+      "name": "Esposende",
+      "region": "Norte",
+      "slug": "esposende"
+    },
+    {
+      "id": "1910108",
+      "name": "Estarreja",
+      "region": "Centro",
+      "slug": "estarreja"
+    },
+    {
+      "id": "1C40704",
+      "name": "Estremoz",
+      "region": "Alentejo",
+      "slug": "estremoz"
+    },
+    {
+      "id": "1C40705",
+      "name": "Évora",
+      "region": "Alentejo",
+      "slug": "evora"
+    },
+    {
+      "id": "1190307",
+      "name": "Fafe",
+      "region": "Norte",
+      "slug": "fafe"
+    },
+    {
+      "id": "11C1303",
+      "name": "Felgueiras",
+      "region": "Norte",
+      "slug": "felgueiras"
+    },
+    {
+      "id": "1C20208",
+      "name": "Ferreira do Alentejo",
+      "region": "Alentejo",
+      "slug": "ferreira-do-alentejo"
+    },
+    {
+      "id": "1D21411",
+      "name": "Ferreira do Zêzere",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "ferreira-do-zezere"
+    },
+    {
+      "id": "1920605",
+      "name": "Figueira da Foz",
+      "region": "Centro",
+      "slug": "figueira-da-foz"
+    },
+    {
+      "id": "1960904",
+      "name": "Figueira de Castelo Rodrigo",
+      "region": "Centro",
+      "slug": "figueira-de-castelo-rodrigo"
+    },
+    {
+      "id": "1931008",
+      "name": "Figueiró dos Vinhos",
+      "region": "Centro",
+      "slug": "figueiro-dos-vinhos"
+    },
+    {
+      "id": "1960905",
+      "name": "Fornos de Algodres",
+      "region": "Centro",
+      "slug": "fornos-de-algodres"
+    },
+    {
+      "id": "11D0404",
+      "name": "Freixo de Espada à Cinta",
+      "region": "Norte",
+      "slug": "freixo-de-espada-a-cinta"
+    },
+    {
+      "id": "1C31208",
+      "name": "Fronteira",
+      "region": "Alentejo",
+      "slug": "fronteira"
+    },
+    {
+      "id": "3003103",
+      "name": "Funchal",
+      "region": "Região Autónoma da Madeira",
+      "slug": "funchal"
+    },
+    {
+      "id": "1960504",
+      "name": "Fundão",
+      "region": "Centro",
+      "slug": "fundao"
+    },
+    {
+      "id": "1C31209",
+      "name": "Gavião",
+      "region": "Alentejo",
+      "slug": "gaviao"
+    },
+    {
+      "id": "1920606",
+      "name": "Góis",
+      "region": "Centro",
+      "slug": "gois"
+    },
+    {
+      "id": "1D31412",
+      "name": "Golegã",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "golega"
+    },
+    {
+      "id": "11A1304",
+      "name": "Gondomar",
+      "region": "Norte",
+      "slug": "gondomar"
+    },
+    {
+      "id": "1960906",
+      "name": "Gouveia",
+      "region": "Centro",
+      "slug": "gouveia"
+    },
+    {
+      "id": "1C11505",
+      "name": "Grândola",
+      "region": "Alentejo",
+      "slug": "grandola"
+    },
+    {
+      "id": "1960907",
+      "name": "Guarda",
+      "region": "Centro",
+      "slug": "guarda"
+    },
+    {
+      "id": "1190308",
+      "name": "Guimarães",
+      "region": "Norte",
+      "slug": "guimaraes"
+    },
+    {
+      "id": "2004701",
+      "name": "Horta",
+      "region": "Região Autónoma dos Açores",
+      "slug": "horta"
+    },
+    {
+      "id": "1950505",
+      "name": "Idanha-a-Nova",
+      "region": "Centro",
+      "slug": "idanha-a-nova"
+    },
+    {
+      "id": "1910110",
+      "name": "Ílhavo",
+      "region": "Centro",
+      "slug": "ilhavo"
+    },
+    {
+      "id": "1500806",
+      "name": "Lagoa",
+      "region": "Algarve",
+      "slug": "lagoa"
+    },
+    {
+      "id": "2004201",
+      "name": "Lagoa (R.A.A.)",
+      "region": "Região Autónoma dos Açores",
+      "slug": "lagoa-r-a-a"
+    },
+    {
+      "id": "2004801",
+      "name": "Lajes das Flores",
+      "region": "Região Autónoma dos Açores",
+      "slug": "lajes-das-flores"
+    },
+    {
+      "id": "2004601",
+      "name": "Lajes do Pico",
+      "region": "Região Autónoma dos Açores",
+      "slug": "lajes-do-pico"
+    },
+    {
+      "id": "11D1805",
+      "name": "Lamego",
+      "region": "Norte",
+      "slug": "lamego"
+    },
+    {
+      "id": "1931009",
+      "name": "Leiria",
+      "region": "Centro",
+      "slug": "leiria"
+    },
+    {
+      "id": "1A01106",
+      "name": "Lisboa",
+      "region": "Grande Lisboa",
+      "slug": "lisboa"
+    },
+    {
+      "id": "1500808",
+      "name": "Loulé",
+      "region": "Algarve",
+      "slug": "loule"
+    },
+    {
+      "id": "1A01107",
+      "name": "Loures",
+      "region": "Grande Lisboa",
+      "slug": "loures"
+    },
+    {
+      "id": "1D11108",
+      "name": "Lourinhã",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "lourinha"
+    },
+    {
+      "id": "1920607",
+      "name": "Lousã",
+      "region": "Centro",
+      "slug": "lousa"
+    },
+    {
+      "id": "11C1305",
+      "name": "Lousada",
+      "region": "Norte",
+      "slug": "lousada"
+    },
+    {
+      "id": "1D21413",
+      "name": "Mação",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "macao"
+    },
+    {
+      "id": "11E0405",
+      "name": "Macedo de Cavaleiros",
+      "region": "Norte",
+      "slug": "macedo-de-cavaleiros"
+    },
+    {
+      "id": "3003104",
+      "name": "Machico",
+      "region": "Região Autónoma da Madeira",
+      "slug": "machico"
+    },
+    {
+      "id": "2004602",
+      "name": "Madalena",
+      "region": "Região Autónoma dos Açores",
+      "slug": "madalena"
+    },
+    {
+      "id": "1A01109",
+      "name": "Mafra",
+      "region": "Grande Lisboa",
+      "slug": "mafra"
+    },
+    {
+      "id": "11A1306",
+      "name": "Maia",
+      "region": "Norte",
+      "slug": "maia"
+    },
+    {
+      "id": "1941806",
+      "name": "Mangualde",
+      "region": "Centro",
+      "slug": "mangualde"
+    },
+    {
+      "id": "1960908",
+      "name": "Manteigas",
+      "region": "Centro",
+      "slug": "manteigas"
+    },
+    {
+      "id": "11C1307",
+      "name": "Marco de Canaveses",
+      "region": "Norte",
+      "slug": "marco-de-canaveses"
+    },
+    {
+      "id": "1931010",
+      "name": "Marinha Grande",
+      "region": "Centro",
+      "slug": "marinha-grande"
+    },
+    {
+      "id": "1C31210",
+      "name": "Marvão",
+      "region": "Alentejo",
+      "slug": "marvao"
+    },
+    {
+      "id": "11A1308",
+      "name": "Matosinhos",
+      "region": "Norte",
+      "slug": "matosinhos"
+    },
+    {
+      "id": "1920111",
+      "name": "Mealhada",
+      "region": "Centro",
+      "slug": "mealhada"
+    },
+    {
+      "id": "1960909",
+      "name": "Mêda",
+      "region": "Centro",
+      "slug": "meda"
+    },
+    {
+      "id": "1111603",
+      "name": "Melgaço",
+      "region": "Norte",
+      "slug": "melgaco"
+    },
+    {
+      "id": "1C20209",
+      "name": "Mértola",
+      "region": "Alentejo",
+      "slug": "mertola"
+    },
+    {
+      "id": "11D1704",
+      "name": "Mesão Frio",
+      "region": "Norte",
+      "slug": "mesao-frio"
+    },
+    {
+      "id": "1920608",
+      "name": "Mira",
+      "region": "Centro",
+      "slug": "mira"
+    },
+    {
+      "id": "1920609",
+      "name": "Miranda do Corvo",
+      "region": "Centro",
+      "slug": "miranda-do-corvo"
+    },
+    {
+      "id": "11E0406",
+      "name": "Miranda do Douro",
+      "region": "Norte",
+      "slug": "miranda-do-douro"
+    },
+    {
+      "id": "11E0407",
+      "name": "Mirandela",
+      "region": "Norte",
+      "slug": "mirandela"
+    },
+    {
+      "id": "11E0408",
+      "name": "Mogadouro",
+      "region": "Norte",
+      "slug": "mogadouro"
+    },
+    {
+      "id": "11D1807",
+      "name": "Moimenta da Beira",
+      "region": "Norte",
+      "slug": "moimenta-da-beira"
+    },
+    {
+      "id": "1B01506",
+      "name": "Moita",
+      "region": "Península de Setúbal",
+      "slug": "moita"
+    },
+    {
+      "id": "1111604",
+      "name": "Monção",
+      "region": "Norte",
+      "slug": "moncao"
+    },
+    {
+      "id": "1500809",
+      "name": "Monchique",
+      "region": "Algarve",
+      "slug": "monchique"
+    },
+    {
+      "id": "1191705",
+      "name": "Mondim de Basto",
+      "region": "Norte",
+      "slug": "mondim-de-basto"
+    },
+    {
+      "id": "1C31211",
+      "name": "Monforte",
+      "region": "Alentejo",
+      "slug": "monforte"
+    },
+    {
+      "id": "11B1706",
+      "name": "Montalegre",
+      "region": "Norte",
+      "slug": "montalegre"
+    },
+    {
+      "id": "1C40706",
+      "name": "Montemor-o-Novo",
+      "region": "Alentejo",
+      "slug": "montemor-o-novo"
+    },
+    {
+      "id": "1920610",
+      "name": "Montemor-o-Velho",
+      "region": "Centro",
+      "slug": "montemor-o-velho"
+    },
+    {
+      "id": "1B01507",
+      "name": "Montijo",
+      "region": "Península de Setúbal",
+      "slug": "montijo"
+    },
+    {
+      "id": "1C40707",
+      "name": "Mora",
+      "region": "Alentejo",
+      "slug": "mora"
+    },
+    {
+      "id": "1921808",
+      "name": "Mortágua",
+      "region": "Centro",
+      "slug": "mortagua"
+    },
+    {
+      "id": "1C20210",
+      "name": "Moura",
+      "region": "Alentejo",
+      "slug": "moura"
+    },
+    {
+      "id": "1C40708",
+      "name": "Mourão",
+      "region": "Alentejo",
+      "slug": "mourao"
+    },
+    {
+      "id": "11D1707",
+      "name": "Murça",
+      "region": "Norte",
+      "slug": "murca"
+    },
+    {
+      "id": "1910112",
+      "name": "Murtosa",
+      "region": "Centro",
+      "slug": "murtosa"
+    },
+    {
+      "id": "1D11011",
+      "name": "Nazaré",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "nazare"
+    },
+    {
+      "id": "1941809",
+      "name": "Nelas",
+      "region": "Centro",
+      "slug": "nelas"
+    },
+    {
+      "id": "1C31212",
+      "name": "Nisa",
+      "region": "Alentejo",
+      "slug": "nisa"
+    },
+    {
+      "id": "2004202",
+      "name": "Nordeste",
+      "region": "Região Autónoma dos Açores",
+      "slug": "nordeste"
+    },
+    {
+      "id": "1D11012",
+      "name": "Óbidos",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "obidos"
+    },
+    {
+      "id": "1C10211",
+      "name": "Odemira",
+      "region": "Alentejo",
+      "slug": "odemira"
+    },
+    {
+      "id": "1A01116",
+      "name": "Odivelas",
+      "region": "Grande Lisboa",
+      "slug": "odivelas"
+    },
+    {
+      "id": "1A01110",
+      "name": "Oeiras",
+      "region": "Grande Lisboa",
+      "slug": "oeiras"
+    },
+    {
+      "id": "1950506",
+      "name": "Oleiros",
+      "region": "Centro",
+      "slug": "oleiros"
+    },
+    {
+      "id": "1500810",
+      "name": "Olhão",
+      "region": "Algarve",
+      "slug": "olhao"
+    },
+    {
+      "id": "11A0113",
+      "name": "Oliveira de Azeméis",
+      "region": "Norte",
+      "slug": "oliveira-de-azemeis"
+    },
+    {
+      "id": "1941810",
+      "name": "Oliveira de Frades",
+      "region": "Centro",
+      "slug": "oliveira-de-frades"
+    },
+    {
+      "id": "1910114",
+      "name": "Oliveira do Bairro",
+      "region": "Centro",
+      "slug": "oliveira-do-bairro"
+    },
+    {
+      "id": "1920611",
+      "name": "Oliveira do Hospital",
+      "region": "Centro",
+      "slug": "oliveira-do-hospital"
+    },
+    {
+      "id": "1D21421",
+      "name": "Ourém",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "ourem"
+    },
+    {
+      "id": "1C20212",
+      "name": "Ourique",
+      "region": "Alentejo",
+      "slug": "ourique"
+    },
+    {
+      "id": "1910115",
+      "name": "Ovar",
+      "region": "Centro",
+      "slug": "ovar"
+    },
+    {
+      "id": "11C1309",
+      "name": "Paços de Ferreira",
+      "region": "Norte",
+      "slug": "pacos-de-ferreira"
+    },
+    {
+      "id": "1B01508",
+      "name": "Palmela",
+      "region": "Península de Setúbal",
+      "slug": "palmela"
+    },
+    {
+      "id": "1920612",
+      "name": "Pampilhosa da Serra",
+      "region": "Centro",
+      "slug": "pampilhosa-da-serra"
+    },
+    {
+      "id": "11A1310",
+      "name": "Paredes",
+      "region": "Norte",
+      "slug": "paredes"
+    },
+    {
+      "id": "1111605",
+      "name": "Paredes de Coura",
+      "region": "Norte",
+      "slug": "paredes-de-coura"
+    },
+    {
+      "id": "1931013",
+      "name": "Pedrógão Grande",
+      "region": "Centro",
+      "slug": "pedrogao-grande"
+    },
+    {
+      "id": "1920613",
+      "name": "Penacova",
+      "region": "Centro",
+      "slug": "penacova"
+    },
+    {
+      "id": "11C1311",
+      "name": "Penafiel",
+      "region": "Norte",
+      "slug": "penafiel"
+    },
+    {
+      "id": "1941811",
+      "name": "Penalva do Castelo",
+      "region": "Centro",
+      "slug": "penalva-do-castelo"
+    },
+    {
+      "id": "1950507",
+      "name": "Penamacor",
+      "region": "Centro",
+      "slug": "penamacor"
+    },
+    {
+      "id": "11D1812",
+      "name": "Penedono",
+      "region": "Norte",
+      "slug": "penedono"
+    },
+    {
+      "id": "1920614",
+      "name": "Penela",
+      "region": "Centro",
+      "slug": "penela"
+    },
+    {
+      "id": "1D11014",
+      "name": "Peniche",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "peniche"
+    },
+    {
+      "id": "11D1708",
+      "name": "Peso da Régua",
+      "region": "Norte",
+      "slug": "peso-da-regua"
+    },
+    {
+      "id": "1960910",
+      "name": "Pinhel",
+      "region": "Centro",
+      "slug": "pinhel"
+    },
+    {
+      "id": "1931015",
+      "name": "Pombal",
+      "region": "Centro",
+      "slug": "pombal"
+    },
+    {
+      "id": "2004203",
+      "name": "Ponta Delgada",
+      "region": "Região Autónoma dos Açores",
+      "slug": "ponta-delgada"
+    },
+    {
+      "id": "3003105",
+      "name": "Ponta do Sol",
+      "region": "Região Autónoma da Madeira",
+      "slug": "ponta-do-sol"
+    },
+    {
+      "id": "1111606",
+      "name": "Ponte da Barca",
+      "region": "Norte",
+      "slug": "ponte-da-barca"
+    },
+    {
+      "id": "1111607",
+      "name": "Ponte de Lima",
+      "region": "Norte",
+      "slug": "ponte-de-lima"
+    },
+    {
+      "id": "1C31213",
+      "name": "Ponte de Sor",
+      "region": "Alentejo",
+      "slug": "ponte-de-sor"
+    },
+    {
+      "id": "1C31214",
+      "name": "Portalegre",
+      "region": "Alentejo",
+      "slug": "portalegre"
+    },
+    {
+      "id": "1C40709",
+      "name": "Portel",
+      "region": "Alentejo",
+      "slug": "portel"
+    },
+    {
+      "id": "11A1312",
+      "name": "Porto",
+      "region": "Norte",
+      "slug": "porto"
+    },
+    {
+      "id": "1931016",
+      "name": "Porto de Mós",
+      "region": "Centro",
+      "slug": "porto-de-mos"
+    },
+    {
+      "id": "3003106",
+      "name": "Porto Moniz",
+      "region": "Região Autónoma da Madeira",
+      "slug": "porto-moniz"
+    },
+    {
+      "id": "3003201",
+      "name": "Porto Santo",
+      "region": "Região Autónoma da Madeira",
+      "slug": "porto-santo"
+    },
+    {
+      "id": "1190309",
+      "name": "Póvoa de Lanhoso",
+      "region": "Norte",
+      "slug": "povoa-de-lanhoso"
+    },
+    {
+      "id": "11A1313",
+      "name": "Póvoa de Varzim",
+      "region": "Norte",
+      "slug": "povoa-de-varzim"
+    },
+    {
+      "id": "2004204",
+      "name": "Povoação",
+      "region": "Região Autónoma dos Açores",
+      "slug": "povoacao"
+    },
+    {
+      "id": "1950508",
+      "name": "Proença-a-Nova",
+      "region": "Centro",
+      "slug": "proenca-a-nova"
+    },
+    {
+      "id": "1C40710",
+      "name": "Redondo",
+      "region": "Alentejo",
+      "slug": "redondo"
+    },
+    {
+      "id": "1C40711",
+      "name": "Reguengos de Monsaraz",
+      "region": "Alentejo",
+      "slug": "reguengos-de-monsaraz"
+    },
+    {
+      "id": "11C1813",
+      "name": "Resende",
+      "region": "Norte",
+      "slug": "resende"
+    },
+    {
+      "id": "3003107",
+      "name": "Ribeira Brava",
+      "region": "Região Autónoma da Madeira",
+      "slug": "ribeira-brava"
+    },
+    {
+      "id": "11B1709",
+      "name": "Ribeira de Pena",
+      "region": "Norte",
+      "slug": "ribeira-de-pena"
+    },
+    {
+      "id": "2004205",
+      "name": "Ribeira Grande",
+      "region": "Região Autónoma dos Açores",
+      "slug": "ribeira-grande"
+    },
+    {
+      "id": "1D31414",
+      "name": "Rio Maior",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "rio-maior"
+    },
+    {
+      "id": "11D1710",
+      "name": "Sabrosa",
+      "region": "Norte",
+      "slug": "sabrosa"
+    },
+    {
+      "id": "1960911",
+      "name": "Sabugal",
+      "region": "Centro",
+      "slug": "sabugal"
+    },
+    {
+      "id": "1D31415",
+      "name": "Salvaterra de Magos",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "salvaterra-de-magos"
+    },
+    {
+      "id": "1941814",
+      "name": "Santa Comba Dão",
+      "region": "Centro",
+      "slug": "santa-comba-dao"
+    },
+    {
+      "id": "3003108",
+      "name": "Santa Cruz",
+      "region": "Região Autónoma da Madeira",
+      "slug": "santa-cruz"
+    },
+    {
+      "id": "2004401",
+      "name": "Santa Cruz da Graciosa",
+      "region": "Região Autónoma dos Açores",
+      "slug": "santa-cruz-da-graciosa"
+    },
+    {
+      "id": "2004802",
+      "name": "Santa Cruz das Flores",
+      "region": "Região Autónoma dos Açores",
+      "slug": "santa-cruz-das-flores"
+    },
+    {
+      "id": "11A0109",
+      "name": "Santa Maria da Feira",
+      "region": "Norte",
+      "slug": "santa-maria-da-feira"
+    },
+    {
+      "id": "11D1711",
+      "name": "Santa Marta de Penaguião",
+      "region": "Norte",
+      "slug": "santa-marta-de-penaguiao"
+    },
+    {
+      "id": "3003109",
+      "name": "Santana",
+      "region": "Região Autónoma da Madeira",
+      "slug": "santana"
+    },
+    {
+      "id": "1D31416",
+      "name": "Santarém",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "santarem"
+    },
+    {
+      "id": "1C11509",
+      "name": "Santiago do Cacém",
+      "region": "Alentejo",
+      "slug": "santiago-do-cacem"
+    },
+    {
+      "id": "11A1314",
+      "name": "Santo Tirso",
+      "region": "Norte",
+      "slug": "santo-tirso"
+    },
+    {
+      "id": "1500812",
+      "name": "São Brás de Alportel",
+      "region": "Algarve",
+      "slug": "sao-bras-de-alportel"
+    },
+    {
+      "id": "11A0116",
+      "name": "São João da Madeira",
+      "region": "Norte",
+      "slug": "sao-joao-da-madeira"
+    },
+    {
+      "id": "11D1815",
+      "name": "São João da Pesqueira",
+      "region": "Norte",
+      "slug": "sao-joao-da-pesqueira"
+    },
+    {
+      "id": "1941816",
+      "name": "São Pedro do Sul",
+      "region": "Centro",
+      "slug": "sao-pedro-do-sul"
+    },
+    {
+      "id": "2004603",
+      "name": "São Roque do Pico",
+      "region": "Região Autónoma dos Açores",
+      "slug": "sao-roque-do-pico"
+    },
+    {
+      "id": "3003110",
+      "name": "São Vicente",
+      "region": "Região Autónoma da Madeira",
+      "slug": "sao-vicente"
+    },
+    {
+      "id": "1D21417",
+      "name": "Sardoal",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "sardoal"
+    },
+    {
+      "id": "1941817",
+      "name": "Sátão",
+      "region": "Centro",
+      "slug": "satao"
+    },
+    {
+      "id": "1960912",
+      "name": "Seia",
+      "region": "Centro",
+      "slug": "seia"
+    },
+    {
+      "id": "1B01510",
+      "name": "Seixal",
+      "region": "Península de Setúbal",
+      "slug": "seixal"
+    },
+    {
+      "id": "11D1818",
+      "name": "Sernancelhe",
+      "region": "Norte",
+      "slug": "sernancelhe"
+    },
+    {
+      "id": "1C20213",
+      "name": "Serpa",
+      "region": "Alentejo",
+      "slug": "serpa"
+    },
+    {
+      "id": "1950509",
+      "name": "Sertã",
+      "region": "Centro",
+      "slug": "serta"
+    },
+    {
+      "id": "1B01511",
+      "name": "Sesimbra",
+      "region": "Península de Setúbal",
+      "slug": "sesimbra"
+    },
+    {
+      "id": "1B01512",
+      "name": "Setúbal",
+      "region": "Península de Setúbal",
+      "slug": "setubal"
+    },
+    {
+      "id": "1910117",
+      "name": "Sever do Vouga",
+      "region": "Centro",
+      "slug": "sever-do-vouga"
+    },
+    {
+      "id": "1500813",
+      "name": "Silves",
+      "region": "Algarve",
+      "slug": "silves"
+    },
+    {
+      "id": "1C11513",
+      "name": "Sines",
+      "region": "Alentejo",
+      "slug": "sines"
+    },
+    {
+      "id": "1A01111",
+      "name": "Sintra",
+      "region": "Grande Lisboa",
+      "slug": "sintra"
+    },
+    {
+      "id": "1D11112",
+      "name": "Sobral de Monte Agraço",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "sobral-de-monte-agraco"
+    },
+    {
+      "id": "1920615",
+      "name": "Soure",
+      "region": "Centro",
+      "slug": "soure"
+    },
+    {
+      "id": "1C31215",
+      "name": "Sousel",
+      "region": "Alentejo",
+      "slug": "sousel"
+    },
+    {
+      "id": "1920616",
+      "name": "Tábua",
+      "region": "Centro",
+      "slug": "tabua"
+    },
+    {
+      "id": "11D1819",
+      "name": "Tabuaço",
+      "region": "Norte",
+      "slug": "tabuaco"
+    },
+    {
+      "id": "11D1820",
+      "name": "Tarouca",
+      "region": "Norte",
+      "slug": "tarouca"
+    },
+    {
+      "id": "1500814",
+      "name": "Tavira",
+      "region": "Algarve",
+      "slug": "tavira"
+    },
+    {
+      "id": "1120310",
+      "name": "Terras de Bouro",
+      "region": "Norte",
+      "slug": "terras-de-bouro"
+    },
+    {
+      "id": "1D21418",
+      "name": "Tomar",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "tomar"
+    },
+    {
+      "id": "1941821",
+      "name": "Tondela",
+      "region": "Centro",
+      "slug": "tondela"
+    },
+    {
+      "id": "11D0409",
+      "name": "Torre de Moncorvo",
+      "region": "Norte",
+      "slug": "torre-de-moncorvo"
+    },
+    {
+      "id": "1D21419",
+      "name": "Torres Novas",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "torres-novas"
+    },
+    {
+      "id": "1D11113",
+      "name": "Torres Vedras",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "torres-vedras"
+    },
+    {
+      "id": "1960913",
+      "name": "Trancoso",
+      "region": "Centro",
+      "slug": "trancoso"
+    },
+    {
+      "id": "11A1318",
+      "name": "Trofa",
+      "region": "Norte",
+      "slug": "trofa"
+    },
+    {
+      "id": "1910118",
+      "name": "Vagos",
+      "region": "Centro",
+      "slug": "vagos"
+    },
+    {
+      "id": "11A0119",
+      "name": "Vale de Cambra",
+      "region": "Norte",
+      "slug": "vale-de-cambra"
+    },
+    {
+      "id": "1111608",
+      "name": "Valença",
+      "region": "Norte",
+      "slug": "valenca"
+    },
+    {
+      "id": "11A1315",
+      "name": "Valongo",
+      "region": "Norte",
+      "slug": "valongo"
+    },
+    {
+      "id": "11B1712",
+      "name": "Valpaços",
+      "region": "Norte",
+      "slug": "valpacos"
+    },
+    {
+      "id": "2004502",
+      "name": "Velas",
+      "region": "Região Autónoma dos Açores",
+      "slug": "velas"
+    },
+    {
+      "id": "1C40712",
+      "name": "Vendas Novas",
+      "region": "Alentejo",
+      "slug": "vendas-novas"
+    },
+    {
+      "id": "1C40713",
+      "name": "Viana do Alentejo",
+      "region": "Alentejo",
+      "slug": "viana-do-alentejo"
+    },
+    {
+      "id": "1111609",
+      "name": "Viana do Castelo",
+      "region": "Norte",
+      "slug": "viana-do-castelo"
+    },
+    {
+      "id": "1C20214",
+      "name": "Vidigueira",
+      "region": "Alentejo",
+      "slug": "vidigueira"
+    },
+    {
+      "id": "1190311",
+      "name": "Vieira do Minho",
+      "region": "Norte",
+      "slug": "vieira-do-minho"
+    },
+    {
+      "id": "2004302",
+      "name": "Vila da Praia da Vitória",
+      "region": "Região Autónoma dos Açores",
+      "slug": "vila-da-praia-da-vitoria"
+    },
+    {
+      "id": "1950510",
+      "name": "Vila de Rei",
+      "region": "Centro",
+      "slug": "vila-de-rei"
+    },
+    {
+      "id": "1500815",
+      "name": "Vila do Bispo",
+      "region": "Algarve",
+      "slug": "vila-do-bispo"
+    },
+    {
+      "id": "11A1316",
+      "name": "Vila do Conde",
+      "region": "Norte",
+      "slug": "vila-do-conde"
+    },
+    {
+      "id": "2004101",
+      "name": "Vila do Porto",
+      "region": "Região Autónoma dos Açores",
+      "slug": "vila-do-porto"
+    },
+    {
+      "id": "11E0410",
+      "name": "Vila Flor",
+      "region": "Norte",
+      "slug": "vila-flor"
+    },
+    {
+      "id": "1A01114",
+      "name": "Vila Franca de Xira",
+      "region": "Grande Lisboa",
+      "slug": "vila-franca-de-xira"
+    },
+    {
+      "id": "2004206",
+      "name": "Vila Franca do Campo",
+      "region": "Região Autónoma dos Açores",
+      "slug": "vila-franca-do-campo"
+    },
+    {
+      "id": "1D21420",
+      "name": "Vila Nova da Barquinha",
+      "region": "Oeste e Vale do Tejo",
+      "slug": "vila-nova-da-barquinha"
+    },
+    {
+      "id": "1111610",
+      "name": "Vila Nova de Cerveira",
+      "region": "Norte",
+      "slug": "vila-nova-de-cerveira"
+    },
+    {
+      "id": "1190312",
+      "name": "Vila Nova de Famalicão",
+      "region": "Norte",
+      "slug": "vila-nova-de-famalicao"
+    },
+    {
+      "id": "11D0914",
+      "name": "Vila Nova de Foz Côa",
+      "region": "Norte",
+      "slug": "vila-nova-de-foz-coa"
+    },
+    {
+      "id": "11A1317",
+      "name": "Vila Nova de Gaia",
+      "region": "Norte",
+      "slug": "vila-nova-de-gaia"
+    },
+    {
+      "id": "1941822",
+      "name": "Vila Nova de Paiva",
+      "region": "Centro",
+      "slug": "vila-nova-de-paiva"
+    },
+    {
+      "id": "1920617",
+      "name": "Vila Nova de Poiares",
+      "region": "Centro",
+      "slug": "vila-nova-de-poiares"
+    },
+    {
+      "id": "11B1713",
+      "name": "Vila Pouca de Aguiar",
+      "region": "Norte",
+      "slug": "vila-pouca-de-aguiar"
+    },
+    {
+      "id": "11D1714",
+      "name": "Vila Real",
+      "region": "Norte",
+      "slug": "vila-real"
+    },
+    {
+      "id": "1500816",
+      "name": "Vila Real de Santo António",
+      "region": "Algarve",
+      "slug": "vila-real-de-santo-antonio"
+    },
+    {
+      "id": "1950511",
+      "name": "Vila Velha de Ródão",
+      "region": "Centro",
+      "slug": "vila-velha-de-rodao"
+    },
+    {
+      "id": "1120313",
+      "name": "Vila Verde",
+      "region": "Norte",
+      "slug": "vila-verde"
+    },
+    {
+      "id": "1C40714",
+      "name": "Vila Viçosa",
+      "region": "Alentejo",
+      "slug": "vila-vicosa"
+    },
+    {
+      "id": "11E0411",
+      "name": "Vimioso",
+      "region": "Norte",
+      "slug": "vimioso"
+    },
+    {
+      "id": "11E0412",
+      "name": "Vinhais",
+      "region": "Norte",
+      "slug": "vinhais"
+    },
+    {
+      "id": "1941823",
+      "name": "Viseu",
+      "region": "Centro",
+      "slug": "viseu"
+    },
+    {
+      "id": "1190314",
+      "name": "Vizela",
+      "region": "Norte",
+      "slug": "vizela"
+    },
+    {
+      "id": "1941824",
+      "name": "Vouzela",
+      "region": "Centro",
+      "slug": "vouzela"
+    }
+  ]
+}

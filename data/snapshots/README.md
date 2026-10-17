@@ -1,0 +1,13 @@
+# Snapshots oficiais para a demo
+
+Recolha: **17-10-2026**. Cada linha contém o pedido exato à API pública do INE em `sourceUrl`. Estes ficheiros são dados previamente recolhidos, identificados na interface como snapshot; não são valores gerados pelo modelo nem são apresentados como atualização em tempo real.
+
+- `portimao-2026-10-17.json`: cinco indicadores municipais verificados: rendas de novos contratos `0014711` (2021–2025); população residente `0012918` (2025); ganho médio mensal `0012653` (2021 e 2024); hóspedes por habitante `0013312` (2022–2025); resíduos urbanos recolhidos por habitante `0012765` (2021–2024). A série completa de rendas consta da resposta literal em `fixtures/ine/rent-2021-2025-four-municipalities.json`; as três séries novas têm respostas literais e metadados em `fixtures/ine/`.
+- `rent-four-municipalities-2021-2025.json`: as **20 observações** de renda de novos contratos de Portimão, Faro, Lagos e Albufeira entre 2021 e 2025. Foram recolhidas num único pedido oficial em 17-10-2026, extração `2026-10-17T12:39:31.296+01:00`, última atualização INE `2026-09-29`. Cada linha remete para o URL exato desse pedido; a Batalha usa este ficheiro ao abrir.
+- `lagos-rent-2025.json`: renda mediana de novos contratos `0014711`, Lagos, 2025 (12,34 €/m²). A resposta literal está em `fixtures/ine/rent-2025-lagos.json`.
+- `faro-rent-2025.json`: renda mediana de novos contratos `0014711`, Faro, 2025 (9,67 €/m²). Obtida pelo botão de consulta pontual da Batalha; a observação normalizada, data de extração e URL exato ficaram guardados em `.data/ine-snapshots/` na recolha local.
+- `algarve-unemployment-2026-q2.json`: taxa de desemprego `0012136`, Algarve, oito trimestres de 2024T3 a 2026T2, num pedido oficial. O 2.º trimestre de 2025 (4,5%) e o de 2026 (4,2%) têm o sinal de qualidade §; a diferença homóloga é −0,3 p.p. Resposta literal em `fixtures/ine/unemployment-algarve-2024q3-2026q2.json`.
+
+Valores em falta não são preenchidos. O endpoint `/api/ask` prefere um snapshot apenas quando **todos** os territórios e períodos pedidos têm observações numéricas verificadas. Caso contrário, pode fazer um pedido em lote ao INE; numa falha, nunca apresenta um snapshot parcial como série completa. A resposta identifica `mode: "snapshot"` e `snapshotDate` quando usou dados guardados.
+
+Na Batalha de Cidades, o botão “Consultar INE” pede um único município, indicador e ano de cada vez. Cada valor recebido é normalizado, guardado de forma atómica em `.data/ine-snapshots/` e reutilizado em visitas seguintes. `INE_SNAPSHOT_DIR` permite apontar para um volume persistente num servidor; se a pasta não for gravável, o pedido apresenta erro em vez de afirmar que guardou o valor.

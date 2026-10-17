@@ -1,0 +1,45 @@
+.copy {
+  position: relative;
+  isolation: isolate;
+  min-height: 320px;
+  overflow: hidden;
+  padding: 30px 28px 52px !important;
+  border-radius: 14px;
+  color: var(--foto-texto);
+}
+.copy > :not(.photo) {
+  position: relative;
+  z-index: 1;
+}
+.copy > .photo {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+}
+.photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--foto-sombra) 78%, transparent), color-mix(in srgb, var(--foto-sombra) 34%, transparent));
+  pointer-events: none;
+}
+.copy :global(.eyebrow),
+.copy > p {
+  color: var(--foto-texto) !important;
+}
+.copy h1 {
+  letter-spacing: -.03em !important;
+}
+.copy :global(.city-secondary) {
+  background: color-mix(in srgb, var(--foto-texto) 94%, transparent);
+  color: var(--pinho);
+}
+@media (max-width: 620px) {
+  .copy {
+    min-height: 370px;
+    padding: 24px 20px 54px !important;
+  }
+  .copy h1 {
+    font-size: clamp(44px, 12vw, 66px);
+  }
+}

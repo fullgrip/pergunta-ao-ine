@@ -1,0 +1,22 @@
+{
+  "city": { "id": "1500807", "name": "Lagos", "slug": "lagos" },
+  "mode": "snapshot",
+  "collectedAt": "2026-10-17",
+  "notice": "Observação oficial da renda mediana de novos contratos em 2025, recolhida em 17-10-2026.",
+  "series": [
+    {
+      "theme": "Habitação",
+      "indicatorId": "0014711",
+      "indicatorName": "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026)",
+      "description": "2.º quartil (mediana) de novos contratos; não representa todas as rendas em vigor.",
+      "unit": "€/m²",
+      "territoryId": "1500807",
+      "territory": "Lagos",
+      "sourceUrl": "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+      "observations": [
+        { "period": "2025", "periodCode": "S7A2025", "value": 12.34, "displayValue": "12,34", "sourceUrl": "https://www.ine.pt/ine/json_indicador/pindica.jsp?op=2&varcd=0014711&Dim1=S7A2025&Dim2=1500807&Dim3=2&lang=PT" }
+      ]
+    }
+  ],
+  "warnings": ["Só foi recolhido o valor de 2025 para Lagos; não permite mostrar a sua evolução temporal."]
+}

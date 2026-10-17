@@ -1,0 +1,87 @@
+[ {
+  "IndicadorCod" : "0012136",
+  "IndicadorDsg" : "Taxa de desemprego (Série 2021 - %) por Local de residência (NUTS - 2024) e Sexo; Trimestral - INE, Inquérito ao emprego (Série - 2021)",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012136&lingua=PT",
+  "DataExtracao" : "2026-10-17T12:40:43.061+01:00",
+  "DataUltimoAtualizacao" : "2026-08-05",
+  "UltimoPref" : "2.º Trimestre de 2026",
+  "Dados" : {
+    "3.º Trimestre de 2024" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "sinal_conv" : "§",
+      "sinal_conv_desc" : "Desvio do padrão de qualidade/Coeficiente de variação elevado",
+      "ind_string" : "4,5 §",
+      "valor" : "4.5"
+    } ],
+    "4.º Trimestre de 2024" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "ind_string" : "5,6",
+      "valor" : "5.6"
+    } ],
+    "1.º Trimestre de 2025" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "ind_string" : "8,1",
+      "valor" : "8.1"
+    } ],
+    "2.º Trimestre de 2025" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "sinal_conv" : "§",
+      "sinal_conv_desc" : "Desvio do padrão de qualidade/Coeficiente de variação elevado",
+      "ind_string" : "4,5 §",
+      "valor" : "4.5"
+    } ],
+    "3.º Trimestre de 2025" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "sinal_conv" : "§",
+      "sinal_conv_desc" : "Desvio do padrão de qualidade/Coeficiente de variação elevado",
+      "ind_string" : "4,5 §",
+      "valor" : "4.5"
+    } ],
+    "4.º Trimestre de 2025" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "ind_string" : "5,3",
+      "valor" : "5.3"
+    } ],
+    "1.º Trimestre de 2026" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "ind_string" : "6,7",
+      "valor" : "6.7"
+    } ],
+    "2.º Trimestre de 2026" : [ {
+      "geocod" : "15",
+      "geodsg" : "Algarve",
+      "dim_3" : "T",
+      "dim_3_t" : "HM",
+      "sinal_conv" : "§",
+      "sinal_conv_desc" : "Desvio do padrão de qualidade/Coeficiente de variação elevado",
+      "ind_string" : "4,2 §",
+      "valor" : "4.2"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

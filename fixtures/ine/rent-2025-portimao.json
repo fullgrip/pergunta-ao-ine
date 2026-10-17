@@ -1,0 +1,23 @@
+[ {
+  "IndicadorCod" : "0014711",
+  "IndicadorDsg" : "Rendas de novos contratos de arrendamento de alojamentos familiares (Metodologia 2026 - €/ m²) por Localização geográfica (NUTS - 2024) e Quartis; Anual - INE, Estatísticas de Rendas da Habitação ao nível local",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0014711&lingua=PT",
+  "DataExtracao" : "2026-10-17T11:30:10.115+01:00",
+  "DataUltimoAtualizacao" : "2026-09-29",
+  "UltimoPref" : "2025",
+  "Dados" : {
+    "2025" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "dim_3" : "2",
+      "dim_3_t" : "2.º quartil",
+      "ind_string" : "11,36",
+      "valor" : "11.36"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]

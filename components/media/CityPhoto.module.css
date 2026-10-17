@@ -1,0 +1,37 @@
+.frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--pinho);
+}
+.image {
+  object-fit: cover;
+  object-position: center;
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--foto-sombra) 78%, transparent) 100%);
+  pointer-events: none;
+}
+.credit {
+  position: absolute;
+  z-index: 2;
+  right: 11px;
+  bottom: 9px;
+  max-width: calc(100% - 22px);
+  overflow: hidden;
+  color: var(--foto-texto);
+  text-overflow: clip;
+  white-space: normal;
+  font-size: 12px;
+  line-height: 1.35;
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--foto-sombra) 65%, transparent);
+}
+.credit:hover,.credit:focus-visible {
+  text-decoration: underline;
+}
+.compact .shade {
+  background: linear-gradient(180deg, transparent 20%, color-mix(in srgb, var(--foto-sombra) 82%, transparent) 100%);
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "cidade": "Portimão",
+    "slug": "portimao",
+    "autor": "Steven Fruitsmaak",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "commonsUrl": "https://commons.wikimedia.org/wiki/File:Praia_da_Rocha,_Portim%C3%A3o.jpg",
+    "alt": "Praia da Rocha e as falésias junto ao mar em Portimão",
+    "adaptacao": "Fotografia redimensionada e convertida para WebP"
+  },
+  {
+    "cidade": "Faro",
+    "slug": "faro",
+    "autor": "LuisNDamas",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "commonsUrl": "https://commons.wikimedia.org/wiki/File:Ria_formosa_faro.jpg",
+    "alt": "Panorama da Ria Formosa com a cidade de Faro ao fundo",
+    "adaptacao": "Fotografia redimensionada e convertida para WebP"
+  },
+  {
+    "cidade": "Lagos",
+    "slug": "lagos",
+    "autor": "Dicklyon",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "commonsUrl": "https://commons.wikimedia.org/wiki/File:Ponta_da_Piedade_pano.jpg",
+    "alt": "Panorama das falésias e do farol da Ponta da Piedade em Lagos",
+    "adaptacao": "Fotografia redimensionada e convertida para WebP"
+  },
+  {
+    "cidade": "Albufeira",
+    "slug": "albufeira",
+    "autor": "Matt Kieffer",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "commonsUrl": "https://commons.wikimedia.org/wiki/File:Praia_dos_Pescadores_-_Albufeira,_Portugal_(47143316062).jpg",
+    "alt": "Praia dos Pescadores e casario junto ao mar em Albufeira",
+    "adaptacao": "Fotografia redimensionada e convertida para WebP"
+  }
+]

@@ -1,0 +1,31 @@
+[ {
+  "IndicadorCod" : "0012653",
+  "IndicadorDsg" : "Ganho médio mensal (€) por Localização geográfica (NUTS - 2024) e Nível de educação; Anual - MTSSS/GEP, Quadros de pessoal",
+  "MetaInfUrl" : "https://www.ine.pt/bddXplorer/htdocs/minfo.jsp?var_cd=0012653&lingua=PT",
+  "DataExtracao" : "2026-10-17T12:43:51.646+01:00",
+  "DataUltimoAtualizacao" : "2026-03-27",
+  "UltimoPref" : "2024",
+  "Dados" : {
+    "2021" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 102,08",
+      "valor" : "1102.08"
+    } ],
+    "2024" : [ {
+      "geocod" : "1500811",
+      "geodsg" : "Portimão",
+      "dim_3" : "T",
+      "dim_3_t" : "Total",
+      "ind_string" : "1 294,27",
+      "valor" : "1294.27"
+    } ]
+  },
+  "Sucesso" : {
+    "Verdadeiro" : [ {
+      "Msg" : "OK"
+    } ]
+  }
+} ]
