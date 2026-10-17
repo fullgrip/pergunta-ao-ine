@@ -10,13 +10,14 @@ const OutputSchema = z.object({
   title: z.string().trim().max(130).optional(),
   body: z.string().trim().max(700).optional(),
 });
+// Cada tom tem uma voz própria e concreta. Os números vêm sempre do servidor; aqui só muda a forma de explicar.
 const TONE_INSTRUCTIONS: Record<ResponseTone, string> = {
-  direct: "Explica o resultado em linguagem simples e direta, sem introduções.",
-  journalist: "Escreve como jornalista de dados: lead claro e contexto, sem sensacionalismo.",
-  teacher: "Explica o conceito de modo acessível e distingue observação de interpretação.",
-  researcher: "Esclarece definição, unidade, período e comparabilidade com rigor e concisão.",
-  executive: "Resume o significado prático do resultado e apresenta hipóteses apenas como hipóteses.",
-  sarcastic: "Usa ironia leve sobre a forma de comunicar, nunca sobre pessoas ou grupos.",
+  direct: "Tom DIRETO: frases curtas e secas, sem adjetivos nem rodeios. Diz o que a medida mostra e o que o leitor pode tirar disso, mais nada.",
+  journalist: "Tom JORNALISTA: escreve como o primeiro parágrafo de uma notícia de jornal português. Abre com uma frase que prenda a atenção do leitor comum (quem procura casa, quem vive na cidade), depois dá o contexto da medida. Informativo, nunca sensacionalista.",
+  teacher: "Tom PROFESSOR: fala com um aluno curioso, por tu. Ensina o conceito com um exemplo do dia a dia (por exemplo, pôr os contratos em fila do mais barato ao mais caro e ver o do meio). Distingue o que os dados mostram do que não mostram.",
+  researcher: "Tom INVESTIGADOR: registo técnico e preciso. Define a medida, a unidade e a cobertura da série, e aponta os limites de comparabilidade. Sem opiniões.",
+  executive: "Tom EXECUTIVO: escreve para quem tem de decidir (orçamento, onde viver, onde investir). Uma frase sobre o que isto quer dizer na prática e uma ressalva. Qualquer hipótese é apresentada como hipótese.",
+  sarcastic: "Tom SARCÁSTICO: ironia seca e bem-humorada, à portuguesa, sobre a situação (procurar casa, ler estatísticas), nunca sobre pessoas ou grupos. A piada não pode mudar o que os dados dizem.",
 };
 
 function pt(value: number, maxDigits = 2) { return value.toLocaleString("pt-PT", { maximumFractionDigits: maxDigits }); }
@@ -164,11 +165,18 @@ export async function generateExplanation(evidenceId: string, evidence: Readonly
       : evidence.indicator.id === "0012918"
         ? "O indicador conta a população residente total, somando ambos os sexos e todos os grupos etários."
         : `O indicador mede ${evidence.indicator.dimensionDescription}.`;
-  const basePrompt = `Produz JSON com {"headline":string,"summary":string,"caveat":string} em português de Portugal. A conclusão factual é fixa: ${JSON.stringify(headline)}. Copia-a em headline sem alterar o sentido. ${TONE_INSTRUCTIONS[tone]} Escreve em summary uma ou duas frases curtas de explicação QUALITATIVA: reformula apenas esta ideia já comprovada, sem acrescentar factos: ${JSON.stringify(scopeHint)}. A frase com números já é composta pelo servidor. Se existir, copia a limitação em caveat: ${JSON.stringify(caveat)}. Usa exclusivamente a evidência JSON verificada. A medida é ${evidence.indicator.shortName}; nunca a chames média se for mediana. Não inventes valores, fontes, períodos, territórios, causas, consequências nem avaliações como "significativo". Não escrevas algarismos nem números por extenso em summary. Evita introduções como "Com base nos dados fornecidos" ou "De acordo com a análise realizada". Se a conclusão indicar dados insuficientes, explica apenas o que falta; não afirmes uma tendência. Não repitas headline em summary. Evidência validada: ${JSON.stringify(evidence)}`;
+  const basePrompt = `${TONE_INSTRUCTIONS[tone]}
+Produz JSON com {"headline":string,"summary":string,"caveat":string} em português de Portugal (nunca do Brasil).
+- headline: copia exatamente esta conclusão, já verificada: ${JSON.stringify(headline)}
+- summary: duas ou três frases, escritas com a voz pedida acima, que expliquem ao leitor o que esta conclusão quer dizer. Podes usar: a direção da conclusão, esta definição da medida (${JSON.stringify(scopeHint)}) e o que os dados permitem ou não permitem concluir. O texto tem de soar claramente diferente de outros tons. A frase com os números já é escrita pelo servidor: em summary não escrevas algarismos nem números por extenso, e não repitas a headline.
+- caveat: ${caveat ? `copia esta limitação: ${JSON.stringify(caveat)}` : "deixa vazio"}
+Regras: a medida é ${evidence.indicator.shortName}; nunca a chames média. Não inventes valores, fontes, períodos, territórios, causas nem consequências. Não uses estas palavras: reflete, causou, provocou, devido, impulsionado, explica, efeito, impacto, dinâmica, significativo, pressão, recorde, disparou, dobrou, duplicou, metade, sempre, todos, todas. Não comeces com "Com base nos dados" nem "De acordo com a análise".
+Evidência verificada (só para contexto): ${JSON.stringify(evidence)}
+Lembra-te: ${TONE_INSTRUCTIONS[tone]}`;
   let forceOllama = false;
   for (let attempt = 0; attempt < 2; attempt++) {
     let reply;
-    try { reply = await chatWithMetadata(`${basePrompt}${attempt ? "\nA resposta anterior falhou a validação factual. Devolve apenas JSON válido e explicação sem números." : ""}`, schema, { forceOllama }); }
+    try { reply = await chatWithMetadata(`${basePrompt}${attempt ? "\nA resposta anterior falhou a validação factual. Devolve apenas JSON válido e explicação sem números." : ""}`, schema, { forceOllama, temperature: 0.7 }); }
     catch { break; }
     try {
       const generated = OutputSchema.parse(JSON.parse(reply.content));
