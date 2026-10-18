@@ -210,3 +210,11 @@ body{background:radial-gradient(900px 520px at 12% -8%, color-mix(in srgb, var(-
 /* Aviso legal. */
 .legal-item h2{font-size:22px}
 .legal-en{color:var(--tinta-2);font-size:14px}
+
+/* "E a seguir?" e partilha (18/10). */
+.answer-followups{max-width:990px;margin:14px auto 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.answer-followups>span{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--tinta-2);margin-right:4px}
+.answer-followups button{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:99px;border:1px solid var(--linha);background:var(--superficie);color:var(--tinta);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .15s,transform .15s}
+.answer-followups button:hover{border-color:var(--pinho);transform:translateY(-1px)}
+.answer-followups .answer-share{margin-left:auto;color:var(--pinho);font-weight:700}
+@media(max-width:520px){.answer-followups .answer-share{margin-left:0}}

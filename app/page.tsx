@@ -1,11 +1,12 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, BarChart3, ExternalLink, LoaderCircle, MapPin, Search, ShieldCheck, Sparkles, BookOpen, Home as HomeIcon, Euro, Users, Sun, Briefcase, Trash2, TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowUpRight, BarChart3, Check, ExternalLink, Link2, LoaderCircle, MapPin, Search, ShieldCheck, Sparkles, BookOpen, Home as HomeIcon, Euro, Users, Sun, Briefcase, Trash2, TrendingUp, TrendingDown } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import AnswerHero, { type AnswerStage } from "@/components/answer/AnswerHero";
 import EverydayView from "@/components/answer/EverydayView";
 import { everydayView } from "@/lib/everyday";
+import { followUpQuestions } from "@/lib/followups";
 import { englishError, indicatorName, indicatorUnit, isLang, periodLabel, type Lang } from "@/lib/i18n";
 import ExplanationPanel, { explanationProviderLabel, type Explanation, type ResponseTone } from "@/components/explain/ExplanationPanel";
 import HomeCityStrip from "@/components/home/HomeCityStrip";
@@ -58,9 +59,22 @@ export default function Home() {
   // Língua da página: ?lang=en ou a última escolha; o servidor responde na mesma língua.
   const [lang, setLangState] = useState<Lang>("pt");
   const L = (pt: string, en: string) => lang === "en" ? en : pt;
-  useEffect(() => { let initial: Lang = "pt"; try { const fromUrl = new URLSearchParams(window.location.search).get("lang"); const stored = localStorage.getItem("pergunta-ao-ine:lang"); initial = isLang(fromUrl) ? fromUrl : isLang(stored) ? stored : "pt"; } catch { /* fica em português */ } setLangState(initial); }, []);
+  // Um link partilhado traz ?q=pergunta&lang=en&m=município: a página abre já com a resposta.
+  const [sharedQuestion, setSharedQuestion] = useState<{ q: string; m?: string } | null>(null);
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    let initial: Lang = "pt";
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fromUrl = params.get("lang"); const stored = localStorage.getItem("pergunta-ao-ine:lang");
+      initial = isLang(fromUrl) ? fromUrl : isLang(stored) ? stored : "pt";
+      const q = params.get("q")?.trim();
+      if (q && q.length >= 3) setSharedQuestion({ q: q.slice(0, 500), m: params.get("m") ?? undefined });
+    } catch { /* fica em português, sem pergunta */ }
+    setLangState(initial);
+  }, []);
   useEffect(() => { document.documentElement.lang = lang === "en" ? "en-GB" : "pt-PT"; }, [lang]);
-  function setLang(next: Lang) { setLangState(next); try { localStorage.setItem("pergunta-ao-ine:lang", next); } catch { /* sem armazenamento */ } setAnswer(null); setError(""); setGuidance(false); setQuestion(""); }
+  function setLang(next: Lang) { setLangState(next); try { localStorage.setItem("pergunta-ao-ine:lang", next); } catch { /* sem armazenamento */ } setAnswer(null); setError(""); setGuidance(false); setQuestion(""); try { window.history.replaceState(null, "", window.location.pathname + (next === "en" ? "?lang=en" : "")); } catch { /* sem history */ } }
   const guidanceRef = useRef<HTMLElement | null>(null);
   const resultRef = useRef<HTMLElement | null>(null);
   const proofRef = useRef<HTMLDetailsElement | null>(null);
@@ -70,11 +84,12 @@ export default function Home() {
   useEffect(() => { if (busy || answer) resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [busy, answer]);
   const onActiveProviderChange = useCallback((provider?: string, model?: string) => setActiveGeneration((current) => current.provider === provider && current.model === model ? current : { provider, model }), []);
   const onExplanationChange = useCallback((explanation: Explanation) => setHeroExplanation(explanation), []);
-  async function ask(value = question) {
+  async function ask(value = question, municipalityOverride?: string) {
     if (!value.trim() || busy) return;
+    const askedMunicipality = municipalityOverride ?? municipalityId;
     setQuestion(value); setBusy(true); setStage("interpret"); setDataSource(undefined); setError(""); setGuidance(false); setAnswer(null); setHeroExplanation(null); setActiveGeneration({});
     try {
-      const response = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json", accept: "text/event-stream" }, body: JSON.stringify({ question: value, lang, ...(municipalityId ? { municipalityId } : {}) }) });
+      const response = await fetch("/api/ask", { method: "POST", headers: { "content-type": "application/json", accept: "text/event-stream" }, body: JSON.stringify({ question: value, lang, ...(askedMunicipality ? { municipalityId: askedMunicipality } : {}) }) });
       if (!response.headers.get("content-type")?.includes("text/event-stream")) {
         const body = await response.json();
         if (body.guidance === "city-choice") { setGuidance(true); return; }
@@ -98,7 +113,7 @@ export default function Home() {
             const body = JSON.parse(payload);
             if (event === "stage") { setStage(body.stage); setDataSource(body.source); }
             if (event === "error") throw new Error(body.error ?? "Não foi possível responder.");
-            if (event === "result") { setAnswer(body); setHeroExplanation(body.explanation ?? null); setActiveGeneration({ provider: body.explanation?.provider ?? body.provider, model: body.explanation?.model ?? body.model }); if (body.territoryIds?.length === 1 && getMunicipalityById(body.territoryIds[0])) selectMunicipality(body.territoryIds[0]); completed = true; }
+            if (event === "result") { setAnswer(body); setCopied(false); try { const url = new URL(window.location.href); const linkMunicipality = body.territoryIds?.length === 1 && getMunicipalityById(body.territoryIds[0]) ? body.territoryIds[0] : askedMunicipality; url.search = new URLSearchParams({ q: value, lang, ...(linkMunicipality ? { m: linkMunicipality } : {}) }).toString(); window.history.replaceState(null, "", url); } catch { /* o endereço fica como estava */ } setHeroExplanation(body.explanation ?? null); setActiveGeneration({ provider: body.explanation?.provider ?? body.provider, model: body.explanation?.model ?? body.model }); if (body.territoryIds?.length === 1 && getMunicipalityById(body.territoryIds[0])) selectMunicipality(body.territoryIds[0]); completed = true; }
           }
           boundary = buffer.indexOf("\n\n");
         }
@@ -108,6 +123,21 @@ export default function Home() {
     }
     catch (e) { const message = e instanceof Error ? e.message : "Erro inesperado."; setError(lang === "en" ? englishError(message) : message); }
     finally { setBusy(false); }
+  }
+  // Abre a pergunta do link uma vez, já com a língua certa.
+  useEffect(() => {
+    if (!sharedQuestion) return;
+    const { q, m } = sharedQuestion;
+    setSharedQuestion(null);
+    if (m && getMunicipalityById(m)) selectMunicipality(m);
+    void ask(q, m && getMunicipalityById(m) ? m : undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedQuestion, lang]);
+  async function copyLink() {
+    const url = window.location.href;
+    try { await navigator.clipboard.writeText(url); }
+    catch { const field = document.createElement("textarea"); field.value = url; document.body.appendChild(field); field.select(); try { document.execCommand("copy"); } finally { field.remove(); } }
+    setCopied(true); window.setTimeout(() => setCopied(false), 2500);
   }
   useEffect(() => { fetch("/api/health?scope=ollama").then((r) => r.json()).then(setHealth).catch(() => undefined); }, []);
   const chartData = answer ? [...new Map(answer.observations.map((row) => [row.period, row.period])).keys()].map((periodo) => ({ periodo, ...Object.fromEntries(answer.observations.filter((row) => row.period === periodo).map((row) => [row.territory, row.value])) })) : [];
@@ -134,6 +164,7 @@ export default function Home() {
       <div className="answer-kpis">{answer.summaries.filter((item) => item.last?.value != null).map((item) => { const change = answer.indicator.id === "0012136" ? answer.homologousComparison?.percentagePointChange ?? null : item.percent ?? null; const unitChange = answer.indicator.id === "0012136" ? " p.p." : " %"; return <article key={item.territory} className="answer-kpi"><span className="answer-kpi-place"><MapPin size={13}/>{item.territory}</span><strong>{fmt(item.last!.value, indicatorUnit(answer.indicator.id, answer.indicator.unit, lang), lang)}</strong><span className="answer-kpi-period">{indicatorName(answer.indicator.id, answer.indicator.shortName, lang)} · {periodLabel(item.last!.period, lang)}</span>{change != null && item.first?.period !== item.last?.period && <span className={change >= 0 ? "answer-kpi-change up" : "answer-kpi-change down"}>{change >= 0 ? <TrendingUp size={14}/> : <TrendingDown size={14}/>}{change >= 0 ? "+" : ""}{change.toLocaleString(lang === "en" ? "en-GB" : "pt-PT", { maximumFractionDigits: 1 })}{unitChange} {answer.indicator.id === "0012136" ? L("face ao ano anterior", "vs a year earlier") : `${L("desde", "since")} ${periodLabel(item.first?.period ?? "", lang)}`}</span>}</article>; })}</div>
       <EverydayView view={everydayView(answer, lang)} lang={lang}/>
       {answer.territoryIds?.length === 1 && getMunicipalityById(answer.territoryIds[0]) && <nav className="answer-next" aria-label={L("Continuar", "Continue")}><Link href={`/cidade/${municipalitySlug(getMunicipalityById(answer.territoryIds[0])!)}`}><MapPin size={14}/> {L("Ver tudo sobre", "Everything about")} {getMunicipalityById(answer.territoryIds[0])!.name} <ArrowUpRight size={14}/></Link><Link href="/comparar"><BarChart3 size={14}/> {L("Comparar com outra cidade", "Compare with another town")} <ArrowUpRight size={14}/></Link></nav>}
+      <div className="answer-followups" aria-label={L("Perguntas seguintes", "Next questions")}><span>{L("E A SEGUIR?", "WHAT NEXT?")}</span>{followUpQuestions({ indicatorId: answer.indicator.id, territories: answer.summaries.map((item) => item.territory) }, lang).map((item) => <button key={item} type="button" onClick={() => void ask(item)}>{item} <ArrowUpRight size={13}/></button>)}<button type="button" className="answer-share" onClick={() => void copyLink()}>{copied ? <><Check size={14}/> {L("Link copiado", "Link copied")}</> : <><Link2 size={14}/> {L("Copiar link desta resposta", "Copy link to this answer")}</>}</button></div>
       <details className="answer-tones" open><summary>🎭 {L("Explica-me de outra maneira", "Explain it another way")} <span aria-hidden>🤙 🎯 🧑‍🏫 😏 📰 💼 🔬</span></summary>
       <ExplanationPanel key={answer.analysisId ?? answer.question} lang={lang} analysisId={answer.analysisId} initialExplanation={directExplanation} onActiveProviderChange={onActiveProviderChange} onToneChange={setSelectedTone} onExplanationChange={onExplanationChange} onShowEvidence={() => { if (proofRef.current) { proofRef.current.open = true; proofRef.current.scrollIntoView({ behavior: "smooth", block: "start" }); } }}/>
       </details>
