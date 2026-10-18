@@ -64,6 +64,12 @@ As respostas literais oficiais estão em [fixtures/ine](./fixtures/ine), os snap
 
 `npm run lint`, `npm test` e `npm run build` validam tipos, testes e build. A cache de evidências do `analysisId` dura 30 minutos e reside na memória de **um processo Node**. Para alojamento com várias instâncias ou funções isoladas, usa uma cache partilhada antes de prometer mudança de tom sem perder a análise. Os valores recolhidos pela Batalha são guardados em `.data/ine-snapshots/` por omissão; em alojamento, aponta `INE_SNAPSHOT_DIR` para um volume persistente. As consultas livres e o Raio-X também usam uma cache temporária em memória para evitar pedidos repetidos durante a demo.
 
+## Aviso legal
+
+**Informação, não aconselhamento.** O Pergunta ao INE é um projeto independente, não afiliado ao INE. Os dados são do INE e podem ser revistos; as explicações são escritas por IA (Gemma 4) e podem conter erros; contas como "uma casa de 80 m²" são ilustrativas; nada aqui é aconselhamento financeiro, imobiliário, jurídico ou de segurança. O software é distribuído "tal como está", sem garantias (licença MIT). Texto completo, em português e inglês: [DISCLAIMER.md](./DISCLAIMER.md), também na aplicação em `/aviso-legal`.
+
+*Disclaimer (EN): independent project, not affiliated with Statistics Portugal (INE); AI-written explanations may contain errors; illustrative figures are not real prices; not professional advice; software provided "as is" under the MIT licence. See [DISCLAIMER.md](./DISCLAIMER.md).*
+
 ## Licenças e atribuição
 
 O **código** tem [licença MIT](./LICENSE) e autoria FullGrip.ai. Os **dados e metadados** são do INE e mantêm as respetivas condições de reutilização e atribuição. O **modelo Gemma 4** conserva os seus próprios termos; a licença MIT do código não os substitui. As explicações são identificadas como geradas por IA, e nunca atribuídas ao INE.

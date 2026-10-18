@@ -67,7 +67,7 @@ describe("POST /api/ask sem acesso ao INE", () => {
     parseMock.mockResolvedValue({ intent: "comparison", indicatorId: "0012918", territoryIds: ["1500811", "1500805"], startYear: null, endYear: null });
     const response = await POST(request("Compara a população de Portimão com Faro"));
     expect(response.status).toBe(502);
-    expect((await response.json()).error).toMatch(/Não foi possível obter valores/);
+    expect((await response.json()).error).toMatch(/O INE está indisponível neste momento/);
   });
   it("responde ao trimestre verificado sem consultar o INE nem outros trimestres", async () => {
     parseMock.mockResolvedValue({ intent: "trend", indicatorId: "0012136", territoryIds: ["15"], startYear: 2026, endYear: 2026, quarter: 2 });

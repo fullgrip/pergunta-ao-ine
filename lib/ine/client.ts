@@ -52,6 +52,8 @@ export async function fetchObservation(indicator: Indicator, territory: Territor
       try { response = await ineFetch(`${base}/pindica.jsp?${params}`); }
       catch (error) { unavailableUntil = Date.now() + 10_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
       if (response.status === 429 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 5000); continue; }
+      // 502/503/504: o INE às vezes fica sobrecarregado durante segundos; vale a pena tentar outra vez.
+      if (response.status >= 500 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 1500); continue; }
       if (response.status === 429) unavailableUntil = Date.now() + 60_000;
       if (!response.ok) throw new Error(`INE dados: HTTP ${response.status}`);
       const data = normalizeIneResponse(await response.json(), indicator, territory, period, periodCode);
@@ -86,12 +88,14 @@ export async function fetchBatchObservations(
     const secondCache = observationCache.get(query);
     if (secondCache && secondCache.until > Date.now()) return secondCache.data;
     if (Date.now() < unavailableUntil) throw new Error("INE temporariamente indisponível; consulta suspensa para evitar espera repetida.");
-    const maxAttempts = Math.max(1, Math.min(3, options?.maxAttempts ?? 2));
+    const maxAttempts = Math.max(1, Math.min(3, options?.maxAttempts ?? 3));
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       let response: Response;
       try { response = await ineFetch(`${base}/pindica.jsp?${query}`); }
       catch (error) { unavailableUntil = Date.now() + 10_000; throw new Error(`INE dados: ligação indisponível (${error instanceof Error ? error.message : "erro de rede"}).`); }
       if (response.status === 429 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 5000); continue; }
+      // 502/503/504: o INE às vezes fica sobrecarregado durante segundos; vale a pena tentar outra vez.
+      if (response.status >= 500 && attempt < maxAttempts - 1) { await pause((attempt + 1) * 1500); continue; }
       if (response.status === 429) unavailableUntil = Date.now() + 60_000;
       if (!response.ok) throw new Error(`INE dados: HTTP ${response.status}`);
       const raw: unknown = await response.json();

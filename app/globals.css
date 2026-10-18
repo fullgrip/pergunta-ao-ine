@@ -206,3 +206,7 @@ body{background:radial-gradient(900px 520px at 12% -8%, color-mix(in srgb, var(-
 .lang-toggle{display:inline-flex;border:1px solid var(--linha);border-radius:99px;overflow:hidden;margin-left:12px}
 .lang-toggle button{border:0;background:none;color:var(--tinta-2);font-size:12px;font-weight:800;padding:6px 10px;cursor:pointer}
 .lang-toggle button[aria-pressed=true]{background:var(--pinho);color:var(--cal)}
+
+/* Aviso legal. */
+.legal-item h2{font-size:22px}
+.legal-en{color:var(--tinta-2);font-size:14px}

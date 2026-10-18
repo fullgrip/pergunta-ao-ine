@@ -56,7 +56,12 @@ async function answerQuestion(input: z.infer<typeof RequestSchema>, notify?: (no
       if (fallback.every(coversRequestedPeriods)) { series = fallback as IneResponse[]; snapshotUsed = true; }
     }
     const rows = series.flatMap((item) => item.observations);
-    if (!rows.some((row) => row.value !== null)) return NextResponse.json({ error: "Não foi possível obter valores numéricos do INE para estes parâmetros.", warnings: series.flatMap((item) => item.warnings) }, { status: 502 });
+    if (!rows.some((row) => row.value !== null)) {
+      const warningsFound = series.flatMap((item) => item.warnings);
+      // Distingue "o INE está em baixo" de "não há dados": a primeira resolve-se a tentar daqui a pouco.
+      const ineDown = warningsFound.some((warning) => /HTTP 5\d\d|liga[cç][aã]o indispon|temporariamente indispon/i.test(warning));
+      return NextResponse.json({ error: ineDown ? "O INE está indisponível neste momento (o servidor deles não respondeu). Tenta outra vez daqui a pouco." : "Não foi possível obter valores numéricos do INE para estes parâmetros.", warnings: warningsFound }, { status: 502 });
+    }
     if (plan.intent === "comparison") {
       const commonPeriods = territories[0] && territories[1]
         ? new Set(rows.filter((row) => row.territoryId === territories[0]!.id && row.value !== null).map((row) => row.periodCode))

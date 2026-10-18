@@ -99,6 +99,16 @@ describe("falhas externas", () => {
     expect(network).toHaveBeenCalledTimes(2);
     expect(result.observations.length).toBeGreaterThan(0);
   });
+  it("volta a tentar quando o INE responde 503", async () => {
+    const ok = fixture("population-2025-portimao.json");
+    const network = vi.fn()
+      .mockResolvedValueOnce(new Response("<html>503 - Service Unavailable</html>", { status: 503 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify(ok), { status: 200 }));
+    vi.stubGlobal("fetch", network);
+    const result = await fetchObservation(pop, pop.supportedTerritories[0], "2023", "S7A2023");
+    expect(network).toHaveBeenCalledTimes(2);
+    expect(result.observations.length).toBeGreaterThan(0);
+  });
   it("deteta Ollama indisponível", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
     expect((await ollamaHealth()).available).toBe(false);
